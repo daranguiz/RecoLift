@@ -1,0 +1,6 @@
+random ass notes dope
+
+this produces a lot of data - as it stands, you'll have to do a sliding window over the data repeatedly to analyze. that's a lot of work for your phone, and that'll use up battery pretty quickly. is there a way to do this in real time without using so much battery life?
+
+what if there is an offline option... analyze the data in cloud or something post-workout then upload to thesquatrack? Explicit application doesn't matter, but i need some way to frame the project.
+

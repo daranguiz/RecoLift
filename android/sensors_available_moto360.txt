@@ -1,0 +1,17 @@
+android.sensor.accelerometer
+android.sensor.step_counter
+android.sensor.gyroscope
+android.sensor.magnetic_field
+android.sensor.light
+android.sensor.rotation_vector
+android.sensor.orientation
+android.sensor.gravity
+android.sensor.linear_acceleration
+
+app lifecycle:
+
+- turn on
+- button: start recording
+- button: end recording (may have troubles with the auto sleep)
+- save as?
+- sync to phone FS
