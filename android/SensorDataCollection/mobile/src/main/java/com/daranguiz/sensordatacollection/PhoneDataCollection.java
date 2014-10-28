@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -34,12 +35,10 @@ public class PhoneDataCollection extends Activity implements
     private GoogleApiClient mGoogleApiClient;
     private boolean mResolvingError;
     private TextView[] mTextView = new TextView[5];
+    private EditText mEditText;
     private boolean mSensorCSVFileOpen;
     private File mSensorCSVFile;
     private BufferedWriter mSensorCSVFileWriter;
-    private int curSensorFileIdx;
-
-    private static final String START_ACTIVITY_PATH = "/phone-data-collection-activity";
 
     // Request code to use when launching the resolution activity
     private static final int REQUEST_RESOLVE_ERROR = 1001;
@@ -51,7 +50,6 @@ public class PhoneDataCollection extends Activity implements
         super.onCreate(savedInstanceState);
 
         mSensorCSVFileOpen = false;
-        curSensorFileIdx = 0;
         setContentView(R.layout.activity_phone_data_collection);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
@@ -70,6 +68,10 @@ public class PhoneDataCollection extends Activity implements
         mTextView[4] = (TextView) findViewById(R.id.text_box_5);
         mTextView[4].setText("TEST");
 
+        String tempCSVName = "sensor_csv_" + Long.toString(System.currentTimeMillis());
+        mEditText = (EditText) findViewById(R.id.text_box_editable_csv_name);
+        mEditText.setText(tempCSVName);
+
         if (!mResolvingError) {
             mGoogleApiClient.connect();
             Log.d("DEBUG", "Attempting to connect");
@@ -84,8 +86,8 @@ public class PhoneDataCollection extends Activity implements
                         if (!mSensorCSVFileOpen) {
                             try {
                                 mSensorCSVFileOpen = true;
-                                mSensorCSVFile = getDCIMStorageDir("sensorCSV_" + Integer.toString(curSensorFileIdx) + ".csv");
-                                curSensorFileIdx++;
+                                mSensorCSVFile = getDCIMStorageDir(mEditText.getText() + ".csv");
+
                                 mSensorCSVFileWriter = new BufferedWriter(new FileWriter(mSensorCSVFile));
                                 runOnUiThread(new Runnable() {
                                     @Override

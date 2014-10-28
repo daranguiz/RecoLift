@@ -8,11 +8,18 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".PhoneDataCollection">
 
+    <EditText
+        android:id="@+id/text_box_editable_csv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world"/>
+
     <Button
         android:id="@+id/button_start_sensor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/start_sensor_button_text" />
+        android:text="@string/start_sensor_button_text"
+        android:layout_below="@id/text_box_editable_csv_name" />
 
     <Button
         android:id="@+id/button_stop_sensor"
