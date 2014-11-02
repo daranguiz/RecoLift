@@ -51,12 +51,9 @@ public class WatchDataCollection extends Activity {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
                 mTextView = (TextView) stub.findViewById(R.id.text);
+                mTextView.setText("Listener service started");
             }
         });
-
-        mTextView = new TextView(this);
-        mTextView.setTextSize(20);
-        mTextView.setText("Init init init init init");
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> deviceSensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);

@@ -86,7 +86,7 @@ public class PhoneDataCollection extends Activity implements
                         if (!mSensorCSVFileOpen) {
                             try {
                                 mSensorCSVFileOpen = true;
-                                mSensorCSVFile = getDCIMStorageDir(mEditText.getText() + ".csv");
+                                mSensorCSVFile = getDCIMStorageDir(mEditText.getText().toString().trim() + ".csv");
 
                                 mSensorCSVFileWriter = new BufferedWriter(new FileWriter(mSensorCSVFile));
                                 runOnUiThread(new Runnable() {
