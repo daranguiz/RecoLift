@@ -1,0 +1,367 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 173.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"python",
+				"Set Syntax: Python"
+			],
+			[
+				"latexreconf",
+				"LaTeXTools: Reconfigure and migrate settings"
+			],
+			[
+				"java",
+				"Set Syntax: Java"
+			],
+			[
+				"tex",
+				"Set Syntax: LaTeX"
+			],
+			[
+				"trailing",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"packageinst",
+				"Package Control: Install Package"
+			],
+			[
+				"align",
+				"Preferences: Alignment Key Bindings – User"
+			],
+			[
+				"alignment",
+				"Preferences: Alignment Key Bindings – Default"
+			],
+			[
+				"syntaxpython",
+				"Set Syntax: Python"
+			],
+			[
+				"syntaxpy",
+				"Set Syntax: Python"
+			],
+			[
+				"syntajava",
+				"Set Syntax: Java"
+			],
+			[
+				"syntaxjava",
+				"Set Syntax: Java"
+			],
+			[
+				"syntaxmat",
+				"Set Syntax: MATLAB"
+			],
+			[
+				":w",
+				":w - Save"
+			]
+		],
+		"width": 707.0
+	},
+	"console":
+	{
+		"height": 524.0,
+		"history":
+		[
+			"sublime.log_commands(False)",
+			"stop",
+			"end",
+			"sublime.log_commands(True)",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis"
+	],
+	"file_history":
+	[
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/android/sensors_available_moto360.txt",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece498rc3/DeadReckoning/src/com/aranguizherr/deadreckoning/Tracker.java",
+		"/C/Users/Dario/Downloads/opencv.sh",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece398bd/lab7/data/test.json",
+		"/C/Users/Dario/test_csv.txt",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece498rc3/Pedometer/SensorCSV/src/ca/aranguiz/sensorcsv/DataToCSV.java",
+		"/C/Users/Dario/Dropbox/SchoolWork/cs425/hw2/hw2.tex",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece498rc3/Pedometer/SensorCSV/AndroidManifest.xml",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece398bd/lab7/data/data.json",
+		"/C/Users/Dario/Dropbox/SchoolWork/HKN/tutoring_kc_explanation",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/QLearningAgent.java",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/1b_episodes.txt",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/mp1.tex",
+		"/C/Users/Dario/Dropbox/School Work/ece398bd/lab5/dario_aranguiz_lab5.ipynb",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/RandomAgent.java",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/Agent.java",
+		"/C/Users/Dario/Dropbox/School Work/SeniorThesis/search/fitness_tracker_brainstorming.txt",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/episodes.txt",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/QAgent.java.todo",
+		"/C/Users/Dario/Dropbox/School Work/ece398bd/lab2/dario_aranguiz_lab2.ipynb",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/TrailingSpaces/trailing_spaces.sublime-settings",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/User/trailing_spaces.sublime-settings",
+		"/C/Users/Dario/Dropbox/School Work/ece398bd/lab3/lab3_test.py",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/Alignment/Default (Windows).sublime-keymap",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/Dario/Dropbox/School Work/CS 440/hw1.txt",
+		"/C/Users/Dario/Downloads/out.facebook-wosn-links",
+		"/C/Users/Dario/Dropbox/Jobs/2014_8_26_jawbone_cover_letter",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/notes_for_friday.txt",
+		"/C/Users/Dario/Dropbox/Save/Random/Colemak_toggleable.ahk",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/14/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/6/groundtruth/markerdata.txt",
+		"/C/Users/Dario/.android/debug.keystore",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/csl_deployment_todo.txt",
+		"/C/Users/Dario/Downloads/Seedbox/Office ProPlus 2013 VL (x86 and x64) EN/README.txt",
+		"/C/Users/Dario/Downloads/Seedbox/Office ProPlus 2013 VL (x86 and x64) EN/Office 2013 KMSmicro Activator v3.10/KMSmicro v3.10/Office 2010&2013 Install & Activate_EN.txt",
+		"/C/Users/Dario/Downloads/Seedbox/Office ProPlus 2013 VL (x86 and x64) EN/Office 2013 KMSmicro Activator v3.10/KMSmicro v3.10/Readme_EN.txt",
+		"/C/Users/Dario/Dropbox/HKN/Course Resources Wiki/Systems/systems.",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Dario/Dropbox/HKN/Course Resources Wiki/mock_article.txt",
+		"/C/Users/Dario/Documents/GitHub/nextwave/README.md",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/User/Matlab.sublime-settings",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/Dario/Documents/GitHub/pebble-sdk-examples-master/weather-demo/WeatherDemo-Android/src/com/example/PebbleKitExample/ExampleWeatherActivity.java",
+		"/C/Users/Dario/Documents/GitHub/pebble-sdk-examples-master/weather-demo/WeatherDemo-Android/res/layout/activity_weather.xml",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/src/com/synrg/utils/FileUtil.java",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/inertialLandmark_upper_square.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.Hudson/Hudson/1/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/5/groundtruth/2014-03-31-04-22-29-562/knownLocation.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/problems_4_2_2014",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/src/com/synrg/UnLocClientActivity.java",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.1/CSL/1/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/9/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/5/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/8/groundtruth/2014-04-02-12-20-29-347/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/7/groundtruth/2014-04-02-12-19-04-718/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/6/groundtruth/2014-04-02-12-17-46-407/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/5/groundtruth/2014-03-31-04-22-29-562/Time.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/6/groundtruth/2014-03-31-04-23-52-355/Time.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/6/groundtruth/2014-03-31-04-23-52-355/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/4/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.1/Hudson/1/groundtruth/2013-05-02-09-18-21-225/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.1/CSL/2/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/4/data/2014-03-31-04-22-05-326/Sensor.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/landmarks/magneticLandmark.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/landmarks/inertialLandmark.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/markerdata.txt.1",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/landmarks/magneticLandmark.txtN",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.1/CSL/1/groundtruth/2013-10-23-07-40-21-193/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/Timestamps/2014-03-31-04-22-29-562/Time.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc client source code/SDCard/landmarks/2/directionFlow.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc client source code/SDCard/landmarks/2/inertialLandmark.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/UnLocData/Hudson/1/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/inertialLandmark.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/Timestamps/2014-03-31-04-23-52-355/timestamps.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/2014-03-31-12-44-58-756/Time.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/2/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/landmarks/2/inertialLandmark.txt",
+		"/C/Users/Dario/AppData/Local/Microsoft/Windows/INetCache/IE/EJ5M4U4N/wifiLandmark[1].txt",
+		"/C/Users/Dario/AppData/Local/Microsoft/Windows/INetCache/IE/AN6JT150/inertialLandmark[1].txt",
+		"/C/Users/Dario/AppData/Local/Microsoft/Windows/INetCache/IE/AN6JT150/inertialLandmark[2].txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/UnLocData/Hudson/1/groundtruth/2013-05-02-09-18-21-225/knownLocation.txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/inertialLandmark_lower_square.txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/InertialLandmark.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/1/groundtruth/2013-10-23-07-40-21-193/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/landmarks/inertialLandmark.txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/InertialLandmarks.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/1/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/floorplan/floorplanInfo.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/1/data/2013-10-23-07-41-09-122/Sensor.txt",
+		"/C/Users/Dario/AppData/Local/Microsoft/Windows/INetCache/IE/NT9IMT9G/timestamps[1].txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/proguard-project.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc client source code/README.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/notes_to_self.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/InstallationNotes.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/UnLocData/Hudson/1/groundtruth/2013-05-02-09-18-21-225/Time.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/README.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/Hudson/landmarks/wifiLandmark.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/UnLocData/Hudson/floorplan/floorplanInfo.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc client source code/UnLocClient/UnLocClient/src/com/synrg/utils/ParameterUtils.java",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/Hudson/areas.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.Hudson/Hudson/googleEarthDrift.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/README.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/InstallationVideoTranscription.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/eclipse/eclipse.ini",
+		"/C/Users/Dario/Desktop/my.ini",
+		"/C/Program Files/MySQL/MySQL Server 5.5/my.ini",
+		"/C/Users/Dario/Desktop/my_2.ini",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/UnLoc_Demo/UnLocFront/src/UnLocFront.css",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/UnLoc_Demo/UnLocFront/src/UnLocFront.mxml",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/my.ini",
+		"/C/Users/Dario/Downloads/Seedbox/Matlab 2013a 32-64/installer_input.txt",
+		"/C/Users/Dario/Downloads/Seedbox/Matlab 2013a 32-64/readme.txt"
+	],
+	"find":
+	{
+		"height": 28.0
+	},
+	"find_in_files":
+	{
+		"height": 117.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"SENSOR_DELAY_NORMAL",
+			"mRotVector",
+			"knows_thief",
+			"_",
+			"\\epsilon",
+			"HWNUM",
+			"ECE",
+			"qValue",
+			"QAgent",
+			"numOfActions",
+			"=",
+			"l2",
+			"calculated_source_node",
+			"buildDatasetGraph",
+			"8",
+			"<node_list>",
+			"tuple",
+			",{\"",
+			"floorplan",
+			"isWatchConnected",
+			"conne"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 169.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "thesis.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 185.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
