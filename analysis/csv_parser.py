@@ -49,33 +49,30 @@ for row in curls_raw_data:
     dict_curls_data.setdefault(sensor_type, []).append(new_dict_entry)
 
 # Not the most efficient way to do this
-# Takes 5s vs sub-1s
-timestamp_data = []
-val_data = [[] for i in xrange(3)]
-for row in dict_curls_data[1]:
-    timestamp_data.append(row[0])
-    for i in xrange(3):
-        val_data[i].append(row[1][i])
+# Switch to numpy array to fix
+dict_timestamp_data = {}
+dict_val_data = {}
+for key, value in dict_curls_data.iteritems():
+    for row in value:
+        dict_timestamp_data.setdefault(key, []).append(row[0])
+        if key not in dict_val_data:
+            dict_val_data[key] = [[] for i in xrange(len(row[1]))]
+        for i in xrange(len(row[1])):
+            dict_val_data[key][i].append(row[1][i])
+
 
 # Plot! "You've come so far, the end is near. Now, you are here."
-plt.subplot(3,1,1)
-plt.plot(timestamp_data, val_data[0])
-plt.xlabel('time (ns)')
-plt.ylabel('Acceleration in m/s^2')
-plt.title('Accelerometer X')
-plt.grid(True)
+str_cur_sensor = 'TYPE_LINEAR_ACCELERATION'
+cur_sensor = dict_sensor_type[str_cur_sensor]
+num_vals = len(dict_val_data[cur_sensor])
 
-plt.subplot(3,1,2)
-plt.plot(timestamp_data, val_data[1])
-plt.xlabel('time (ns)')
-plt.ylabel('Acceleration in m/s^2')
-plt.title('Accelerometer Y')
-plt.grid(True)
+for i in xrange(num_vals):
+    plt.subplot(num_vals,1,i+1)
+    plt.plot(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i])
+    plt.ylabel('Value')
+    plt.title(str_cur_sensor + ' ' + str(i))
+    plt.grid(True)
 
-plt.subplot(3,1,3)
-plt.plot(timestamp_data, val_data[2])
 plt.xlabel('time (ns)')
-plt.ylabel('Acceleration in m/s^2')
-plt.title('Accelerometer Z')
-plt.grid(True)
 plt.show()
+
