@@ -188,23 +188,33 @@ public class PhoneDataCollection extends Activity implements
                 Log.d(TAG, "DataItem deleted: " + event.getDataItem().getUri());
             } else if (event.getType() == DataEvent.TYPE_CHANGED) {
                 Log.d(TAG, "DataItem changed: " + event.getDataItem().getUri());
-                DataMap dataFromWatch = DataMap.fromByteArray(event.getDataItem().getData());
-                final float[] dataArray = dataFromWatch.getFloatArray("values");
-                final int dataType = dataFromWatch.getInt("sensor_type");
-                final long dataTimestamp = dataFromWatch.getLong("timestamp");
-                if (mSensorCSVFileOpen) {
-                    String newLine = "";
-                    newLine += Integer.toString(dataType) + ", ";
-                    newLine += Long.toString(dataTimestamp) + ", ";
-                    for (float sensorData : dataArray) {
-                        newLine += Float.toString(sensorData) + ", ";
-                    }
-                    // Remove the last extra comma
-                    newLine = newLine.substring(0, newLine.length() - 2) + "\r\n";
-                    try {
-                        mSensorCSVFileWriter.write(newLine);
-                    } catch (IOException e) {
-                        Log.e(TAG, "File could not be written");
+                DataMap dataMap = DataMap.fromByteArray(event.getDataItem().getData());
+                for (int i = 0; i < 20; i++) {
+                    String valKey = "values" + Integer.toString(i);
+                    String typeKey = "sensor_type" + Integer.toString(i);
+                    String timestampKey = "timestamp" + Integer.toString(i);
+
+                    float[] dataArray = dataMap.getFloatArray(valKey);
+                    int dataType = dataMap.getInt(typeKey);
+                    long dataTimestamp = dataMap.getLong(timestampKey);
+
+                    Log.d(TAG, Float.toString(dataArray[0]));
+//                    Log.d(TAG, Integer.toString(dataType));
+                    Log.d(TAG, Long.toString(dataTimestamp));
+                    if (mSensorCSVFileOpen) {
+                        String newLine = "";
+                        newLine += Integer.toString(dataType) + ", ";
+                        newLine += Long.toString(dataTimestamp) + ", ";
+                        for (float sensorData : dataArray) {
+                            newLine += Float.toString(sensorData) + ", ";
+                        }
+                        // Remove the last extra comma
+                        newLine = newLine.substring(0, newLine.length() - 2) + "\r\n";
+                        try {
+                            mSensorCSVFileWriter.write(newLine);
+                        } catch (IOException e) {
+                            Log.e(TAG, "File could not be written");
+                        }
                     }
                 }
 //                runOnUiThread(new Runnable() {

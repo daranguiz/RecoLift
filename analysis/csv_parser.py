@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import csv
 
 thesis_dir = "C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/"
-data_dir = thesis_dir + "data/2014_11_1/"
+data_dir = thesis_dir + "data/SyncedFromPhoneDCIM/"
 
 curls_raw_data = []
-with open(data_dir + "barbell curls.csv", 'rb') as csvfile:
+with open(data_dir + "orientation_drift_test.csv", 'rb') as csvfile:
     curls_csv = csv.reader(csvfile, delimiter=",")
     for row in curls_csv:
         curls_raw_data.append(row)
@@ -62,13 +62,13 @@ for key, value in dict_curls_data.iteritems():
 
 
 # Plot! "You've come so far, the end is near. Now, you are here."
-str_cur_sensor = 'TYPE_LINEAR_ACCELERATION'
+str_cur_sensor = 'TYPE_ORIENTATION'
 cur_sensor = dict_sensor_type[str_cur_sensor]
 num_vals = len(dict_val_data[cur_sensor])
 
 for i in xrange(num_vals):
     plt.subplot(num_vals,1,i+1)
-    plt.plot(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i])
+    plt.plot(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i], 'bo-')
     plt.ylabel('Value')
     plt.title(str_cur_sensor + ' ' + str(i))
     plt.grid(True)

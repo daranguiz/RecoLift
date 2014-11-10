@@ -22,6 +22,7 @@ import com.google.android.gms.wearable.WearableListenerService;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.concurrent.locks.Lock;
 
 public class SensorBackgroundService extends WearableListenerService
         implements SensorEventListener {
@@ -39,6 +40,9 @@ public class SensorBackgroundService extends WearableListenerService
     // Request code to use when launching the resolution activity
     private static final int REQUEST_RESOLVE_ERROR = 1001;
     private boolean mResolvingError = false;
+    private int mSensorCounter = 0;
+    private PutDataMapRequest dataMap;
+    private Lock mLock;
 
     /* just sensor things */
     private SensorManager mSensorManager;
@@ -64,6 +68,8 @@ public class SensorBackgroundService extends WearableListenerService
         super.onCreate();
 
         Log.d("sDEBUG", "SensorService started!");
+
+        mSensorCounter = 0;
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -158,19 +164,34 @@ public class SensorBackgroundService extends WearableListenerService
     @Override
     public void onSensorChanged(SensorEvent event) {
 //        Log.d("sDEBUG", "SensorEvent!");
+        if (mGoogleApiClient.isConnected()) {
+//            Log.d("sDEBUG", Integer.toString(mSensorCounter));
 
-        if (1==1 && mGoogleApiClient.isConnected()) {
             /* Populate the data te be sent to the phone */
-            PutDataMapRequest dataMap = PutDataMapRequest.create("/sensor");
-            dataMap.getDataMap().putFloatArray("values", event.values);
-            dataMap.getDataMap().putInt("sensor_type", event.sensor.getType());
-            dataMap.getDataMap().putLong("timestamp", event.timestamp);
+            if (mSensorCounter == 0) {
+                dataMap = PutDataMapRequest.create("/sensor");
+            }
+
+            String valKey = "values" + Integer.toString(mSensorCounter);
+            String typeKey = "sensor_type" + Integer.toString(mSensorCounter);
+            String timestampKey = "timestamp" + Integer.toString(mSensorCounter);
+
+            dataMap.getDataMap().putFloatArray(valKey, event.values.clone());
+            dataMap.getDataMap().putInt(typeKey, event.sensor.getType());
+            dataMap.getDataMap().putLong(timestampKey, event.timestamp);
+            mSensorCounter++;
+//
+//            Log.d(TAG, valKey);
+//            Log.d(TAG, Float.toString(dataMap.getDataMap().getFloatArray(valKey)[0]));
 
             /* Send the data to the phone */
-            PutDataRequest request = dataMap.asPutDataRequest();
-            PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi
-                    .putDataItem(mGoogleApiClient, request);
-            Log.d("sDEBUG", "SensorEvent!");
+            if (mSensorCounter == 20) {
+                PutDataRequest request = dataMap.asPutDataRequest();
+                PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi
+                        .putDataItem(mGoogleApiClient, request);
+                mSensorCounter = 0;
+            }
+//            Log.d("sDEBUG", "SensorEvent!");
         }
     }
 
@@ -186,13 +207,7 @@ public class SensorBackgroundService extends WearableListenerService
         Log.d(TAG, "onMessageReceived: " + messageData);
         if (messageData.equals("StartCollection")) {
             if (!SENSOR_ALWAYS_ON) {
-//                mSensorManager.registerListener(curService, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-//                mSensorManager.registerListener(curService, mGyroscope, SensorManager.SENSOR_DELAY_NORMAL);
-//                mSensorManager.registerListener(curService, mMagnet, SensorManager.SENSOR_DELAY_NORMAL);
-//                mSensorManager.registerListener(curService, mRotVector, SensorManager.SENSOR_DELAY_NORMAL);
-//                mSensorManager.registerListener(curService, mOrientation, SensorManager.SENSOR_DELAY_NORMAL);
-//                mSensorManager.registerListener(curService, mGravity, SensorManager.SENSOR_DELAY_NORMAL);
-//                mSensorManager.registerListener(curService, mLinearAcceleration, SensorManager.SENSOR_DELAY_NORMAL);
+                mSensorCounter = 0;
                 mSensorManager.registerListener(curService, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
                 mSensorManager.registerListener(curService, mGyroscope, SensorManager.SENSOR_DELAY_FASTEST);
                 mSensorManager.registerListener(curService, mMagnet, SensorManager.SENSOR_DELAY_FASTEST);
@@ -222,6 +237,42 @@ public class SensorBackgroundService extends WearableListenerService
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-        Log.d("sDEBUG", "Inside onDataChanged in SensorBackgroundService");
+//        Log.d("sDEBUG", "Inside onDataChanged in SensorBackgroundService");
+//        for (DataEvent event : dataEvents) {
+//            if (event.getType() == DataEvent.TYPE_DELETED) {
+//                Log.d(TAG, "DataItem deleted: " + event.getDataItem().getUri());
+//            } else if (event.getType() == DataEvent.TYPE_CHANGED) {
+//                Log.d(TAG, "DataItem changed: " + event.getDataItem().getUri());
+//                DataMap dataMap = DataMap.fromByteArray(event.getDataItem().getData());
+//                /*for (int i = 0; i < 10; i++) {
+//                    String valKey = "values" + Integer.toString(i);
+//                    String typeKey = "sensor_type" + Integer.toString(i);
+//                    String timestampKey = "timestamp" + Integer.toString(i);
+//
+//                    float[] dataArray = dataMap.getFloatArray(valKey);
+//                    int dataType = dataMap.getInt(typeKey);
+//                    long dataTimestamp = dataMap.getLong(timestampKey);
+//
+//                    Log.d(TAG, Float.toString(dataArray[0]));
+////                    Log.d(TAG, Integer.toString(dataType));
+//                    Log.d(TAG, Long.toString(dataTimestamp));
+//                }*/
+//                String valKey = "values0";
+//                float[] dataArray = dataMap.getFloatArray(valKey);
+//                Log.d(TAG, Float.toString(dataArray[0]));
+//
+//                valKey = "values1";
+//                dataArray = dataMap.getFloatArray(valKey);
+//                Log.d(TAG, Float.toString(dataArray[0]));
+//
+//                valKey = "values2";
+//                dataArray = dataMap.getFloatArray(valKey);
+//                Log.d(TAG, Float.toString(dataArray[0]));
+//
+//                valKey = "values3";
+//                dataArray = dataMap.getFloatArray(valKey);
+//                Log.d(TAG, Float.toString(dataArray[0]));
+//            }
+//        }
     }
 }
