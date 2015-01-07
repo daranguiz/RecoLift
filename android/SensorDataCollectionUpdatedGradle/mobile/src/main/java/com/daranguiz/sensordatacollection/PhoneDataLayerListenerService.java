@@ -78,11 +78,13 @@ public class PhoneDataLayerListenerService extends WearableListenerService {
         // http://stackoverflow.com/questions/6091270/how-can-i-keep-my-android-service-running-when-the-screen-is-turned-off
         PowerManager mgr = (PowerManager)this.getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wakeLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakeLock");
-//        wakeLock.acquire();
+        wakeLock.acquire();
 
         Log.d(TAG, "onStartCommand");
 
-
+        if (wakeLock != null && !wakeLock.isHeld()) {
+            wakeLock.acquire();
+        }
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
@@ -118,9 +120,6 @@ public class PhoneDataLayerListenerService extends WearableListenerService {
 
         if (messageEvent.getPath().equals(START_PATH)) {
             Log.d(TAG, "Start message received!");
-            if (wakeLock != null && !wakeLock.isHeld()) {
-                wakeLock.acquire();
-            }
             sendWatchRPC("StartCollection");
             try {
                 if (!mSensorCSVFileOpen) {
@@ -143,9 +142,6 @@ public class PhoneDataLayerListenerService extends WearableListenerService {
                 mSensorCSVFileOpen = false;
             } catch (Exception e) {
                 Log.e(TAG, "File could not be closed");
-            }
-            if (wakeLock != null && wakeLock.isHeld()) {
-                wakeLock.release();
             }
         }
     }

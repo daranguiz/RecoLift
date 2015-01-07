@@ -59,6 +59,17 @@ public class PhoneDataCollection extends Activity implements
         mSensorCSVFileOpen = false;
         setContentView(R.layout.activity_phone_data_collection);
 
+        mTextView[0] = (TextView) findViewById(R.id.text_box_1);
+        mTextView[0].setText("TEST");
+        mTextView[1] = (TextView) findViewById(R.id.text_box_2);
+        mTextView[1].setText("TEST");
+        mTextView[2] = (TextView) findViewById(R.id.text_box_3);
+        mTextView[2].setText("TEST");
+        mTextView[3] = (TextView) findViewById(R.id.text_box_4);
+        mTextView[3].setText("TEST");
+        mTextView[4] = (TextView) findViewById(R.id.text_box_5);
+        mTextView[4].setText("TEST");
+
         String tempCSVName = "sensor_csv_" + Long.toString(System.currentTimeMillis());
         mEditText = (EditText) findViewById(R.id.text_box_editable_csv_name);
         mEditText.setText(tempCSVName);
@@ -68,6 +79,7 @@ public class PhoneDataCollection extends Activity implements
             public void onClick(View v) {
                 // Start data collection
                 new SendMessageActivityToService(START_PATH, mEditText.getText().toString().trim()).start();
+                mTextView[0].setText("Data collection started");
             }
         });
 
@@ -76,6 +88,7 @@ public class PhoneDataCollection extends Activity implements
             public void onClick(View v) {
                 // Stop data collection
                 new SendMessageActivityToService(STOP_PATH, "test").start();
+                mTextView[0].setText("Data collection stopped");
             }
         });
 
