@@ -1,5 +1,6 @@
 package com.daranguiz.sensordatacollection;
 
+import android.content.Context;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Environment;
@@ -75,15 +76,13 @@ public class PhoneDataLayerListenerService extends WearableListenerService {
         Log.d(TAG, "onCreate");
 
         // http://stackoverflow.com/questions/6091270/how-can-i-keep-my-android-service-running-when-the-screen-is-turned-off
-//        PowerManager mgr = (PowerManager)this.getSystemService(Context.POWER_SERVICE);
-//        PowerManager.WakeLock wakeLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakeLock");
+        PowerManager mgr = (PowerManager)this.getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakeLock");
 //        wakeLock.acquire();
 
         Log.d(TAG, "onStartCommand");
 
-//        if (wakeLock != null && !wakeLock.isHeld()) {
-//            wakeLock.acquire();
-//        }
+
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
@@ -119,11 +118,15 @@ public class PhoneDataLayerListenerService extends WearableListenerService {
 
         if (messageEvent.getPath().equals(START_PATH)) {
             Log.d(TAG, "Start message received!");
+            if (wakeLock != null && !wakeLock.isHeld()) {
+                wakeLock.acquire();
+            }
             sendWatchRPC("StartCollection");
             try {
                 if (!mSensorCSVFileOpen) {
                     mSensorCSVFileOpen = true;
-                    String fromTextBox = messageEvent.getData().toString();
+                    String fromTextBox = new String(messageEvent.getData());
+                    Log.d(TAG, "From text box: " + fromTextBox);
                     mSensorCSVFile = getDCIMStorageDir(fromTextBox + ".csv");
                     mSensorCSVFileWriter = new BufferedWriter(new FileWriter(mSensorCSVFile));
                 }
@@ -140,6 +143,9 @@ public class PhoneDataLayerListenerService extends WearableListenerService {
                 mSensorCSVFileOpen = false;
             } catch (Exception e) {
                 Log.e(TAG, "File could not be closed");
+            }
+            if (wakeLock != null && wakeLock.isHeld()) {
+                wakeLock.release();
             }
         }
     }
@@ -207,11 +213,10 @@ public class PhoneDataLayerListenerService extends WearableListenerService {
 
         new Thread(new Runnable() {
             public void run() {
-//                sendWatchRPC("StopCollection");
                 mGoogleApiClient.disconnect();
-//                if (wakeLock != null && wakeLock.isHeld()) {
-//                    wakeLock.release();
-//                }
+                if (wakeLock != null && wakeLock.isHeld()) {
+                    wakeLock.release();
+                }
             }
         }).start();
 

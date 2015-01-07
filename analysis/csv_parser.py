@@ -6,7 +6,7 @@ thesis_dir = "C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/"
 data_dir = thesis_dir + "data/SyncedFromPhoneDCIM/"
 
 curls_raw_data = []
-with open(data_dir + "sensor_csv_1416381476734.csv", 'rb') as csvfile:
+with open(data_dir + "sensor_csv_1420665975984.csv", 'rb') as csvfile:
     curls_csv = csv.reader(csvfile, delimiter=",")
     for row in curls_csv:
         curls_raw_data.append(row)

@@ -102,6 +102,8 @@ public class PhoneDataCollection extends Activity implements
         Log.d(TAG, "Tryna stop service");
         stopService(phoneListenerServiceIntent);
         unbindService(mConnection);
+
+        super.onDestroy();
     }
 
     /* Defines callbacks for service binding, passed to bindService(). Never called for some reason? */

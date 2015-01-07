@@ -210,12 +210,12 @@ public class SensorBackgroundService extends WearableListenerService
             if (!SENSOR_ALWAYS_ON) {
                 mSensorCounter = 0;
                 mSensorManager.registerListener(curService, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
-//                mSensorManager.registerListener(curService, mGyroscope, SensorManager.SENSOR_DELAY_FASTEST);
-//                mSensorManager.registerListener(curService, mMagnet, SensorManager.SENSOR_DELAY_FASTEST);
-//                mSensorManager.registerListener(curService, mRotVector, SensorManager.SENSOR_DELAY_FASTEST);
-//                mSensorManager.registerListener(curService, mOrientation, SensorManager.SENSOR_DELAY_FASTEST);
-//                mSensorManager.registerListener(curService, mGravity, SensorManager.SENSOR_DELAY_FASTEST);
-//                mSensorManager.registerListener(curService, mLinearAcceleration, SensorManager.SENSOR_DELAY_FASTEST);
+                mSensorManager.registerListener(curService, mGyroscope, SensorManager.SENSOR_DELAY_FASTEST);
+                mSensorManager.registerListener(curService, mMagnet, SensorManager.SENSOR_DELAY_FASTEST);
+                mSensorManager.registerListener(curService, mRotVector, SensorManager.SENSOR_DELAY_FASTEST);
+                mSensorManager.registerListener(curService, mOrientation, SensorManager.SENSOR_DELAY_FASTEST);
+                mSensorManager.registerListener(curService, mGravity, SensorManager.SENSOR_DELAY_FASTEST);
+                mSensorManager.registerListener(curService, mLinearAcceleration, SensorManager.SENSOR_DELAY_FASTEST);
             }
             Log.d("sDEBUG", "Started Sensor Collection");
         } else if (messageData.equals("StopCollection")) {
