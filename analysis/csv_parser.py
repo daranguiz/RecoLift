@@ -6,7 +6,7 @@ thesis_dir = "C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/"
 data_dir = thesis_dir + "data/SyncedFromPhoneDCIM/"
 
 curls_raw_data = []
-with open(data_dir + "orientation_drift_test.csv", 'rb') as csvfile:
+with open(data_dir + "sensor_csv_1416381476734.csv", 'rb') as csvfile:
     curls_csv = csv.reader(csvfile, delimiter=",")
     for row in curls_csv:
         curls_raw_data.append(row)
@@ -62,7 +62,7 @@ for key, value in dict_curls_data.iteritems():
 
 
 # Plot! "You've come so far, the end is near. Now, you are here."
-str_cur_sensor = 'TYPE_ORIENTATION'
+str_cur_sensor = 'TYPE_ACCELEROMETER'
 cur_sensor = dict_sensor_type[str_cur_sensor]
 num_vals = len(dict_val_data[cur_sensor])
 

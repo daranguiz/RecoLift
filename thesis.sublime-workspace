@@ -23,7 +23,15 @@
 			"file": "analysis/csv_parser.py",
 			"settings":
 			{
-				"buffer_size": 2322,
+				"buffer_size": 2332,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Dario/Dropbox/SchoolWork/cs425/hw3/hw3.tex",
+			"settings":
+			{
+				"buffer_size": 16095,
 				"line_ending": "Windows"
 			}
 		},
@@ -31,7 +39,7 @@
 			"file": "android/SensorDataCollection/wear/src/main/java/com/daranguiz/sensordatacollection/SensorBackgroundService.java",
 			"settings":
 			{
-				"buffer_size": 10450,
+				"buffer_size": 12658,
 				"line_ending": "Windows"
 			}
 		}
@@ -139,6 +147,7 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Dario/Dropbox/SchoolWork/cs425/hw2/hw2.tex",
 		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis/csv_parser.py",
 		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/android/sensors_available_moto360.txt",
 		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/android/SensorDataCollection/settings.gradle",
@@ -149,7 +158,6 @@
 		"/C/Users/Dario/Dropbox/SchoolWork/ece398bd/lab7/data/test.json",
 		"/C/Users/Dario/test_csv.txt",
 		"/C/Users/Dario/Dropbox/SchoolWork/ece498rc3/Pedometer/SensorCSV/src/ca/aranguiz/sensorcsv/DataToCSV.java",
-		"/C/Users/Dario/Dropbox/SchoolWork/cs425/hw2/hw2.tex",
 		"/C/Users/Dario/Dropbox/SchoolWork/ece498rc3/Pedometer/SensorCSV/AndroidManifest.xml",
 		"/C/Users/Dario/Dropbox/SchoolWork/ece398bd/lab7/data/data.json",
 		"/C/Users/Dario/Dropbox/SchoolWork/HKN/tutoring_kc_explanation",
@@ -276,6 +284,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"ANDREWID",
 			"Acceleration",
 			"Accelerometer",
 			"dict_sensor['TYPE_ACCELEROMETER']",
@@ -410,7 +419,7 @@
 						"translation.y": 680.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -419,15 +428,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2322,
+						"buffer_size": 2332,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								421,
-								421
+								432,
+								432
 							]
 						],
 						"settings":
@@ -445,11 +454,41 @@
 				},
 				{
 					"buffer": 2,
+					"file": "/C/Users/Dario/Dropbox/SchoolWork/cs425/hw3/hw3.tex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 16095,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10929,
+								10929
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4422.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "android/SensorDataCollection/wear/src/main/java/com/daranguiz/sensordatacollection/SensorBackgroundService.java",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10450,
+						"buffer_size": 12658,
 						"regions":
 						{
 						},
@@ -529,7 +568,7 @@
 						"translation.y": 2700.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				}
 			]

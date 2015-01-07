@@ -33,6 +33,7 @@ public class SensorBackgroundService extends WearableListenerService
     private static final String TAG = "sDEBUG";
     private static final String START_ACTIVITY_PATH = "/start-activity";
     private static final String DATA_ITEM_RECEIVED_PATH = "/data-item-received";
+    private static final int NUM_VALUES_IN_PACKET = 20;
 
     private GoogleApiClient mGoogleApiClient;
     SensorBackgroundService curService = this;
@@ -185,7 +186,7 @@ public class SensorBackgroundService extends WearableListenerService
 //            Log.d(TAG, Float.toString(dataMap.getDataMap().getFloatArray(valKey)[0]));
 
             /* Send the data to the phone */
-            if (mSensorCounter == 20) {
+            if (mSensorCounter == NUM_VALUES_IN_PACKET) {
                 PutDataRequest request = dataMap.asPutDataRequest();
                 PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi
                         .putDataItem(mGoogleApiClient, request);
