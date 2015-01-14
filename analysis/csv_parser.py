@@ -129,6 +129,10 @@ plt.xlabel('time (ns)')
 
 #=======================================================================#
 # Preprocessing/filtering
+#
+# It's kind of frustrating that the sensor rate is only 25Hz. This should be
+# enough, but we only get fidelity up to 10Hz if we're downsampling to 20Hz.
+# Probably should only downsample to 22Hz or something.
 
 Fs = 20
 
