@@ -1,0 +1,7 @@
+options
+
+RPE calculator - find maximum bar speed of a user, compute RPE based on percentage of max speed
+
+is the user doing the lift correctly? - idea, compute difference between a "perfect" set and the user's set. DTW -> compute percentage difference? i don't actually think this would work. say we compare accelerometer time series data. the user could do a lift slower, and it could be totally alright, but the accelerometer would be different.
+
+maybe we could track the bar path from rep to rep and ensure that it's consistent? that could pose some interesting challenges.
