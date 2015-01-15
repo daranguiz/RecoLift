@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"timesta",
+				"acc_20hz_timestamp"
+			],
+			[
 				"TYPE",
 				"TYPE_LINEAR_ACCELERATION"
 			]
@@ -12,42 +16,26 @@
 	"buffers":
 	[
 		{
-			"file": "data/2014_11_1/barbell curls.csv",
-			"settings":
-			{
-				"buffer_size": 18718,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "analysis/csv_parser.py",
 			"settings":
 			{
-				"buffer_size": 2332,
+				"buffer_size": 5958,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/Dario/Dropbox/SchoolWork/cs425/hw3/hw3.tex",
+			"file": "/C/Users/Dario/Desktop/kingmaker.css",
 			"settings":
 			{
-				"buffer_size": 16095,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "android/SensorDataCollection/wear/src/main/java/com/daranguiz/sensordatacollection/SensorBackgroundService.java",
-			"settings":
-			{
-				"buffer_size": 12658,
-				"line_ending": "Windows"
+				"buffer_size": 358,
+				"line_ending": "Unix"
 			}
 		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 469.0,
+		"height": 135.0,
 		"selected_items":
 		[
 			[
@@ -115,7 +103,7 @@
 				":w - Save"
 			]
 		],
-		"width": 694.0
+		"width": 522.0
 	},
 	"console":
 	{
@@ -147,6 +135,9 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Dario/Dropbox/SchoolWork/cs425/hw3/hw3.tex",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/android/SensorDataCollection/wear/src/main/java/com/daranguiz/sensordatacollection/SensorBackgroundService.java",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/data/2014_11_1/barbell curls.csv",
 		"/C/Users/Dario/Dropbox/SchoolWork/cs425/hw2/hw2.tex",
 		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis/csv_parser.py",
 		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/android/sensors_available_moto360.txt",
@@ -284,6 +275,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Accelerometer",
 			"ANDREWID",
 			"Acceleration",
 			"Accelerometer",
@@ -337,19 +329,19 @@
 			[
 				{
 					"buffer": 0,
-					"file": "data/2014_11_1/barbell curls.csv",
+					"file": "analysis/csv_parser.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 18718,
+						"buffer_size": 5958,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4074,
-								4074
+								5958,
+								5958
 							]
 						],
 						"settings":
@@ -362,31 +354,6 @@
 								"bh_unmatched_open",
 								"bh_unmatched_close",
 								"bh_unmatched_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
 								"bh_single_quote",
 								"bh_single_quote_center",
 								"bh_single_quote_open",
@@ -402,173 +369,183 @@
 								"bh_curly_open",
 								"bh_curly_close",
 								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
 								"bh_tag",
 								"bh_tag_center",
 								"bh_tag_open",
 								"bh_tag_close",
 								"bh_tag_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
-								"bh_regex_content"
+								"bh_regex_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content"
 							],
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 680.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "analysis/csv_parser.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2332,
-						"regions":
-						{
-						},
-						"selection":
-						[
+							"codeintel": true,
+							"codeintel_config":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_files_in_project": false,
+									"javascriptExtraPaths":
+									[
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 5,
+									"codeintel_scan_files_in_project": false,
+									"phpExtraPaths":
+									[
+									]
+								},
+								"Python":
+								{
+									"env":
+									{
+									}
+								}
+							},
+							"codeintel_enabled_languages":
 							[
-								432,
-								432
-							]
-						],
-						"settings":
-						{
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_live": true,
+							"codeintel_live_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							{
+								"JavaScript":
+								[
+									"/build/",
+									"/min/"
+								]
+							},
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+								"PyWin32",
+								"jQuery",
+								"Rails"
+							],
+							"codeintel_snippets": true,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"sublime_auto_complete": true,
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/C/Users/Dario/Dropbox/SchoolWork/cs425/hw3/hw3.tex",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 16095,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								10929,
-								10929
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/LaTeX/LaTeX.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 4422.0,
+						"translation.x": -0.0,
+						"translation.y": 2025.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "android/SensorDataCollection/wear/src/main/java/com/daranguiz/sensordatacollection/SensorBackgroundService.java",
+					"buffer": 1,
+					"file": "/C/Users/Dario/Desktop/kingmaker.css",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12658,
+						"buffer_size": 358,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8744,
-								8744
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content"
-							],
-							"syntax": "Packages/Java/Java.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/CSS/CSS.tmLanguage"
 						},
-						"translation.x": -0.0,
-						"translation.y": 2700.0,
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]

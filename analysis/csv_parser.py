@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import csv
 from scipy import interpolate
+from scipy.constants import pi
 
 thesis_dir = "C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/"
 data_dir = thesis_dir + "data/SyncedFromPhoneDCIM/"
@@ -109,7 +110,7 @@ num_vals = len(dict_val_data[cur_sensor])
 
 f_acc = {}
 acc_20hz_vals = {}
-acc_20hz_timestamp = np.arange(dict_timestamp_data[cur_sensor][-1], step=50*ns_to_ms)
+acc_20hz_timestamp = np.arange(50*ns_to_ms, dict_timestamp_data[cur_sensor][-1], step=50*ns_to_ms)
 # print acc_20hz_timestamp
 for i in xrange(num_vals):
     f_acc[i] = interpolate.interp1d(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i], kind='cubic')
@@ -134,12 +135,16 @@ plt.xlabel('time (ns)')
 # enough, but we only get fidelity up to 10Hz if we're downsampling to 20Hz.
 # Probably should only downsample to 22Hz or something.
 
+# Thinking aloud here. Is it worth doing any sort of filtering on the data?
+# I'm only going to get up to 11 or 12Hz tops. Maybe it's still worth doing, 
+# although I'm concerned about throwing away information. 
+
 Fs = 20
 
 # Compute FFT just for area of interest, roughly samples 200-1200
 plt.figure(1)
 for i in xrange(num_vals):
-    cur_fft = np.absolute(np.fft.fft(acc_20hz_vals[i][200:1200]))
+    cur_fft = np.absolute(np.fft.fft(acc_20hz_vals[i]))
     cur_fft = cur_fft[:len(cur_fft)/2]
     for j in xrange(2):
         cur_fft[j] = 0
@@ -151,4 +156,66 @@ for i in xrange(num_vals):
     plt.grid(True)
 
 plt.xlabel('n')
+# plt.show()
+
+# Create a LPF to only keep <5Hz
+# http://docs.scipy.org/doc/scipy-0.14.0/reference/signal.html
+# http://www.ee.iitm.ac.in/~nitin/teaching/ee5480/firdesign.html
+plt.figure(2)
+from scipy import signal
+from scipy.signal import remez
+from scipy.signal import freqz
+from scipy.signal import lfilter
+end_passband = 4.0 / Fs 
+start_stopband = 6.0 / Fs
+end_stopband = 10.0 / Fs
+lpf = remez(20, [0, end_passband, start_stopband, end_stopband], [1.0, 0.0])
+# w, h = freqz(lpf)
+# plt.plot(w/(2*pi), 20*np.log10(abs(h)))
+# plt.show()
+
+vals_filtered = []
+for i in xrange(num_vals):
+    vals_filtered.append(lfilter(lpf, 1, acc_20hz_vals[i]))
+# plt.plot(20*np.log10(abs(np.fft.fft(acc_20hz_vals[0]))))
+# plt.plot(20*np.log10(abs(np.fft.fft(vals_filtered))))
+# plt.plot(abs(np.fft.fft(vals_filtered[0])))
+
+plt.subplot(2,1,1)
+plt.plot(acc_20hz_vals[0])
+plt.subplot(2,1,2)
+plt.plot(vals_filtered[0][10:])
+plt.ylabel('Value')
+plt.title(str_cur_sensor + ' ' + str(i))
+plt.grid(True)
+
+# plt.show()
+
+#=======================================================================#
+# Autocorrelation
+# http://stackoverflow.com/questions/643699/how-can-i-use-numpy-correlate-to-do-autocorrelation
+
+def autocorr(x):
+    result = np.correlate(x, x, mode='full')
+    return result[result.size/2:]
+
+vals_autoc = []
+for i in xrange(num_vals):
+    vals_autoc.append(autocorr(vals_filtered[i][400:500]))
+
+t = np.linspace(0, 1, 500, endpoint=False)
+# plt.figure()
+# tmp_wave = signal.square(2 * np.pi * 5 * t)
+# plt.plot(autocorr(tmp_wave))
+# plt.show()
+
+plt.figure(3)
+for i in xrange(num_vals):
+    plt.subplot(num_vals,1,i+1)
+    plt.plot(vals_autoc[i])
+    plt.ylabel('Autocorrelation Value')
+    plt.title(str_cur_sensor + ' ' + str(i))
+    plt.grid(True)
+
+plt.xlabel('time (ns)')
 plt.show()
