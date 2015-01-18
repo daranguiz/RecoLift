@@ -19,16 +19,8 @@
 			"file": "analysis/csv_parser.py",
 			"settings":
 			{
-				"buffer_size": 5958,
+				"buffer_size": 7248,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/Dario/Desktop/kingmaker.css",
-			"settings":
-			{
-				"buffer_size": 358,
-				"line_ending": "Unix"
 			}
 		}
 	],
@@ -110,6 +102,7 @@
 		"height": 524.0,
 		"history":
 		[
+			"import urllib.request,os; pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')",
 			"sublime.log_commands(False)",
 			"stop",
 			"end",
@@ -135,6 +128,7 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Dario/Desktop/kingmaker.css",
 		"/C/Users/Dario/Dropbox/SchoolWork/cs425/hw3/hw3.tex",
 		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/android/SensorDataCollection/wear/src/main/java/com/daranguiz/sensordatacollection/SensorBackgroundService.java",
 		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/data/2014_11_1/barbell curls.csv",
@@ -260,7 +254,7 @@
 	],
 	"find":
 	{
-		"height": 46.0
+		"height": 36.0
 	},
 	"find_in_files":
 	{
@@ -275,6 +269,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"acc_filtered",
+			"plt.show()",
+			"acc_filtered",
+			"sout",
 			"Accelerometer",
 			"ANDREWID",
 			"Acceleration",
@@ -324,7 +322,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -333,15 +331,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5958,
+						"buffer_size": 7248,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5958,
-								5958
+								936,
+								936
 							]
 						],
 						"settings":
@@ -513,36 +511,8 @@
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": -0.0,
-						"translation.y": 2025.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/C/Users/Dario/Desktop/kingmaker.css",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 358,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.tmLanguage"
-						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 28.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,

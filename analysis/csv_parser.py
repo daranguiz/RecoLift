@@ -7,8 +7,13 @@ from scipy.constants import pi
 thesis_dir = "C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/"
 data_dir = thesis_dir + "data/SyncedFromPhoneDCIM/"
 
+filename = [ 
+            "sensor_csv_1421204195054squat20",
+            "sensor_csv_1421542046004curl20"
+           ]
+
 curls_raw_data = []
-with open(data_dir + "sensor_csv_1421204195054squat20.csv", 'rb') as csvfile:
+with open(data_dir + filename[0] + ".csv", 'rb') as csvfile:
     curls_csv = csv.reader(csvfile, delimiter=",")
     for row in curls_csv:
         curls_raw_data.append(row)
@@ -70,14 +75,16 @@ str_cur_sensor = 'TYPE_ACCELEROMETER'
 cur_sensor = dict_sensor_type[str_cur_sensor]
 num_vals = len(dict_val_data[cur_sensor])
 
-# for i in xrange(num_vals):
-#     plt.subplot(num_vals,1,i+1)
-#     plt.plot(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i], 'bo-')
-#     plt.ylabel('Value')
-#     plt.title(str_cur_sensor + ' ' + str(i))
-#     plt.grid(True)
 
-# plt.xlabel('time (ns)')
+if 0:
+    for i in xrange(num_vals):
+        plt.subplot(num_vals,1,i+1)
+        plt.plot(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i], 'bo-')
+        plt.ylabel('Value')
+        plt.title(str_cur_sensor + ' ' + str(i))
+        plt.grid(True)
+
+    plt.xlabel('time (ns)')
 # plt.show()
 
 #=======================================================================#
@@ -109,23 +116,23 @@ cur_sensor = dict_sensor_type[str_cur_sensor]
 num_vals = len(dict_val_data[cur_sensor])
 
 f_acc = {}
-acc_20hz_vals = {}
-acc_20hz_timestamp = np.arange(50*ns_to_ms, dict_timestamp_data[cur_sensor][-1], step=50*ns_to_ms)
-# print acc_20hz_timestamp
+vals_20hz = {}
+timestamp_20hz = np.arange(50*ns_to_ms, dict_timestamp_data[cur_sensor][-1], step=50*ns_to_ms)
+# print timestamp_20hz
 for i in xrange(num_vals):
-    f_acc[i] = interpolate.interp1d(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i], kind='cubic')
-    acc_20hz_vals[i] = f_acc[i](acc_20hz_timestamp)
+    f_acc[i] = interpolate.interp1d(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i], kind='cubic', fill_value=0, bounds_error=False)
+    vals_20hz[i] = f_acc[i](timestamp_20hz)
 
-plt.figure(0)
-for i in xrange(num_vals):
-    plt.subplot(num_vals,1,i+1)
-    # plt.plot(acc_20hz_timestamp, acc_20hz_vals[i], 'bo-')
-    plt.plot(acc_20hz_vals[i], 'bo-')
-    plt.ylabel('Value')
-    plt.title(str_cur_sensor + ' ' + str(i))
-    plt.grid(True)
+if 0:
+    plt.figure(0)
+    for i in xrange(num_vals):
+        plt.subplot(num_vals,1,i+1)
+        plt.plot(vals_20hz[i])
+        plt.ylabel('Value')
+        plt.title(str_cur_sensor + ' ' + str(i))
+        plt.grid(True)
 
-plt.xlabel('time (ns)')
+    plt.xlabel('time (ns)')
 # plt.show()
 
 #=======================================================================#
@@ -142,20 +149,21 @@ plt.xlabel('time (ns)')
 Fs = 20
 
 # Compute FFT just for area of interest, roughly samples 200-1200
-plt.figure(1)
-for i in xrange(num_vals):
-    cur_fft = np.absolute(np.fft.fft(acc_20hz_vals[i]))
-    cur_fft = cur_fft[:len(cur_fft)/2]
-    for j in xrange(2):
-        cur_fft[j] = 0
-    f = Fs/2 * np.linspace(0, 1, len(cur_fft))
-    plt.subplot(num_vals,1,i+1)
-    plt.plot(f, cur_fft)
-    plt.ylabel('FFT Value')
-    plt.title(str_cur_sensor + ' ' + str(i))
-    plt.grid(True)
+if 1:
+    plt.figure(1)
+    for i in xrange(num_vals):
+        cur_fft = np.absolute(np.fft.fft(vals_20hz[i]))
+        cur_fft = cur_fft[:len(cur_fft)/2]
+        for j in xrange(2):
+            cur_fft[j] = 0
+        f = Fs/2 * np.linspace(0, 1, len(cur_fft))
+        plt.subplot(num_vals,1,i+1)
+        plt.plot(f, cur_fft)
+        plt.ylabel('FFT Value')
+        plt.title(str_cur_sensor + ' ' + str(i))
+        plt.grid(True)
 
-plt.xlabel('n')
+    plt.xlabel('n')
 # plt.show()
 
 # Create a LPF to only keep <5Hz
@@ -176,18 +184,12 @@ lpf = remez(20, [0, end_passband, start_stopband, end_stopband], [1.0, 0.0])
 
 vals_filtered = []
 for i in xrange(num_vals):
-    vals_filtered.append(lfilter(lpf, 1, acc_20hz_vals[i]))
-# plt.plot(20*np.log10(abs(np.fft.fft(acc_20hz_vals[0]))))
-# plt.plot(20*np.log10(abs(np.fft.fft(vals_filtered))))
-# plt.plot(abs(np.fft.fft(vals_filtered[0])))
-
-plt.subplot(2,1,1)
-plt.plot(acc_20hz_vals[0])
-plt.subplot(2,1,2)
-plt.plot(vals_filtered[0][10:])
-plt.ylabel('Value')
-plt.title(str_cur_sensor + ' ' + str(i))
-plt.grid(True)
+    vals_filtered.append(lfilter(lpf, 1, vals_20hz[i]))
+    plt.subplot(num_vals,1,i+1)
+    plt.plot(vals_filtered[i])
+    plt.ylabel('Sensor Value')
+    plt.title(str_cur_sensor + ' ' + str(i))
+    plt.grid(True)
 
 # plt.show()
 
@@ -199,9 +201,11 @@ def autocorr(x):
     result = np.correlate(x, x, mode='full')
     return result[result.size/2:]
 
+start_autoc = 400
+end_autoc = 700
 vals_autoc = []
 for i in xrange(num_vals):
-    vals_autoc.append(autocorr(vals_filtered[i][400:500]))
+    vals_autoc.append(autocorr(vals_filtered[i][start_autoc:end_autoc]))
 
 t = np.linspace(0, 1, 500, endpoint=False)
 # plt.figure()
@@ -216,6 +220,37 @@ for i in xrange(num_vals):
     plt.ylabel('Autocorrelation Value')
     plt.title(str_cur_sensor + ' ' + str(i))
     plt.grid(True)
+    plt.xlabel('time (ns)')
 
-plt.xlabel('time (ns)')
+#=======================================================================#
+# Magnitude Autoc + slope correction
+
+vals_magnitude = [vals_filtered[0][i]**2 + vals_filtered[1][i]**2 + \
+                    vals_filtered[2][i]**2 for i in xrange(50, len(vals_filtered[0]))]
+
+magnitude_autoc = autocorr(vals_magnitude[start_autoc:end_autoc])
+
+# Correct for autocorrelation slope, if any
+autoc_x_vals = np.arange(len(magnitude_autoc))
+regression_coefs = np.polyfit(autoc_x_vals, magnitude_autoc, 1)
+magnitude_autoc_corrected = [magnitude_autoc[i] - (regression_coefs[0] * autoc_x_vals[i] \
+                                + regression_coefs[1]) for i in xrange(len(magnitude_autoc))]
+
+if 1:
+    plt.figure(4)
+    plt.subplot(3,1,1)
+    plt.plot(vals_magnitude)
+    plt.ylabel('Magnitude')
+    plt.title('x^2 + y^2 + z^2 Magnitude of ' + str_cur_sensor)
+    plt.subplot(3,1,2)
+    plt.plot(magnitude_autoc)
+    plt.ylabel('Autocorrelation Value')
+    plt.title('Autocorrelation from ' + str(start_autoc) + ':' + str(end_autoc))
+    plt.subplot(3,1,3)
+    plt.plot(magnitude_autoc_corrected)
+    plt.ylabel('Autocorrelation Value')
+    plt.title('Slope-Corrected Autocorrelation')
+    plt.grid(True)
+    plt.xlabel('time (ns)')
+
 plt.show()
