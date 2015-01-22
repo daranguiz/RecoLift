@@ -7,9 +7,13 @@ from scipy.constants import pi
 thesis_dir = "C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/"
 data_dir = thesis_dir + "data/SyncedFromPhoneDCIM/"
 
-filename = [ 
+filename = [
             "sensor_csv_1421204195054squat20",
-            "sensor_csv_1421542046004curl20"
+            "sensor_csv_1421542046004curl20",
+            "sensor_csv_handforward-out-up",
+            "sensor_csv_handforward-out-up2",
+            "sensor_csv_1421871073565ohp75",
+            "sensor_csv_1421871073565ohp95"
            ]
 
 curls_raw_data = []
@@ -17,6 +21,13 @@ with open(data_dir + filename[0] + ".csv", 'rb') as csvfile:
     curls_csv = csv.reader(csvfile, delimiter=",")
     for row in curls_csv:
         curls_raw_data.append(row)
+
+'''
+Accelerometer: (0 and 1 may be flipped)
+    0 - Center to top of watch, perpendicular to wrist
+    1 - Direction from watch down to fingers (center to button)
+    2 - Upward, perpendicular to watchface
+'''
 
 dict_sensor_type = {
     "TYPE_ACCELEROMETER": 1,
@@ -143,13 +154,13 @@ if 0:
 # Probably should only downsample to 22Hz or something.
 
 # Thinking aloud here. Is it worth doing any sort of filtering on the data?
-# I'm only going to get up to 11 or 12Hz tops. Maybe it's still worth doing, 
-# although I'm concerned about throwing away information. 
+# I'm only going to get up to 11 or 12Hz tops. Maybe it's still worth doing,
+# although I'm concerned about throwing away information.
 
 Fs = 20
 
 # Compute FFT just for area of interest, roughly samples 200-1200
-if 1:
+if 0:
     plt.figure(1)
     for i in xrange(num_vals):
         cur_fft = np.absolute(np.fft.fft(vals_20hz[i]))
@@ -169,12 +180,11 @@ if 1:
 # Create a LPF to only keep <5Hz
 # http://docs.scipy.org/doc/scipy-0.14.0/reference/signal.html
 # http://www.ee.iitm.ac.in/~nitin/teaching/ee5480/firdesign.html
-plt.figure(2)
 from scipy import signal
 from scipy.signal import remez
 from scipy.signal import freqz
 from scipy.signal import lfilter
-end_passband = 4.0 / Fs 
+end_passband = 4.0 / Fs
 start_stopband = 6.0 / Fs
 end_stopband = 10.0 / Fs
 lpf = remez(20, [0, end_passband, start_stopband, end_stopband], [1.0, 0.0])
@@ -185,11 +195,13 @@ lpf = remez(20, [0, end_passband, start_stopband, end_stopband], [1.0, 0.0])
 vals_filtered = []
 for i in xrange(num_vals):
     vals_filtered.append(lfilter(lpf, 1, vals_20hz[i]))
-    plt.subplot(num_vals,1,i+1)
-    plt.plot(vals_filtered[i])
-    plt.ylabel('Sensor Value')
-    plt.title(str_cur_sensor + ' ' + str(i))
-    plt.grid(True)
+    if 0:
+        plt.figure()
+        plt.subplot(num_vals,1,i+1)
+        plt.plot(vals_filtered[i])
+        plt.ylabel('Sensor Value')
+        plt.title(str_cur_sensor + ' ' + str(i))
+        plt.grid(True)
 
 # plt.show()
 
@@ -201,8 +213,8 @@ def autocorr(x):
     result = np.correlate(x, x, mode='full')
     return result[result.size/2:]
 
-start_autoc = 400
-end_autoc = 700
+start_autoc = 600
+end_autoc = 800
 vals_autoc = []
 for i in xrange(num_vals):
     vals_autoc.append(autocorr(vals_filtered[i][start_autoc:end_autoc]))
@@ -213,14 +225,15 @@ t = np.linspace(0, 1, 500, endpoint=False)
 # plt.plot(autocorr(tmp_wave))
 # plt.show()
 
-plt.figure(3)
-for i in xrange(num_vals):
-    plt.subplot(num_vals,1,i+1)
-    plt.plot(vals_autoc[i])
-    plt.ylabel('Autocorrelation Value')
-    plt.title(str_cur_sensor + ' ' + str(i))
-    plt.grid(True)
-    plt.xlabel('time (ns)')
+if 0:
+    plt.figure()
+    for i in xrange(num_vals):
+        plt.subplot(num_vals,1,i+1)
+        plt.plot(vals_autoc[i])
+        plt.ylabel('Autocorrelation Value')
+        plt.title(str_cur_sensor + ' ' + str(i))
+        plt.grid(True)
+        plt.xlabel('time (ns)')
 
 #=======================================================================#
 # Magnitude Autoc + slope correction
@@ -236,7 +249,7 @@ regression_coefs = np.polyfit(autoc_x_vals, magnitude_autoc, 1)
 magnitude_autoc_corrected = [magnitude_autoc[i] - (regression_coefs[0] * autoc_x_vals[i] \
                                 + regression_coefs[1]) for i in xrange(len(magnitude_autoc))]
 
-if 1:
+if 0:
     plt.figure(4)
     plt.subplot(3,1,1)
     plt.plot(vals_magnitude)
@@ -252,5 +265,81 @@ if 1:
     plt.title('Slope-Corrected Autocorrelation')
     plt.grid(True)
     plt.xlabel('time (ns)')
+
+if 0:
+    plt.figure()
+    cur_fft = np.absolute(np.fft.fft(magnitude_autoc_corrected))
+    cur_fft = cur_fft[:len(cur_fft)/2]
+    for j in xrange(2):
+        cur_fft[j] = 0
+    f = Fs/2 * np.linspace(0, 1, len(cur_fft))
+    plt.plot(f, cur_fft)
+    plt.ylabel('FFT Value')
+    plt.title('FFT of Corrected Autocorrelation for ' + str_cur_sensor)
+    plt.grid(True)
+
+    plt.xlabel('n')
+
+#=======================================================================#
+# PCA - Get 1D projection onto primary axis
+# http://sebastianraschka.com/Articles/2014_pca_step_by_step.html
+
+# Using the PCA() class from matplotlib.mlab
+# Note: this does some weird things, namely scaling primary axis
+# w.r.t. the unit variance.
+
+from matplotlib.mlab import PCA
+
+# This handles the whole PCA, dope
+vals_pca = PCA(np.array(vals_filtered).T)
+pca_primary_proj = vals_pca.Y[:,0]
+
+if 0:
+    plt.figure()
+    plt.plot(pca_primary_proj)
+    plt.xlabel('Time-series Sample Number')
+    plt.ylabel('Value (not necessarily to scale)')
+    plt.title(str_cur_sensor + ' Projected onto Principal Axis')
+
+
+pca_autoc = autocorr(pca_primary_proj[start_autoc:end_autoc])
+
+# Correct for autocorrelation slope, if any
+autoc_x_vals = np.arange(len(pca_autoc))
+regression_coefs = np.polyfit(autoc_x_vals, pca_autoc, 1)
+pca_autoc_corrected = [pca_autoc[i] - (regression_coefs[0] * autoc_x_vals[i] \
+                                + regression_coefs[1]) for i in xrange(len(pca_autoc))]
+
+if 1:
+    plt.figure(4)
+    plt.subplot(3,1,1)
+    plt.plot(pca_primary_proj)
+    plt.ylabel('Value')
+    plt.title(str_cur_sensor + ' PCA - Primary Axis Projection')
+    plt.subplot(3,1,2)
+    plt.plot(pca_autoc)
+    plt.ylabel('Autocorrelation Value')
+    plt.title('Autocorrelation from ' + str(start_autoc) + ':' + str(end_autoc))
+    plt.subplot(3,1,3)
+    plt.plot(pca_autoc_corrected)
+    plt.ylabel('Autocorrelation Value')
+    plt.title('Slope-Corrected Autocorrelation')
+    plt.grid(True)
+    plt.xlabel('time (ns)')
+
+if 0:
+    plt.figure()
+    cur_fft = np.absolute(np.fft.fft(pca_autoc_corrected))
+    cur_fft = cur_fft[:len(cur_fft)/2]
+    for j in xrange(2):
+        cur_fft[j] = 0
+    f = Fs/2 * np.linspace(0, 1, len(cur_fft))
+    plt.plot(f, cur_fft)
+    plt.ylabel('FFT Value')
+    plt.title('FFT of Corrected Autocorrelation for ' + str_cur_sensor)
+    plt.grid(True)
+
+    plt.xlabel('n')
+
 
 plt.show()
