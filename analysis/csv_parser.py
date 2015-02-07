@@ -1,8 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
+import math
 from scipy import interpolate
 from scipy.constants import pi
+
+start_autoc = 400
+end_autoc = 600
 
 thesis_dir = "C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/"
 data_dir = thesis_dir + "data/SyncedFromPhoneDCIM/"
@@ -17,7 +21,7 @@ filename = [
            ]
 
 curls_raw_data = []
-with open(data_dir + filename[0] + ".csv", 'rb') as csvfile:
+with open(data_dir + filename[1] + ".csv", 'rb') as csvfile:
     curls_csv = csv.reader(csvfile, delimiter=",")
     for row in curls_csv:
         curls_raw_data.append(row)
@@ -213,8 +217,6 @@ def autocorr(x):
     result = np.correlate(x, x, mode='full')
     return result[result.size/2:]
 
-start_autoc = 600
-end_autoc = 800
 vals_autoc = []
 for i in xrange(num_vals):
     vals_autoc.append(autocorr(vals_filtered[i][start_autoc:end_autoc]))
@@ -310,6 +312,9 @@ regression_coefs = np.polyfit(autoc_x_vals, pca_autoc, 1)
 pca_autoc_corrected = [pca_autoc[i] - (regression_coefs[0] * autoc_x_vals[i] \
                                 + regression_coefs[1]) for i in xrange(len(pca_autoc))]
 
+# Normalize autoc
+pca_autoc_corrected /= pca_autoc_corrected[0]
+
 if 1:
     plt.figure(4)
     plt.subplot(3,1,1)
@@ -323,9 +328,9 @@ if 1:
     plt.subplot(3,1,3)
     plt.plot(pca_autoc_corrected)
     plt.ylabel('Autocorrelation Value')
-    plt.title('Slope-Corrected Autocorrelation')
+    plt.title('Slope-Corrected and Normalized Autocorrelation')
     plt.grid(True)
-    plt.xlabel('time (ns)')
+    plt.xlabel('Sample number (at 20Hz)')
 
 if 0:
     plt.figure()
@@ -341,5 +346,137 @@ if 0:
 
     plt.xlabel('n')
 
+#=======================================================================#
+# Compute Segmentation Features
+# - Number of autocorrelation peaks
+# - Number of prominent peaks
+# - Number of weak peaks
+# - Maximum autoc value (starting at 0.5s)
+# - Height of first autoc peak after a zero crossing
+print_features = 0
 
+# General peak detection
+# http://stackoverflow.com/questions/3260/peak-detection-of-measured-signal
+# For now, do simple peak detector
+#  - Two samples on either side for a peak
+autoc = list(pca_autoc_corrected)
+peak_indices = []
+delay_half_sec = int(Fs * 0.5);
+num_peak_threshold = 2;
+for i in xrange(delay_half_sec, len(autoc)-num_peak_threshold):
+    candidate_samples = autoc[i-num_peak_threshold:i+num_peak_threshold]
+    max_idx = candidate_samples.index(max(candidate_samples))
+    if (type(max_idx) is int and max_idx == num_peak_threshold):
+        peak_indices.append(i)
+if print_features:
+    print "Peak Indices:"
+    print peak_indices
+
+def isNeighbor(peak1, peak2, neighbor_threshold):
+    if (np.abs(peak1 - peak2) <= neighbor_threshold):
+        return True
+    else:
+        return False
+
+# Prominent peak detection
+# - Larger than neighboring peaks by a threshold
+#   -> Neighboring peaks = plus or minus 20 samples (arbitrary)
+#   -> Threshold is 0.5 (arbitrary)
+# - More than a threshold lag away from their neighboring peaks
+#   -> Lag corresponding to 10 samples (arbitrary)
+prominent_peak_height_threshold = 0.4
+prominent_peak_lag_threshold    = 10
+neighbor_threshold              = 20
+peaks_to_remove = set()
+for peak1 in peak_indices:
+    for peak2 in peak_indices:
+        if isNeighbor(peak1, peak2, neighbor_threshold) and peak1 != peak2:
+            # If it's too close, reject
+            if abs(peak1 - peak2) < prominent_peak_lag_threshold:
+                peaks_to_remove.add(peak1)
+                peaks_to_remove.add(peak2)
+            # If one peak isn't greater by a threshold, reject
+            if abs(autoc[peak1] - autoc[peak2]) < prominent_peak_height_threshold:
+                peaks_to_remove.add(peak1)
+                peaks_to_remove.add(peak2)
+prominent_peak_indices = [peak for peak in peak_indices if peak not in peaks_to_remove]
+if print_features:
+    print "prominent_peak_indices:"
+    print prominent_peak_indices
+
+
+# Weak peak detection
+# - Less than a threshold height of their neighboring peaks
+#   -> Threshold is 0.2 (arbitrary)
+# - Less than a threshold lag way from their neighboring peaks
+#   -> 10 samples (arbitrary)
+# NOTE: Prominent peak does exclusive approach, this does inclusive
+weak_peak_height_threshold = 0.2
+weak_peak_lag_threshold    = 10
+neighbor_threshold         = 20
+weak_peak_indices_set = set()
+for peak1 in peak_indices:
+    for peak2 in peak_indices:
+        if peak1 != peak2:
+            if abs(peak1 - peak2) < weak_peak_lag_threshold:
+                if abs(autoc[peak1] - autoc[peak2]) < weak_peak_height_threshold:
+                    weak_peak_indices_set.update([peak1, peak2])
+weak_peak_indices = list(weak_peak_indices_set)
+weak_peak_indices.sort()
+if print_features:
+    print "weak_peak_indices:"
+    print weak_peak_indices
+
+# Maximum autoc value
+max_autoc = max([autoc[i] for i in peak_indices])
+if print_features:
+    print "max_autoc: " + str(max_autoc)
+
+# Height of the first autocorrelation peak after a zero-crossing
+first_zc = np.where(np.diff(np.sign(autoc)))[0][0]
+max_autoc_after_zc = max([autoc[i] for i in peak_indices if i > first_zc])
+if print_features:
+    print "max_autoc_after_zc: " + str(max_autoc_after_zc)
+
+#=======================================================================#
+# Calculate other non-autoc features:
+#   - RMS
+#   - Power bands
+#   - Mean, std dev, and variance
+#   - Integrated RMS
+
+signal_snippet = pca_primary_proj[start_autoc:end_autoc]
+
+# RMS calculation
+rms = np.sqrt(np.mean(np.square(signal_snippet)))
+if print_features:
+    print rms
+
+# Power band calculation
+# 10 features, linearly spaced from 0.1 to 10Hz
+# Right now, LPF cuts off at 5Hz. Look into changing this.
+# Also, start at 0.1Hz ideally
+cur_fft = np.absolute(np.fft.fft(signal_snippet))
+cur_fft = cur_fft[:len(cur_fft)/2]
+cur_fft[0:1] = 0 # kill DC, maybe? maybe not?
+bin_width = np.floor(len(cur_fft)/10)
+power_bands = [np.sum(cur_fft[bin_width*i:bin_width*(i+1)-1]) for i in xrange(10)]
+if print_features:
+    print power_bands
+
+# Mean, std_dev, variance
+mean = np.mean(signal_snippet)
+std_dev = np.std(signal_snippet)
+variance = np.square(std_dev)
+
+# Integrated RMS - RMS after cusum
+cusum_signal = [np.sum(signal_snippet[:i]) for i in xrange(len(signal_snippet))]
+integrated_rms = np.sqrt(np.mean(np.square(cusum_signal)))
+
+#=======================================================================#
+# The above is all passed into an L2 linear SVM to determine exercise or
+# non-exercise. Once this is done, the results of the classifier are passed
+# into an aggregator to perform a majority vote, such that one small window
+# voting "exercise" in a period of downtime does not affect user experience.
+#
 plt.show()
