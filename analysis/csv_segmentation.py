@@ -21,7 +21,7 @@ filename = [
            ]
 
 curls_raw_data = []
-with open(data_dir + filename[1] + ".csv", 'rb') as csvfile:
+with open(data_dir + filename[0] + ".csv", 'rb') as csvfile:
     curls_csv = csv.reader(csvfile, delimiter=",")
     for row in curls_csv:
         curls_raw_data.append(row)
@@ -91,10 +91,10 @@ cur_sensor = dict_sensor_type[str_cur_sensor]
 num_vals = len(dict_val_data[cur_sensor])
 
 
-if 0:
+if 1:
     for i in xrange(num_vals):
         plt.subplot(num_vals,1,i+1)
-        plt.plot(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i], 'bo-')
+        plt.plot(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i])
         plt.ylabel('Value')
         plt.title(str_cur_sensor + ' ' + str(i))
         plt.grid(True)
@@ -478,5 +478,6 @@ integrated_rms = np.sqrt(np.mean(np.square(cusum_signal)))
 # non-exercise. Once this is done, the results of the classifier are passed
 # into an aggregator to perform a majority vote, such that one small window
 # voting "exercise" in a period of downtime does not affect user experience.
-#
+
+
 plt.show()
