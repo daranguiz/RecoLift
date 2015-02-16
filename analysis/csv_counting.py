@@ -21,7 +21,7 @@ filename = [
            ]
 
 curls_raw_data = []
-with open(data_dir + filename[1] + ".csv", 'rb') as csvfile:
+with open(data_dir + filename[0] + ".csv", 'rb') as csvfile:
     curls_csv = csv.reader(csvfile, delimiter=",")
     for row in curls_csv:
         curls_raw_data.append(row)
@@ -309,12 +309,15 @@ window_start = 0
 window_end = 10000
 
 # squats, 0
-if 0:
-    window_start = 0
-# curls, 1
 if 1:
+    window_start = 441
+    window_end = 1205
+    min_period = int(Fs * 0.7)
+# curls, 1
+if 0:
     window_start = 137
-    window_end = 757
+    window_end = 75
+    min_period = int(Fs * 0.5)
 
 windowed_sig = pca_primary_proj[window_start:window_end]
 
@@ -362,13 +365,6 @@ def autocorrelation(sample_list):
 
 plot_rep_counter = True
 
-if plot_rep_counter:
-    plt.figure()
-    plt.plot(windowed_sig)
-    plt.xlabel('Sample number')
-    plt.ylabel('Sensor Value')
-    plt.title('Windowed Data Projected onto Primary Component Axis')
-
 # Find peak indices and sort by height
 # http://stackoverflow.com/questions/403421/how-to-sort-a-list-of-objects-in-python-based-on-an-attribute-of-the-objects
 peak_indices = findPeaks(windowed_sig)
@@ -377,7 +373,6 @@ sorted_peak_vals.sort(key=lambda x: x['val'], reverse=True)
 sorted_peak_indices = [entry['idx'] for entry in sorted_peak_vals]
 
 # Add to set if distance to any peak already in set is at least minPeriod away
-min_period = int(Fs * 0.5)  # half a second
 candidate_peak_indices = []
 for idx in sorted_peak_indices:
     do_not_add = False
@@ -394,24 +389,67 @@ for idx in sorted_peak_indices:
 #   -- Remove from set if <0.75P away from any other peak
 # Notes:
 # Maybe try two seconds on either side?
-autoc_side_width = Fs * 2
+autoc_side_width = Fs * 2.5
 for idx in candidate_peak_indices:
-    if (idx - autoc_side_width) < 0 or (idx + autoc_side_width) > len(windowed_sig):
+    # We're iterating over a changing list, so check to see that idx is
+    # still a part of the list.
+    if idx not in candidate_peak_indices:
         continue
-    autoc = autocorrelation(windowed_sig[idx-autoc_side_width:idx+autoc_side_width])
+
+    # Adjust offset such that a full autoc is performed at every candidate peak
+    offset = 0
+    # if (idx - autoc_side_width) < 0 or (idx + autoc_side_width) > len(windowed_sig):
+    if (idx - autoc_side_width) < 0:
+        offset = abs(idx - autoc_side_width)
+    elif (idx + autoc_side_width) > len(windowed_sig):
+        offset = -1 * abs(idx + autoc_side_width - len(windowed_sig))
+
+    autoc = autocorrelation(windowed_sig[idx-autoc_side_width+offset:idx+autoc_side_width+offset])
     max_autoc_val = max(autoc[min_period:])
     autoc_period = autoc.index(max_autoc_val)
 
+    if 0 and idx == 613:
+        plt.figure()
+        plt.plot(autoc)
+        plt.title('Autoc @ Candidate peak: ' + str(idx))
+        plt.xlabel('Sample number')
+        plt.ylabel('Autoc Value')
+
     # Remove candidate peaks if 0.75P away
     for idx_close in candidate_peak_indices:
+        # Same as above, we're iterating over a changing container.
+        # Check that our index is still valid.
+        if idx_close not in candidate_peak_indices or idx not in candidate_peak_indices:
+            continue
         if abs(idx_close - idx) < (0.75 * autoc_period) and idx != idx_close:
             if windowed_sig[idx] < windowed_sig[idx_close]:
                 candidate_peak_indices.remove(idx)
+                # print "removing " + str(idx)
             else:
                 candidate_peak_indices.remove(idx_close)
+                # print "removing " + str(idx_close)
 
+# 3:
+# - Normalize between 0 and 1
+# - Find peak at 40th percentile
+# - Reject all peaks smaller than half the amplitude of that peak
+
+# Normalize
+windowed_sig = windowed_sig + abs(min(windowed_sig))
+windowed_sig = windowed_sig / max(windowed_sig)
+
+# Find 40th percentile peak and cull
+candidate_peaks = windowed_sig[candidate_peak_indices]
+p40_peak = np.percentile(candidate_peaks, 40)
+candidate_peak_indices = [idx for idx in candidate_peak_indices if \
+                            windowed_sig[idx] > p40_peak/2]
 
 if plot_rep_counter:
+    plt.figure()
+    plt.plot(windowed_sig)
+    plt.xlabel('Sample number')
+    plt.ylabel('Sensor Value')
+    plt.title('Windowed Data Projected onto Primary Component Axis')
     plt.plot(candidate_peak_indices, windowed_sig[candidate_peak_indices], 'go')
 
 #=======================================================================#
