@@ -1,0 +1,27 @@
+landing page:
+    - UI elements
+        - login (stretch)
+        - begin workout
+    - Responsibilities
+        - initialize connections with watch via googleAPI
+        - initialize watch service if not already running
+        - open CSV file
+        - grab wakelock (?)
+
+tracker page:
+    - UI elements
+        - start/stop tracking (maybe just start tracking)
+        - rep counter (perhaps w/confidence?)
+        - type of lift (perhaps w/confidence?)
+        - Weight input set-to-set
+    - Responsibilities
+        - Register sensors on phone
+        - Receive sensor data stream from watch
+        - Segmentation
+        - Recognition
+        - Counting
+        - Write raw sensor data to CSV
+
+tracker service, ie tracker responsibilities:
+    - Register sensors on phone and receive sensor data stream
+    -

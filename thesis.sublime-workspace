@@ -16,20 +16,33 @@
 	"buffers":
 	[
 		{
-			"file": "/C/Users/Dario/AppData/Local/Temp/7zOE34B.tmp/READ_ME_FIRST.txt",
+			"file": "analysis/csv_counting.py",
 			"settings":
 			{
-				"buffer_size": 636,
+				"buffer_size": 15410,
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "analysis/secret_sauce.txt",
+			"settings":
+			{
+				"buffer_size": 776,
+				"line_ending": "Windows",
+				"name": "secret sauce"
 			}
 		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 135.0,
+		"height": 77.0,
 		"selected_items":
 		[
+			[
+				"syntaxmatlab",
+				"Set Syntax: MATLAB"
+			],
 			[
 				"install",
 				"Package Control: Install Package"
@@ -95,7 +108,7 @@
 				":w - Save"
 			]
 		],
-		"width": 522.0
+		"width": 694.0
 	},
 	"console":
 	{
@@ -128,6 +141,10 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Dario/Dropbox/SchoolWork/pulse_2015_signal_processing/reps480085.py",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece417/mp2/computepca.m",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis/csv_segmentation.py",
+		"/C/Users/Dario/AppData/Local/Temp/7zOE34B.tmp/READ_ME_FIRST.txt",
 		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis/csv_parser.py",
 		"/C/Users/Dario/Desktop/GitHubLog.txt",
 		"/C/Users/Dario/Dropbox/Save/len_face.ahk",
@@ -251,12 +268,11 @@
 		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/UnLoc_Demo/UnLocFront/src/UnLocFront.css",
 		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/UnLoc_Demo/UnLocFront/src/UnLocFront.mxml",
 		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/my.ini",
-		"/C/Users/Dario/Downloads/Seedbox/Matlab 2013a 32-64/installer_input.txt",
-		"/C/Users/Dario/Downloads/Seedbox/Matlab 2013a 32-64/readme.txt"
+		"/C/Users/Dario/Downloads/Seedbox/Matlab 2013a 32-64/installer_input.txt"
 	],
 	"find":
 	{
-		"height": 36.0
+		"height": 46.0
 	},
 	"find_in_files":
 	{
@@ -327,116 +343,178 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/C/Users/Dario/AppData/Local/Temp/7zOE34B.tmp/READ_ME_FIRST.txt",
+					"file": "analysis/csv_counting.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 636,
+						"buffer_size": 15410,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								14315,
+								14315
 							]
 						],
 						"settings":
 						{
-							"codeintel": true,
-							"codeintel_database_dir": "~/.codeintel",
-							"codeintel_enabled_languages":
+							"BracketHighlighterBusy": false,
+							"auto_complete": false,
+							"bh_regions":
 							[
-								"JavaScript",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Node.js",
-								"TemplateToolkit",
-								"PHP"
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
 							],
-							"codeintel_exclude_scopes_from_complete_triggers":
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 8156.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "analysis/secret_sauce.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 776,
+						"regions":
+						{
+						},
+						"selection":
+						[
 							[
-								"comment"
-							],
-							"codeintel_language_settings":
-							{
-								"JavaScript":
-								{
-									"codeintel_max_recursive_dir_depth": 2,
-									"codeintel_scan_exclude_dir":
-									[
-										"/build/",
-										"/min/"
-									],
-									"codeintel_scan_extra_dir":
-									[
-									],
-									"codeintel_scan_files_in_project": false,
-									"codeintel_selected_catalogs":
-									[
-										"jQuery"
-									]
-								},
-								"PHP":
-								{
-									"codeintel_max_recursive_dir_depth": 15,
-									"codeintel_scan_exclude_dir":
-									[
-										"/Applications/MAMP/bin/php/php5.5.3/"
-									],
-									"codeintel_scan_extra_dir":
-									[
-									],
-									"codeintel_scan_files_in_project": true,
-									"php": "/Applications/MAMP/bin/php/php5.5.3/bin/php"
-								},
-								"Python3":
-								{
-									"codeintel_scan_extra_dir":
-									[
-										"/Applications/Sublime Text.app/Contents/MacOS",
-										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/arch",
-										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/libs"
-									],
-									"codeintel_scan_files_in_project": true,
-									"codeintel_selected_catalogs":
-									[
-									],
-									"python3": "/usr/local/bin/python3.3"
-								}
-							},
-							"codeintel_live": true,
-							"codeintel_max_recursive_dir_depth": 10,
-							"codeintel_scan_exclude_dir":
+								776,
+								776
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"auto_name": "secret sauce",
+							"bh_regions":
 							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
 							],
-							"codeintel_scan_files_in_project": true,
-							"codeintel_selected_catalogs":
-							[
-							],
-							"codeintel_snippets": false,
-							"codeintel_syntax_map":
-							{
-								"Python Django": "Python"
-							},
-							"codeintel_tooltips": "popup",
-							"codeintel_word_completions": "buffer",
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,

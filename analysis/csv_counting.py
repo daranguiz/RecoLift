@@ -424,10 +424,8 @@ for idx in candidate_peak_indices:
         if abs(idx_close - idx) < (0.75 * autoc_period) and idx != idx_close:
             if windowed_sig[idx] < windowed_sig[idx_close]:
                 candidate_peak_indices.remove(idx)
-                # print "removing " + str(idx)
             else:
                 candidate_peak_indices.remove(idx_close)
-                # print "removing " + str(idx_close)
 
 # 3:
 # - Normalize between 0 and 1
