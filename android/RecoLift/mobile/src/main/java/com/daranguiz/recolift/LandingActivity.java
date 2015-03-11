@@ -1,5 +1,6 @@
 package com.daranguiz.recolift;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +19,10 @@ public class LandingActivity extends ActionBarActivity {
     @OnClick(R.id.button_begin_workout)
     public void beginWorkout() {
         beginWorkoutButton.setText("WORKOUT STARTED");
+
+        /* Start tracker activity */
+        Intent intent = new Intent(this, TrackerActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -27,6 +32,11 @@ public class LandingActivity extends ActionBarActivity {
         ButterKnife.inject(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        beginWorkoutButton.setText("Start workout");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
