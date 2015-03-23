@@ -9,11 +9,15 @@ import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 public class DataLayerListenerService extends WearableListenerService {
     public DataLayerListenerService() {
@@ -73,11 +77,48 @@ public class DataLayerListenerService extends WearableListenerService {
         if (messageEvent.getPath().equals(TrackerActivity.START_PATH)) {
             // TODO: Begin sensor tracking and computation
             Log.d(TAG, "Received START message");
+
         } else if (messageEvent.getPath().equals(TrackerActivity.STOP_PATH)) {
             // TODO: Deregister sensors and stop collection
             Log.d(TAG, "Received STOP message");
             stopSelf();
         }
+    }
+
+    private Collection<String> sendWatchMessage(String message) {
+        Log.d(TAG, "Inside sendWatchRPC");
+
+        // Create container for connected nodes
+        HashSet<String> results = new HashSet<String>();
+        NodeApi.GetConnectedNodesResult nodes =
+                Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
+
+        // Get handle to local node, ie phone
+        NodeApi.GetLocalNodeResult myNode =
+                Wearable.NodeApi.getLocalNode(mGoogleApiClient).await();
+        Log.d(TAG, "myNodeID = " + myNode.getNode().getId());
+
+        // Get connected nodes' ID strings
+        for (Node node : nodes.getNodes()) {
+            results.add(node.getId());
+        }
+
+        // Send message to all connected nodes
+        for (String id : results) {
+            MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
+                    mGoogleApiClient, id, message, null).await();
+
+            // Display result of message send
+            if (!result.getStatus().isSuccess()) {
+                Log.e(TAG, "ERROR: Failed to send message: " + result.getStatus());
+            } else {
+                Log.d(TAG, "Message: {" + message + "} sent to: " + id);
+            }
+        }
+
+        // Return list of connected nodes' IDs
+        return results;
+
     }
 
 }

@@ -20,7 +20,7 @@ public class TrackerActivity extends ActionBarActivity implements
         GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
-    private String TAG = "TrackerActivity";
+    private static String TAG = "TrackerActivity";
     public static String START_PATH = "config/start";
     public static String STOP_PATH = "config/stop";
     Intent phoneListenerService;
@@ -31,7 +31,7 @@ public class TrackerActivity extends ActionBarActivity implements
         setContentView(R.layout.activity_tracker);
 
         /* Layout init */
-        // TODO
+        // TODO: Layout Init
 
         /* Start service to initialize GoogleAPI connections */
         phoneListenerService = new Intent(getApplicationContext(), DataLayerListenerService.class);
