@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataEventBuffer;
@@ -57,6 +58,9 @@ public class DataLayerListenerService extends WearableListenerService {
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
+        // TODO: Write to CSV, talk to server?
+        Log.d(TAG, "Received sensor data");
+
         super.onDataChanged(dataEvents);
     }
 
@@ -72,21 +76,36 @@ public class DataLayerListenerService extends WearableListenerService {
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         super.onMessageReceived(messageEvent);
-        Log.d(TAG, "Received message");
+//        Log.d(TAG, "Received message");
 
         if (messageEvent.getPath().equals(TrackerActivity.START_PATH)) {
             // TODO: Begin sensor tracking and computation
             Log.d(TAG, "Received START message");
+            sendWatchMessage(TrackerActivity.START_PATH);
 
-        } else if (messageEvent.getPath().equals(TrackerActivity.STOP_PATH)) {
+            // TODO: Register sensors on phone locally
+            // TODO: Open CSV? Communicate with DigitalOcean?
+
+        } else if (messageEvent.getPath().equals(TrackerActivity.STOP_COLLECTION_PATH)) {
             // TODO: Deregister sensors and stop collection
+            Log.d(TAG, "Received STOP_COLLECTION message");
+            sendWatchMessage(TrackerActivity.STOP_COLLECTION_PATH);
+
+            // TODO: Deregister sensors on phone locally
+
+        } else if (messageEvent.getPath().equals(TrackerActivity.STOP_SERVICE_PATH)) {
+            // TODO: Stop service
             Log.d(TAG, "Received STOP message");
+            sendWatchMessage(TrackerActivity.STOP_SERVICE_PATH);
+
+            // Kill mGoogleApiClient and stop service
+            mGoogleApiClient.disconnect();
             stopSelf();
         }
     }
 
     private Collection<String> sendWatchMessage(String message) {
-        Log.d(TAG, "Inside sendWatchRPC");
+        Log.d(TAG, "Inside sendWatchMessage");
 
         // Create container for connected nodes
         HashSet<String> results = new HashSet<String>();
@@ -118,7 +137,6 @@ public class DataLayerListenerService extends WearableListenerService {
 
         // Return list of connected nodes' IDs
         return results;
-
     }
 
 }

@@ -22,7 +22,8 @@ public class TrackerActivity extends ActionBarActivity implements
     private GoogleApiClient mGoogleApiClient;
     private static String TAG = "TrackerActivity";
     public static String START_PATH = "config/start";
-    public static String STOP_PATH = "config/stop";
+    public static String STOP_SERVICE_PATH = "config/stop_service";
+    public static String STOP_COLLECTION_PATH = "config/stop_collection";
     Intent phoneListenerService;
 
     @Override
@@ -78,14 +79,13 @@ public class TrackerActivity extends ActionBarActivity implements
     protected void onDestroy() {
         Log.d(TAG, "Destroying TrackerActivity");
 
-        // NOTE: This may not actually work, may need to send message
-        // and allow it to stop on its own
-//        stopService(phoneListenerService);
-
         // Send STOP command to service
-        // NOTE: Do I actually want to do this? This should be a button.
+        // NOTE: Do I actually want to do this onDestroy()? This should be a button.
         // what if it stops whenever the app loses focus? (note it doesn't)
-        new SendMessageActivityToService(STOP_PATH, "Stop").start();
+        new SendMessageActivityToService(STOP_SERVICE_PATH, "StopService").start();
+
+        // Important note to self:
+        // Cannot stop service until googleApiClient disconnected
 
         super.onDestroy();
     }
