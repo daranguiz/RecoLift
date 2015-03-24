@@ -35,6 +35,7 @@ public class TrackerActivity extends ActionBarActivity implements
         // TODO: Layout Init
 
         /* Start service to initialize GoogleAPI connections */
+        // TODO: This is very fragile. Hitting back button then trying to restart service kills the service permanently.
         phoneListenerService = new Intent(getApplicationContext(), DataLayerListenerService.class);
         startService(phoneListenerService);
 
