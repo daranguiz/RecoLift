@@ -9,7 +9,9 @@ import android.util.Log;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Node;
@@ -26,6 +28,8 @@ public class DataLayerListenerService extends WearableListenerService {
 
     private String TAG = "DataLayerListenerService";
     private GoogleApiClient mGoogleApiClient;
+    public static final int MAX_EVENTS_IN_PACKET = 20;
+    private String lastMessageSent;
 
     @Override
     public void onCreate() {
@@ -54,6 +58,7 @@ public class DataLayerListenerService extends WearableListenerService {
                 })
                 .build();
         mGoogleApiClient.connect();
+        lastMessageSent = "";
     }
 
     @Override
@@ -61,7 +66,30 @@ public class DataLayerListenerService extends WearableListenerService {
         // TODO: Write to CSV, talk to server?
         Log.d(TAG, "Received sensor data");
 
-        super.onDataChanged(dataEvents);
+        if (lastMessageSent.equals(TrackerActivity.START_PATH)) {
+            for (DataEvent event : dataEvents) {
+                if (event.getType() == DataEvent.TYPE_DELETED) {
+                    Log.d(TAG, "DataItem deleted: " + event.getDataItem().getUri());
+
+                } else if (event.getType() == DataEvent.TYPE_CHANGED) {
+                    DataMap receivedDataMap = DataMap.fromByteArray(event.getDataItem().getData());
+                    for (int i = 0; i < MAX_EVENTS_IN_PACKET; i++) {
+                        String counterString = Integer.toString(i);
+                        String valKey = "values" + counterString;
+                        String typeKey = "sensor_type" + Integer.toString(i);
+                        String timestampKey = "timestamp" + Integer.toString(i);
+
+                        /* Parse old data */
+                        float[] dataArray = receivedDataMap.getFloatArray(valKey);
+                        int dataType = receivedDataMap.getInt(typeKey);
+                        long dataTimestamp = receivedDataMap.getLong(timestampKey);
+
+                        /* This would be where I talk to a server or begin processing locally */
+                    }
+                }
+            }
+        }
+
     }
 
     @Override
@@ -106,6 +134,7 @@ public class DataLayerListenerService extends WearableListenerService {
 
     private Collection<String> sendWatchMessage(String message) {
         Log.d(TAG, "Inside sendWatchMessage");
+        lastMessageSent = message;
 
         // Create container for connected nodes
         HashSet<String> results = new HashSet<String>();

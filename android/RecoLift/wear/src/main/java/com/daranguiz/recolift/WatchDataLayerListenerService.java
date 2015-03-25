@@ -12,8 +12,11 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 
@@ -31,7 +34,10 @@ public class WatchDataLayerListenerService extends WearableListenerService
     public static String STOP_SERVICE_PATH = "config/stop_service";
     public static String STOP_COLLECTION_PATH = "config/stop_collection";
     public static final int MAX_EVENTS_IN_PACKET = 20;
+
+    /* Communication */
     private GoogleApiClient mGoogleApiClient;
+    private String lastMessage;
 
     /* Sensor Global Variables */
     private SensorManager mSensorManager;
@@ -77,23 +83,25 @@ public class WatchDataLayerListenerService extends WearableListenerService
                 })
                 .build();
         mGoogleApiClient.connect();
+        lastMessage = "";
     }
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        String messagePath = messageEvent.getPath();
+        lastMessage = messageEvent.getPath();
 
         /* Message handling */
-        if (messagePath.equals(START_PATH)) {
+        if (lastMessage.equals(START_PATH)) {
             Log.d(TAG, "Received message, starting watch collection");
             registerListeners();
+            mSensorCounter = 0;
 
-        } else if (messagePath.equals(STOP_COLLECTION_PATH) | messagePath.equals(STOP_SERVICE_PATH)) {
+        } else if (lastMessage.equals(STOP_COLLECTION_PATH) | lastMessage.equals(STOP_SERVICE_PATH)) {
             Log.d(TAG, "Received message, stopping watch collection");
             mSensorManager.unregisterListener(this);
 
         } else {
-            Log.d(TAG, "Received message: " + messagePath);
+            Log.d(TAG, "Received message: " + lastMessage);
         }
     }
 
@@ -137,10 +145,15 @@ public class WatchDataLayerListenerService extends WearableListenerService
         sensorDataMap.getDataMap().putFloatArray(valKey, event.values.clone());
         sensorDataMap.getDataMap().putInt(typeKey, event.sensor.getType());
         sensorDataMap.getDataMap().putLong(timestampKey, event.timestamp);
+        mSensorCounter++;
 
         /* If full, send packet */
-        if (mSensorCounter == MAX_EVENTS_IN_PACKET) {
-
+        if (mSensorCounter >= MAX_EVENTS_IN_PACKET) {
+            Log.d(TAG, "Sending sensor data packet");
+            PutDataRequest request = sensorDataMap.asPutDataRequest();
+            PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi
+                    .putDataItem(mGoogleApiClient, request);
+            mSensorCounter = 0;
         }
     }
 }
