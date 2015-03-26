@@ -108,11 +108,11 @@ public class DataLayerListenerService extends WearableListenerService {
                          */
 
                         // TODO: HANDLE GYRO NOT JUST ACCEL
+                        long nextSampleTime = lastSensorValue.timestamp + SAMPLING_DELTA_NS;
                         if (lastSensorValue.timestamp == -1) {
                             mSensorData.accel.add(new SensorValue(curSensorValue));
 
                         } else {
-                            long nextSampleTime = lastSensorValue.timestamp + SAMPLING_DELTA_NS;
                             // If new sample happens before it should, take old sample
                             if (dataTimestamp < nextSampleTime) {
                                 mSensorData.accel.add(new SensorValue(
@@ -122,7 +122,7 @@ public class DataLayerListenerService extends WearableListenerService {
                                         nextSampleTime, curSensorValue.values));
                             }
                         }
-                        lastSensorValue = new SensorValue(dataTimestamp, dataArray);
+                        lastSensorValue = new SensorValue(nextSampleTime, curSensorValue.values);
 
                     }
                 }
