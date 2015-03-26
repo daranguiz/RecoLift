@@ -106,9 +106,9 @@ public class WatchDataLayerListenerService extends WearableListenerService
     }
 
     public void registerListeners() {
-        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, mGyroscope, SensorManager.SENSOR_DELAY_NORMAL);
-        mSensorManager.registerListener(this, mMagnet, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+//        mSensorManager.registerListener(this, mGyroscope, SensorManager.SENSOR_DELAY_FASTEST);
+//        mSensorManager.registerListener(this, mMagnet, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     /******* SensorEventListener Methods ********/
@@ -156,4 +156,14 @@ public class WatchDataLayerListenerService extends WearableListenerService
             mSensorCounter = 0;
         }
     }
+
+    /* Quick notes before I leave:
+       Use ZOH for resampling. On phone side, keep track of the last received sensor value from
+       a given sensor. Every 100ms (10Hz, something), set the value equal to the last received value.
+       This may take some doing, as sensor values are received in a bundle. Perhaps ZOH-resample
+       within bundle, then keep track of last value received in the bundle to resample subsequent
+       values? But then at that point, why not just linearly interpolate. meh. thoughts.
+
+       TODO: ZOH first, linear after ZOH finished
+     */
 }

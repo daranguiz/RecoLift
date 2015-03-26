@@ -2,6 +2,7 @@ package com.daranguiz.recolift;
 
 import android.app.Service;
 import android.content.Intent;
+import android.hardware.Sensor;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -26,10 +28,19 @@ public class DataLayerListenerService extends WearableListenerService {
     public DataLayerListenerService() {
     }
 
-    private String TAG = "DataLayerListenerService";
+    /* Constants */
+    private static final String TAG = "DataLayerListenerServ";
+    private static final int MAX_EVENTS_IN_PACKET = 20;
+    private static final int SEC_TO_NS = 1000000000;
+    private static final int MS_TO_NS = 1000000;
+    private static final int SAMPLING_DELTA_NS = Math.round(SEC_TO_NS * 0.04f);
+
     private GoogleApiClient mGoogleApiClient;
-    public static final int MAX_EVENTS_IN_PACKET = 20;
     private String lastMessageSent;
+
+    /* Sensor values */
+    private SensorValue lastSensorValue;
+    private SensorData mSensorData;
 
     @Override
     public void onCreate() {
@@ -58,7 +69,11 @@ public class DataLayerListenerService extends WearableListenerService {
                 })
                 .build();
         mGoogleApiClient.connect();
+
+        /* Other init */
         lastMessageSent = "";
+        mSensorData = new SensorData();
+        lastSensorValue = new SensorValue(-1, null);
     }
 
     @Override
@@ -73,6 +88,8 @@ public class DataLayerListenerService extends WearableListenerService {
 
                 } else if (event.getType() == DataEvent.TYPE_CHANGED) {
                     DataMap receivedDataMap = DataMap.fromByteArray(event.getDataItem().getData());
+                    long curNanoSec = Calendar.getInstance().get(Calendar.MILLISECOND) * MS_TO_NS;
+
                     for (int i = 0; i < MAX_EVENTS_IN_PACKET; i++) {
                         String counterString = Integer.toString(i);
                         String valKey = "values" + counterString;
@@ -83,8 +100,30 @@ public class DataLayerListenerService extends WearableListenerService {
                         float[] dataArray = receivedDataMap.getFloatArray(valKey);
                         int dataType = receivedDataMap.getInt(typeKey);
                         long dataTimestamp = receivedDataMap.getLong(timestampKey);
+                        SensorValue curSensorValue = new SensorValue(dataTimestamp, dataArray);
 
-                        /* This would be where I talk to a server or begin processing locally */
+                        /* Sampling rate notes:
+                            Accel/Gyro both sample at just about 25Hz.
+                            Evenly resample this with ZOH.
+                         */
+
+                        // TODO: HANDLE GYRO NOT JUST ACCEL
+                        if (lastSensorValue.timestamp == -1) {
+                            mSensorData.accel.add(new SensorValue(curSensorValue));
+
+                        } else {
+                            long nextSampleTime = lastSensorValue.timestamp + SAMPLING_DELTA_NS;
+                            // If new sample happens before it should, take old sample
+                            if (dataTimestamp < nextSampleTime) {
+                                mSensorData.accel.add(new SensorValue(
+                                        nextSampleTime, lastSensorValue.values));
+                            } else {
+                                mSensorData.accel.add(new SensorValue(
+                                        nextSampleTime, curSensorValue.values));
+                            }
+                        }
+                        lastSensorValue = new SensorValue(dataTimestamp, dataArray);
+
                     }
                 }
             }
