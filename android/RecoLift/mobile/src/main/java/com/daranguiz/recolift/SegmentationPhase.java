@@ -1,17 +1,29 @@
 package com.daranguiz.recolift;
 
+import android.util.Log;
+
+import com.daranguiz.recolift.utils.RecoMath;
+import com.daranguiz.recolift.utils.SensorData;
+
+import Jama.Matrix;
+
+// TODO: Remove openCV, going to spin my own PCA instead
 public class SegmentationPhase {
     public SegmentationPhase(SensorData sensorDataRef) {
         bufferPointer = 0;
         mSensorData = sensorDataRef;
+        mRecoMath = new RecoMath();
     }
 
     /* Constants */
     private static final int WINDOW_SIZE = 25 * 5;
     private static final int SLIDE_AMOUNT = 5;
+    private static final int NUM_DOFS = 3;
+    private static final String TAG = "SegmentationPhase";
 
     private int bufferPointer;
     private SensorData mSensorData;
+    private RecoMath mRecoMath;
 
     /* Okay, talking myself through on this one.
        I have a large vector of data that i'll have to grab a sliding window over.
@@ -36,7 +48,9 @@ public class SegmentationPhase {
      */
     public void performBatchSegmentation() {
         while (isBufferAvailable()) {
-            SensorData buffer = getNextBuffer();
+            double[][] doubleBuffer = bufferToDoubleArray(getNextBuffer());
+            Matrix scatterMat = mRecoMath.computePCA(doubleBuffer, NUM_DOFS, WINDOW_SIZE);
+            Log.d(TAG, "Row: " + scatterMat.getRowDimension() + ", Col: " + scatterMat.getColumnDimension());
         }
     }
 
@@ -67,5 +81,20 @@ public class SegmentationPhase {
         bufferPointer = nextBufferPointer;
 
         return buffer;
+    }
+
+    // TODO: SensorValue is poorly optimized for quick array copies
+    /* Convert our SensorValue buffer to a float array for easy computation */
+    private double[][] bufferToDoubleArray(SensorData buffer) {
+        double outputArr[][] = new double[NUM_DOFS][WINDOW_SIZE];
+
+        /* No easy way to do quick array copies in current form */
+        for (int i = 0; i < NUM_DOFS; i++) {
+            for (int j = 0; j < WINDOW_SIZE; j++) {
+                outputArr[i][j] = (double) buffer.accel.get(j).values[i];
+            }
+        }
+
+        return outputArr;
     }
 }

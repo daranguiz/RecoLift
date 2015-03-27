@@ -9,6 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/libraries" />
+            <option value="$PROJECT_DIR$/libraries/opencv" />
             <option value="$PROJECT_DIR$/mobile" />
             <option value="$PROJECT_DIR$/wear" />
           </set>
