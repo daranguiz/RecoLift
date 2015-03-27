@@ -34,13 +34,18 @@ public class DataLayerListenerService extends WearableListenerService {
     private static final int SEC_TO_NS = 1000000000;
     private static final int MS_TO_NS = 1000000;
     private static final int SAMPLING_DELTA_NS = Math.round(SEC_TO_NS * 0.04f);
+    private static final int NUM_DOFS = 3;
 
     private GoogleApiClient mGoogleApiClient;
     private String lastMessageSent;
 
     /* Sensor values */
     private SensorValue lastSensorValue;
-    private SensorData mSensorData;
+    public SensorData mSensorData;
+
+    /* Processing */
+    private ButterworthLowPassFilter[] mAccelWatchFilt;
+    private SegmentationPhase mSegmentationPhase;
 
     @Override
     public void onCreate() {
@@ -70,10 +75,20 @@ public class DataLayerListenerService extends WearableListenerService {
                 .build();
         mGoogleApiClient.connect();
 
+        /* Phase init */
+        mSensorData = new SensorData();
+        mSegmentationPhase = new SegmentationPhase(mSensorData);
+
+        /* Filter init */
+        mAccelWatchFilt = new ButterworthLowPassFilter[NUM_DOFS];
+        for (int i = 0; i < NUM_DOFS; i++) {
+            mAccelWatchFilt[i] = new ButterworthLowPassFilter();
+        }
+
         /* Other init */
         lastMessageSent = "";
-        mSensorData = new SensorData();
-        lastSensorValue = new SensorValue(-1, null);
+        float[] emptyValues = {-1, -1, -1};
+        lastSensorValue = new SensorValue(-1, emptyValues);
     }
 
     @Override
@@ -88,7 +103,6 @@ public class DataLayerListenerService extends WearableListenerService {
 
                 } else if (event.getType() == DataEvent.TYPE_CHANGED) {
                     DataMap receivedDataMap = DataMap.fromByteArray(event.getDataItem().getData());
-                    long curNanoSec = Calendar.getInstance().get(Calendar.MILLISECOND) * MS_TO_NS;
 
                     for (int i = 0; i < MAX_EVENTS_IN_PACKET; i++) {
                         String counterString = Integer.toString(i);
@@ -102,12 +116,9 @@ public class DataLayerListenerService extends WearableListenerService {
                         long dataTimestamp = receivedDataMap.getLong(timestampKey);
                         SensorValue curSensorValue = new SensorValue(dataTimestamp, dataArray);
 
-                        /* Sampling rate notes:
-                            Accel/Gyro both sample at just about 25Hz.
-                            Evenly resample this with ZOH.
-                         */
+                        // TODO: HANDLE GYRO NOT JUST ACCEL, PHONE SENSORS AS WELL AS WATCH
 
-                        // TODO: HANDLE GYRO NOT JUST ACCEL
+                        /* Resample to 25Hz with ZOH */
                         long nextSampleTime = lastSensorValue.timestamp + SAMPLING_DELTA_NS;
                         if (lastSensorValue.timestamp == -1) {
                             mSensorData.accel.add(new SensorValue(curSensorValue));
@@ -117,16 +128,35 @@ public class DataLayerListenerService extends WearableListenerService {
                             if (dataTimestamp < nextSampleTime) {
                                 mSensorData.accel.add(new SensorValue(
                                         nextSampleTime, lastSensorValue.values));
+//                                Log.d(TAG, "XVal: " + lastSensorValue.values[0]);
                             } else {
                                 mSensorData.accel.add(new SensorValue(
                                         nextSampleTime, curSensorValue.values));
+//                                Log.d(TAG, "XVal: " + curSensorValue.values[0]);
                             }
                         }
                         lastSensorValue = new SensorValue(nextSampleTime, curSensorValue.values);
 
+                        /* Filter just-added sample */
+                        // TODO: Cur version is safe, but does get() return reference or value? Could optimize
+                        for (int j = 0; j < NUM_DOFS; j++) {
+                            int curIdx = mSensorData.accel.size()-1;
+                            SensorValue curSensorVal = mSensorData.accel.get(curIdx);
+                            float outputVal = mAccelWatchFilt[j].singleFilt(curSensorVal.values[j]);
+                            curSensorVal.values[j] = outputVal;
+                            mSensorData.accel.set(curIdx, curSensorVal);
+
+                            /* Logging! Quick test */
+                            if (j == 0 & false) {
+                                Log.d(TAG, "XVal: " + outputVal);
+                            }
+                        }
                     }
                 }
             }
+
+            /* Begin segmentation */
+            mSegmentationPhase.performBatchSegmentation();
         }
 
     }

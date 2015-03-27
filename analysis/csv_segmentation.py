@@ -160,6 +160,9 @@ if 0:
 # Thinking aloud here. Is it worth doing any sort of filtering on the data?
 # I'm only going to get up to 11 or 12Hz tops. Maybe it's still worth doing,
 # although I'm concerned about throwing away information.
+# 
+# Future me: Past me, you're fucking stupid. Nyquist rate, you have to 
+#            filter down to remove aliasing. 
 
 Fs = 20
 

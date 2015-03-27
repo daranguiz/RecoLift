@@ -1,5 +1,6 @@
 package com.daranguiz.recolift;
 
+import java.util.List;
 import java.util.Vector;
 
 /* Class to hold all sensor measurements */
@@ -9,7 +10,7 @@ public class SensorData {
         gyro = new Vector<SensorValue>();
     }
 
-    public Vector<SensorValue> accel;
-    public Vector<SensorValue> gyro;
+    public List<SensorValue> accel;
+    public List<SensorValue> gyro;
 
 }

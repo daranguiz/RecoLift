@@ -1,0 +1,15 @@
+% FIR Filter
+% Sampling rate: 25Hz
+% Cutoff: 12Hz (Nyquist)
+
+n = 5;
+Fs = 25;
+Fc = 12 / Fs;
+transBand = 1 / Fs;
+
+f = [0 Fc-transBand Fc+transBand 1];
+a = [1 1 0 0];
+
+b = firpm(n, f, a);
+[h,w] = freqz(b, 1);
+plot(f, aabs(h));

@@ -1,5 +1,7 @@
 package com.daranguiz.recolift;
 
+import java.util.Vector;
+
 /* Individual sensor measurements */
 public class SensorValue {
     public SensorValue(long mTimestamp, float[] mValues) {
