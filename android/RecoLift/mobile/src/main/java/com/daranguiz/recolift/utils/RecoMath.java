@@ -2,6 +2,7 @@ package com.daranguiz.recolift.utils;
 
 import Jama.EigenvalueDecomposition;
 import Jama.Matrix;
+import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
 
 public class RecoMath {
     public RecoMath() {
@@ -77,5 +78,57 @@ public class RecoMath {
         }
 
         return maxIdx;
+    }
+
+    /* Compute autocorrelation
+     * Relevant: http://stackoverflow.com/questions/12239096/computing-autocorrelation-with-fft-using-jtransforms-library
+     * http://dsp.stackexchange.com/questions/736/how-do-i-implement-cross-correlation-to-prove-two-audio-files-are-similar
+     */
+    public double[] computeAutocorrelation(double[] buffer) {
+        int n = buffer.length;
+
+        /* The FFT method actually computes a circular convolution, so zero pad */
+        double[] tmpBuf = new double[2 * n];
+        System.arraycopy(buffer, 0, tmpBuf, 0, n);
+        buffer = tmpBuf;
+        n *= 2;
+
+        /* Autoc = IFFT(FFT * FFT) */
+        double[] autoc = new double[n];
+        DoubleFFT_1D fft = new DoubleFFT_1D(n);
+
+        /* Compute DFT, store into buffer */
+        fft.realForward(buffer);
+
+        /* Clear DC to remove mean, leave variance */
+        autoc[0] = 0;
+        autoc[1] = sqr(buffer[1]);
+
+        /* Set real part equal to magnitude squared, imaginary equal to 0 */
+        for (int i = 2; i < n; i += 2) {
+            autoc[i] = sqr(buffer[i]) + sqr(buffer[i+1]);
+            autoc[i+1] = 0;
+        }
+
+        /* IFFT to recover autoc */
+        DoubleFFT_1D ifft = new DoubleFFT_1D(n);
+        ifft.realInverse(autoc, true);
+
+        /* Normalize */
+        for (int i = 1; i < n; i++) {
+            autoc[i] /= autoc[0];
+        }
+        autoc[0] = 1;
+
+        /* Symmetric across zero, slice */
+        double[] finalAutoc = new double[n/2];
+        System.arraycopy(autoc, 0, finalAutoc, 0, n/2);
+
+        return finalAutoc;
+    }
+
+    /* Square a number */
+    public double sqr(double x) {
+        return x * x;
     }
 }

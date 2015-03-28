@@ -51,8 +51,21 @@ public class SegmentationPhase {
     public void performBatchSegmentation() {
         while (isBufferAvailable()) {
             double[][] buffer = bufferToDoubleArray(getNextBuffer());
+
+            /* Condense axes to single principal component */
             Matrix firstPrincipalComponent = mRecoMath.computePCA(buffer, NUM_DOFS, WINDOW_SIZE);
             double[] primaryProjection = mRecoMath.projectPCA(buffer, firstPrincipalComponent);
+
+            /* Compute autocorrelation on primaryProjection */
+            // TODO: Compute on all axes
+            double[] autoc = mRecoMath.computeAutocorrelation(primaryProjection);
+
+            if (!dataLogged) {
+                dataLogged = true;
+                for (int i = 0; i < autoc.length; i++) {
+                    Log.d(TAG, Double.toString(autoc[i]));
+                }
+            }
         }
     }
 
