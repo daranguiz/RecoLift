@@ -53,12 +53,6 @@ public class SegmentationPhase {
             double[][] buffer = bufferToDoubleArray(getNextBuffer());
             Matrix firstPrincipalComponent = mRecoMath.computePCA(buffer, NUM_DOFS, WINDOW_SIZE);
             double[] primaryProjection = mRecoMath.projectPCA(buffer, firstPrincipalComponent);
-            if (!dataLogged) {
-                dataLogged = true;
-                for (int i = 0; i < WINDOW_SIZE; i++) {
-                    Log.d(TAG, Double.toString(primaryProjection[i]));
-                }
-            }
         }
     }
 

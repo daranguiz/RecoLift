@@ -1,7 +1,5 @@
 package com.daranguiz.recolift.utils;
 
-import org.opencv.core.Mat;
-
 import Jama.EigenvalueDecomposition;
 import Jama.Matrix;
 
