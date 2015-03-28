@@ -13,6 +13,7 @@ public class SegmentationPhase {
         bufferPointer = 0;
         mSensorData = sensorDataRef;
         mRecoMath = new RecoMath();
+        dataLogged = false;
     }
 
     /* Constants */
@@ -24,6 +25,7 @@ public class SegmentationPhase {
     private int bufferPointer;
     private SensorData mSensorData;
     private RecoMath mRecoMath;
+    private boolean dataLogged;
 
     /* Okay, talking myself through on this one.
        I have a large vector of data that i'll have to grab a sliding window over.
@@ -48,9 +50,15 @@ public class SegmentationPhase {
      */
     public void performBatchSegmentation() {
         while (isBufferAvailable()) {
-            double[][] doubleBuffer = bufferToDoubleArray(getNextBuffer());
-            Matrix scatterMat = mRecoMath.computePCA(doubleBuffer, NUM_DOFS, WINDOW_SIZE);
-            Log.d(TAG, "Row: " + scatterMat.getRowDimension() + ", Col: " + scatterMat.getColumnDimension());
+            double[][] buffer = bufferToDoubleArray(getNextBuffer());
+            Matrix firstPrincipalComponent = mRecoMath.computePCA(buffer, NUM_DOFS, WINDOW_SIZE);
+            double[] primaryProjection = mRecoMath.projectPCA(buffer, firstPrincipalComponent);
+            if (!dataLogged) {
+                dataLogged = true;
+                for (int i = 0; i < WINDOW_SIZE; i++) {
+                    Log.d(TAG, Double.toString(primaryProjection[i]));
+                }
+            }
         }
     }
 
@@ -74,11 +82,11 @@ public class SegmentationPhase {
      */
     private SensorData getNextBuffer() {
         SensorData buffer = new SensorData();
-        int nextBufferPointer = bufferPointer + SLIDE_AMOUNT;
+        int nextBufferPointer = bufferPointer + WINDOW_SIZE;
 
         /* List is implemented as a vector */
         buffer.accel = mSensorData.accel.subList(bufferPointer, nextBufferPointer);
-        bufferPointer = nextBufferPointer;
+        bufferPointer = bufferPointer + SLIDE_AMOUNT;
 
         return buffer;
     }

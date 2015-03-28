@@ -26,5 +26,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'gov.nist.math:jama:1.0.2'
-//    compile project(':libraries:opencv')
+    compile project(':libraries:opencv')
 }
