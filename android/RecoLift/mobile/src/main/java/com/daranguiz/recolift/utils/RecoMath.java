@@ -405,11 +405,12 @@ public class RecoMath {
         double mean = 0;
 
         /* Compute mean over slice */
-        for (int i = startIdx; i < startIdx + len; i++) {
+        // TODO: Investigate hacky len-1, what's up with the last value in the loop being weird?
+        for (int i = startIdx; i < startIdx + len-1; i++) {
             mean += signal[i];
         }
 
-        mean /= len;
+        mean = mean / (double) len;
         return mean;
     }
 

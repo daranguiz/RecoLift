@@ -131,7 +131,6 @@ public class SegmentationPhase {
         curSegmentationFeatures.numWeakAutocPeaks      = mRecoMath.computeNumWeakPeaks(autoc, autocPeaks);
         curSegmentationFeatures.maxAutocValue          = mRecoMath.findMaxPeakValue(autoc, autocPeaks);
         curSegmentationFeatures.firstAutocPeakValue    = mRecoMath.findFirstPeakValueAfterZc(autoc, autocPeaks);
-        Log.d(TAG, "numWeakAutocPeaks: " + curSegmentationFeatures.numWeakAutocPeaks);
 
         /* Energy features */
         curSegmentationFeatures.fullRms             = mRecoMath.computeRms(signal, 0, signal.length);
