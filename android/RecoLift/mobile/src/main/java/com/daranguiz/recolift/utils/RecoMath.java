@@ -89,6 +89,7 @@ public class RecoMath {
      * Relevant: http://stackoverflow.com/questions/12239096/computing-autocorrelation-with-fft-using-jtransforms-library
      * http://dsp.stackexchange.com/questions/736/how-do-i-implement-cross-correlation-to-prove-two-audio-files-are-similar
      */
+    // TODO: Check const correctness, ensure that the output is full (only computing half fft)
     public double[] computeAutocorrelation(double[] buffer) {
         int n = buffer.length;
 
@@ -252,5 +253,116 @@ public class RecoMath {
         }
 
         return maxValue;
+    }
+
+    /* Compute RMS of array slice, [inclusive, exclusive) */
+    public double computeRms(double[] signal, int startIdx, int len) {
+        double rms = 0;
+
+        /* Compute sum of squares */
+        for (int i = 0; i < len; i++) {
+            rms += sqr(signal[i+startIdx]);
+        }
+
+        /* Compute mean */
+        rms /= len;
+
+        /* Compute square root */
+        rms = Math.sqrt(rms);
+
+        return rms;
+    }
+
+    /* Compute CUSUM, ie a poor man's integral */
+    public double[] computeCusum(double[] signal) {
+        double[] signalCusum = new double[signal.length];
+        signalCusum[0] = signal[0];
+
+        /* Compute CUSUM */
+        for (int i = 1; i < signal.length; i++) {
+            signalCusum[i] = signalCusum[i-1] + signal[i];
+        }
+
+        return signalCusum;
+    }
+
+    /* Compute sum of power band bins
+     * NOTE: Binning entire DFT because Fs/2 = 12.5Hz
+     */
+    // TODO: Check timing on sqrt(), check const correctness
+    public double[] computePowerBandSums(double signal[], int numBins) {
+        double[] signalZp = signal;
+        int n = signal.length;
+
+        /* Zero pad if necessary */
+        if (n % 2 != 0) {
+            signalZp = new double[n+1];
+            System.arraycopy(signal, 0, signalZp, 0, n);
+            n += 1;
+        }
+
+        /* Compute FFT. NOTE: This only computes half of the FFT */
+        DoubleFFT_1D fft = new DoubleFFT_1D(n);
+        double[] signalFft = signal.clone();
+        fft.realForward(signalFft);
+
+        /* Clear DC */
+        signalFft[0] = 0;
+        signalFft[1] = 0;
+
+        /* Find magnitude */
+        double normFactor = 0;
+        for (int i = 2; i < n; i+= 2) {
+            signalFft[i] = Math.sqrt(sqr(signalFft[i]) + sqr(signalFft[i+1]));
+            signalFft[i+1] = 0;
+            normFactor += signalFft[i];
+        }
+
+        /* Normalize */
+        for (int i = 0; i < n; i += 2) {
+            signalFft[i] /= normFactor;
+        }
+
+        /* Sum bins */
+        int binWidth = n / numBins;
+        double powerBandSums[] = new double[numBins];
+        for (int i = 0; i < n; i++) {
+            powerBandSums[i/binWidth] += signalFft[i];
+        }
+
+        return powerBandSums;
+    }
+
+    /* Compute mean */
+    public double computeMean(double signal[], int startIdx, int len) {
+        double mean = 0;
+
+        /* Compute mean over slice */
+        for (int i = startIdx; i < startIdx + len; i++) {
+            mean += signal[i];
+        }
+
+        mean /= len;
+        return mean;
+    }
+
+
+    /* Compute variance */
+    public double computeVariance(double signal[], int startIdx, int len) {
+        double mean = computeMean(signal, startIdx, len);
+        double variance = 0;
+
+        /* Compute variance over slice */
+        for (int i = 0; i < startIdx + len; i++) {
+            variance += sqr(signal[i] - mean);
+        }
+
+        variance /= len;
+        return variance;
+    }
+
+    /* Compute std dev */
+    public double computeStdDev(double signal[], int startIdx, int len) {
+        return Math.sqrt(computeVariance(signal, startIdx, len));
     }
 }

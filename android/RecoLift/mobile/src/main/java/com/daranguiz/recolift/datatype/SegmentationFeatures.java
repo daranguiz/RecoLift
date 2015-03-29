@@ -29,7 +29,7 @@ public class SegmentationFeatures {
 
     public double fullStdDev;
     public double firstHalfStdDev;
-    public double getSecondHalfStdDev;
+    public double secondHalfStdDev;
 
     public double fullVariance;
     public double firstHalfVariance;

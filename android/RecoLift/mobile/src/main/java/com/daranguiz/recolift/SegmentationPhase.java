@@ -114,17 +114,39 @@ public class SegmentationPhase {
     }
 
     /* Compute segmentation features */
+    // TODO: Check for const correctness on inputs
+    private static final int NUM_POWER_BAND_BINS = 10;
     private SegmentationFeatures computeSegmentationFeatures(double[] signal){
         SegmentationFeatures curSegmentationFeatures = new SegmentationFeatures();
 
         /* Autoc features */
         double[] autoc = mRecoMath.computeAutocorrelation(signal);
         List<Integer> autocPeaks = mRecoMath.computePeakIndices(autoc, NUM_SIDE_PEAK, HALF_SEC_DELAY);
-        curSegmentationFeatures.numAutocPeaks = autocPeaks.size();
-        curSegmentationFeatures.numProminentPeaks = mRecoMath.computeNumProminentPeaks(autoc, autocPeaks);
-        curSegmentationFeatures.numWeakPeaks = mRecoMath.computeNumWeakPeaks(autoc, autocPeaks);
-        curSegmentationFeatures.maxAutocValue = mRecoMath.findMaxPeakValue(autoc, autocPeaks);
+        curSegmentationFeatures.numAutocPeaks       = autocPeaks.size();
+        curSegmentationFeatures.numProminentPeaks   = mRecoMath.computeNumProminentPeaks(autoc, autocPeaks);
+        curSegmentationFeatures.numWeakPeaks        = mRecoMath.computeNumWeakPeaks(autoc, autocPeaks);
+        curSegmentationFeatures.maxAutocValue       = mRecoMath.findMaxPeakValue(autoc, autocPeaks);
         curSegmentationFeatures.firstAutocPeakValue = autoc[autocPeaks.get(0)];
+
+        /* Energy features */
+        curSegmentationFeatures.fullRms             = mRecoMath.computeRms(signal, 0, signal.length);
+        curSegmentationFeatures.firstHalfRms        = mRecoMath.computeRms(signal, 0, signal.length/2);
+        curSegmentationFeatures.secondHalfRms       = mRecoMath.computeRms(signal, signal.length/2, signal.length/2);
+        curSegmentationFeatures.cusumRms            = mRecoMath.computeRms(mRecoMath.computeCusum(signal), 0, signal.length/2);
+        curSegmentationFeatures.powerBandMagnitudes = mRecoMath.computePowerBandSums(signal, NUM_POWER_BAND_BINS);
+
+        /* Statistical features */
+        curSegmentationFeatures.fullMean           = mRecoMath.computeMean(signal, 0, signal.length);
+        curSegmentationFeatures.firstHalfMean      = mRecoMath.computeMean(signal, 0, signal.length/2);
+        curSegmentationFeatures.secondHalfMean     = mRecoMath.computeMean(signal, signal.length/2, signal.length/2);
+
+        curSegmentationFeatures.fullVariance       = mRecoMath.computeVariance(signal, 0, signal.length);
+        curSegmentationFeatures.firstHalfVariance  = mRecoMath.computeVariance(signal, 0, signal.length/2);
+        curSegmentationFeatures.secondHalfVariance = mRecoMath.computeVariance(signal, 0, signal.length/2);
+
+        curSegmentationFeatures.fullStdDev         = Math.sqrt(curSegmentationFeatures.fullVariance);
+        curSegmentationFeatures.firstHalfStdDev    = Math.sqrt(curSegmentationFeatures.firstHalfVariance);
+        curSegmentationFeatures.secondHalfStdDev   = Math.sqrt(curSegmentationFeatures.secondHalfVariance);
 
         return curSegmentationFeatures;
     }

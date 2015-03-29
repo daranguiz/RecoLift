@@ -30,6 +30,7 @@ public class DataLayerListenerService extends WearableListenerService {
     private static final int MAX_EVENTS_IN_PACKET = 20;
     private static final int SEC_TO_NS = 1000000000;
     private static final int MS_TO_NS = 1000000;
+    private static final int F_S = 25;
     private static final int SAMPLING_DELTA_NS = Math.round(SEC_TO_NS * 0.04f);
     private static final int NUM_DOFS = 3;
 
@@ -154,6 +155,7 @@ public class DataLayerListenerService extends WearableListenerService {
 
             /* Begin segmentation */
             mSegmentationPhase.performBatchSegmentation();
+            Log.d(TAG, "Done processing!");
         }
 
     }
