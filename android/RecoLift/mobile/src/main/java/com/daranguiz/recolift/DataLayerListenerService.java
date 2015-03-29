@@ -90,6 +90,8 @@ public class DataLayerListenerService extends WearableListenerService {
     }
 
     @Override
+    // TODO: Keep the watch from sleeping somehow, it stops transmitting data after some period of inactivity
+    // ^ maybe that doesn't matter if you're in the gym, will be moving and not inactive ever?
     public void onDataChanged(DataEventBuffer dataEvents) {
         // TODO: Write to CSV, talk to server?
         Log.d(TAG, "Received sensor data");
@@ -155,7 +157,6 @@ public class DataLayerListenerService extends WearableListenerService {
 
             /* Begin segmentation */
             mSegmentationPhase.performBatchSegmentation();
-            Log.d(TAG, "Done processing!");
         }
 
     }

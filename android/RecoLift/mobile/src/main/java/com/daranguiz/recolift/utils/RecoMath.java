@@ -1,5 +1,7 @@
 package com.daranguiz.recolift.utils;
 
+import android.util.Log;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +14,9 @@ import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
 public class RecoMath {
     public RecoMath() {
     }
+
+    private static final String TAG = "RecoMath";
+
     /* Compute PCA using Jama library
      * Return float array of first principal component projection
      */
@@ -154,7 +159,7 @@ public class RecoMath {
         for (int i = delay; i < signal.length - n; i++) {
             System.arraycopy(signal, i-n, subSignal, 0, arrayLength);
             if (getArrayMaxIdx(subSignal) == n) {
-                peakIndices.add(n);
+                peakIndices.add(i);
             }
         }
 
@@ -242,6 +247,11 @@ public class RecoMath {
 
     /* Find the maximum value given a set of array indices */
     public double findMaxPeakValue(double[] signal, List<Integer> peakIndices) {
+        /* Error handling - sometimes no peaks are found, somehow */
+        if (peakIndices.size() == 0) {
+            return 0;
+        }
+
         double maxValue = signal[peakIndices.get(0)];
         double curValue = 0;
 
@@ -253,6 +263,62 @@ public class RecoMath {
         }
 
         return maxValue;
+    }
+
+    /* Find the first peak value after a zero crossing */
+    public double findFirstPeakValueAfterZc(double[] signal, List<Integer> peakIndices) {
+        int firstZcIdx = findFirstZeroCrossing(signal);
+        int peakIdx;
+
+        /* Error handling */
+        if (firstZcIdx == -1 || peakIndices.size() == 0) {
+            return 0;
+        }
+
+        /* Find first peak after ZC, should be in order */
+        for (int i = 0; i < peakIndices.size(); i++) {
+            peakIdx = peakIndices.get(i);
+            if (peakIdx > firstZcIdx) {
+                return signal[peakIdx];
+            }
+        }
+
+        /* If we've reached this point, no peak found */
+        // TODO: Refactor, this is poor
+        return 0;
+    }
+
+    /* Find the index of the first zero crossing in a signal, assuming val never == 0 exactly */
+    public int findFirstZeroCrossing(double[] signal) {
+        boolean lastWasPositive;
+        boolean curSignPositive;
+        int firstZc = -1;
+
+        /* Init */
+        if (signal[0] > 0) {
+            lastWasPositive = true;
+        } else {
+            lastWasPositive = false;
+        }
+
+        /* Check for sign differences */
+        for (int i = 0; i < signal.length; i++) {
+            if (signal[i] > 0) {
+                curSignPositive = true;
+            } else {
+                curSignPositive = false;
+            }
+
+            /* ZC has occurred */
+            if (curSignPositive != lastWasPositive) {
+                firstZc = i;
+                break;
+            } else {
+                lastWasPositive = curSignPositive;
+            }
+        }
+
+        return firstZc;
     }
 
     /* Compute RMS of array slice, [inclusive, exclusive) */
@@ -303,7 +369,8 @@ public class RecoMath {
 
         /* Compute FFT. NOTE: This only computes half of the FFT */
         DoubleFFT_1D fft = new DoubleFFT_1D(n);
-        double[] signalFft = signal.clone();
+        double[] signalFft = new double[n];
+        System.arraycopy(signal, 0, signalFft, 0, signal.length);
         fft.realForward(signalFft);
 
         /* Clear DC */
@@ -324,7 +391,7 @@ public class RecoMath {
         }
 
         /* Sum bins */
-        int binWidth = n / numBins;
+        int binWidth = (int) Math.ceil((double) n / numBins);
         double powerBandSums[] = new double[numBins];
         for (int i = 0; i < n; i++) {
             powerBandSums[i/binWidth] += signalFft[i];

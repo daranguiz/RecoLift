@@ -356,7 +356,7 @@ if 0:
 # - Number of weak peaks
 # - Maximum autoc value (starting at 0.5s)
 # - Height of first autoc peak after a zero crossing
-print_features = 0
+print_features = 1
 
 # General peak detection
 # http://stackoverflow.com/questions/3260/peak-detection-of-measured-signal

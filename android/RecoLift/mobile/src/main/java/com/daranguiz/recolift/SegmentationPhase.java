@@ -63,6 +63,10 @@ public class SegmentationPhase {
             Matrix firstPrincipalComponent = mRecoMath.computePCA(buffer, NUM_DOFS, WINDOW_SIZE);
             double[] primaryProjection = mRecoMath.projectPCA(buffer, firstPrincipalComponent);
 
+            if (primaryProjection.length == 0) {
+                Log.d(TAG, "Proj len = 0");
+            }
+
             /* Compute features on primaryProjection */
             SegmentationFeatures signalFeatures = computeSegmentationFeatures(primaryProjection);
 
@@ -122,11 +126,12 @@ public class SegmentationPhase {
         /* Autoc features */
         double[] autoc = mRecoMath.computeAutocorrelation(signal);
         List<Integer> autocPeaks = mRecoMath.computePeakIndices(autoc, NUM_SIDE_PEAK, HALF_SEC_DELAY);
-        curSegmentationFeatures.numAutocPeaks       = autocPeaks.size();
-        curSegmentationFeatures.numProminentPeaks   = mRecoMath.computeNumProminentPeaks(autoc, autocPeaks);
-        curSegmentationFeatures.numWeakPeaks        = mRecoMath.computeNumWeakPeaks(autoc, autocPeaks);
-        curSegmentationFeatures.maxAutocValue       = mRecoMath.findMaxPeakValue(autoc, autocPeaks);
-        curSegmentationFeatures.firstAutocPeakValue = autoc[autocPeaks.get(0)];
+        curSegmentationFeatures.numAutocPeaks          = autocPeaks.size();
+        curSegmentationFeatures.numProminentAutocPeaks = mRecoMath.computeNumProminentPeaks(autoc, autocPeaks);
+        curSegmentationFeatures.numWeakAutocPeaks      = mRecoMath.computeNumWeakPeaks(autoc, autocPeaks);
+        curSegmentationFeatures.maxAutocValue          = mRecoMath.findMaxPeakValue(autoc, autocPeaks);
+        curSegmentationFeatures.firstAutocPeakValue    = mRecoMath.findFirstPeakValueAfterZc(autoc, autocPeaks);
+        Log.d(TAG, "numWeakAutocPeaks: " + curSegmentationFeatures.numWeakAutocPeaks);
 
         /* Energy features */
         curSegmentationFeatures.fullRms             = mRecoMath.computeRms(signal, 0, signal.length);

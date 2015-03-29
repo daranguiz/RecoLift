@@ -8,8 +8,8 @@ public class SegmentationFeatures {
 
     /* Autoc-related */
     public int numAutocPeaks;
-    public int numProminentPeaks;
-    public int numWeakPeaks;
+    public int numProminentAutocPeaks;
+    public int numWeakAutocPeaks;
     public double maxAutocValue;
     public double firstAutocPeakValue;
 
