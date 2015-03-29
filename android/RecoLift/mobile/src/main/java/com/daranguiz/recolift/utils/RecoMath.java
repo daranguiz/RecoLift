@@ -1,5 +1,10 @@
 package com.daranguiz.recolift.utils;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
+
 import Jama.EigenvalueDecomposition;
 import Jama.Matrix;
 import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
@@ -130,5 +135,122 @@ public class RecoMath {
     /* Square a number */
     public double sqr(double x) {
         return x * x;
+    }
+
+    /* Peak detection, n samples on either side */
+    // TODO: Ignoring last n samples currently. Does this affect output?
+    public List<Integer> computePeakIndices(double[] signal, int n, int delay) {
+        int arrayLength = 2 * n + 1;
+        double[] subSignal = new double[arrayLength];
+        List<Integer> peakIndices = new Vector<Integer>();
+
+        /* May want to start search late, ie on autoc, so as to ignore initial zero-lag peak */
+        if (n > delay) {
+            delay = n;
+        }
+
+        /* Loop over all possible sub-arrays */
+        for (int i = delay; i < signal.length - n; i++) {
+            System.arraycopy(signal, i-n, subSignal, 0, arrayLength);
+            if (getArrayMaxIdx(subSignal) == n) {
+                peakIndices.add(n);
+            }
+        }
+
+        return peakIndices;
+    }
+
+    /* Compute number of prominent peaks */
+    // TODO: Copy python pseudocode over to comments
+    private static final double PROMINENT_PEAK_HEIGHT_THRESHOLD = 0.4;
+    private static final int PEAK_LAG_THRESHOLD = 10;
+    private static final int NEIGHBOR_THRESHOLD = 20;
+    public int computeNumProminentPeaks(double[] signal, List<Integer> peakIndices) {
+        Set<Integer> peaksToRemove = new HashSet<Integer>();
+        int numPeaks = peakIndices.size();
+        int peak1 = 0;
+        int peak2 = 0;
+
+        /* Populate set with peaks to remove from list */
+        for (int i = 0; i < numPeaks; i++) {
+            for (int j = 0; j < numPeaks; j++) {
+                peak1 = peakIndices.get(i);
+                peak2 = peakIndices.get(j);
+
+                /* If peaks are neighbors but not referring to the same peak */
+                if (isNeighbor(peak1, peak2, NEIGHBOR_THRESHOLD) && i != j) {
+                    /* If too close, reject */
+                    if (Math.abs(peak1 - peak2) < PEAK_LAG_THRESHOLD) {
+                        peaksToRemove.add(peak1);
+                        peaksToRemove.add(peak2);
+                    }
+
+                    /* If one peak isn't greater than another by a threshold, reject */
+                    // TODO: Think about this, may not be correct
+                    if (Math.abs(signal[peak1] - signal[peak2]) < PROMINENT_PEAK_HEIGHT_THRESHOLD) {
+                        peaksToRemove.add(peak1);
+                        peaksToRemove.add(peak2);
+                    }
+                }
+            }
+        }
+
+        return numPeaks - peaksToRemove.size();
+    }
+
+    /* Compute number of weak peaks. Not necessarily (numPeaks - strongPeaks) */
+    // TODO: Copy python pseudocode over to comments
+    private static final double WEAK_PEAK_HEIGHT_THRESHOLD = 0.2;
+    public int computeNumWeakPeaks(double[] signal, List<Integer> peakIndices) {
+        Set<Integer> weakPeakIndices = new HashSet<Integer>();
+        int numPeaks = peakIndices.size();
+        int peak1 = 0;
+        int peak2 = 0;
+
+        /* Populate set with weak peaks */
+        for (int i = 0; i < numPeaks; i++) {
+            for (int j = 0; j < numPeaks; j++) {
+                peak1 = peakIndices.get(i);
+                peak2 = peakIndices.get(j);
+
+                /* If peaks are neighbors but not referring to the same peak */
+                if (isNeighbor(peak1, peak2, NEIGHBOR_THRESHOLD) && i != j) {
+                    /* If too close, consider */
+                    if (Math.abs(peak1 - peak2) < PEAK_LAG_THRESHOLD) {
+                        /* If also not above height threshold, add to set */
+                        if (Math.abs(signal[peak1] - signal[peak2]) < WEAK_PEAK_HEIGHT_THRESHOLD) {
+                            weakPeakIndices.add(peak1);
+                            weakPeakIndices.add(peak2);
+                        }
+                    }
+                }
+            }
+        }
+
+        return weakPeakIndices.size();
+    }
+
+    /* Helper function for weak/prominent peak computations */
+    private boolean isNeighbor(int peak1, int peak2, int neighborThreshold) {
+        if (Math.abs(peak1 - peak2) <= neighborThreshold) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /* Find the maximum value given a set of array indices */
+    public double findMaxPeakValue(double[] signal, List<Integer> peakIndices) {
+        double maxValue = signal[peakIndices.get(0)];
+        double curValue = 0;
+
+        for (int peakIdx : peakIndices) {
+            curValue = signal[peakIdx];
+            if (curValue > maxValue) {
+                maxValue = curValue;
+            }
+        }
+
+        return maxValue;
     }
 }

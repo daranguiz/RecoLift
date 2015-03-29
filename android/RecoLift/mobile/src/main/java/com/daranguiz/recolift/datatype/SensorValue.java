@@ -1,4 +1,4 @@
-package com.daranguiz.recolift.utils;
+package com.daranguiz.recolift.datatype;
 
 /* Individual sensor measurements */
 public class SensorValue {

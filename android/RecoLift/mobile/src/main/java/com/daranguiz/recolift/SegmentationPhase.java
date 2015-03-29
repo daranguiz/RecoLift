@@ -2,8 +2,11 @@ package com.daranguiz.recolift;
 
 import android.util.Log;
 
+import com.daranguiz.recolift.datatype.SegmentationFeatures;
 import com.daranguiz.recolift.utils.RecoMath;
-import com.daranguiz.recolift.utils.SensorData;
+import com.daranguiz.recolift.datatype.SensorData;
+
+import java.util.List;
 
 import Jama.Matrix;
 
@@ -17,9 +20,12 @@ public class SegmentationPhase {
     }
 
     /* Constants */
-    private static final int WINDOW_SIZE = 25 * 5;
+    private static final int F_S = 25;
+    private static final int HALF_SEC_DELAY = F_S / 2;
+    private static final int WINDOW_SIZE = F_S * 5;
     private static final int SLIDE_AMOUNT = 5;
     private static final int NUM_DOFS = 3;
+    private static final int NUM_SIDE_PEAK = 2;
     private static final String TAG = "SegmentationPhase";
 
     private int bufferPointer;
@@ -48,6 +54,7 @@ public class SegmentationPhase {
        exercise when six seconds of +exercise (at 0.2sec per, == 30). If there is ANY exercise
        occurring in the window, it should be flagged. *matters on the ground truth input.
      */
+    // TODO: Refactor into: Get buffer -> Get axes -> Get features -> Classify -> Accumulate
     public void performBatchSegmentation() {
         while (isBufferAvailable()) {
             double[][] buffer = bufferToDoubleArray(getNextBuffer());
@@ -56,16 +63,9 @@ public class SegmentationPhase {
             Matrix firstPrincipalComponent = mRecoMath.computePCA(buffer, NUM_DOFS, WINDOW_SIZE);
             double[] primaryProjection = mRecoMath.projectPCA(buffer, firstPrincipalComponent);
 
-            /* Compute autocorrelation on primaryProjection */
-            // TODO: Compute on all axes
-            double[] autoc = mRecoMath.computeAutocorrelation(primaryProjection);
+            /* Compute features on primaryProjection */
+            SegmentationFeatures signalFeatures = computeSegmentationFeatures(primaryProjection);
 
-            if (!dataLogged) {
-                dataLogged = true;
-                for (int i = 0; i < autoc.length; i++) {
-                    Log.d(TAG, Double.toString(autoc[i]));
-                }
-            }
         }
     }
 
@@ -98,7 +98,7 @@ public class SegmentationPhase {
         return buffer;
     }
 
-    // TODO: SensorValue is poorly optimized for quick array copies
+    // TODO: SensorValue is poorly optimized for quick array copies. Check if timing met.
     /* Convert our SensorValue buffer to a float array for easy computation */
     private double[][] bufferToDoubleArray(SensorData buffer) {
         double outputArr[][] = new double[NUM_DOFS][WINDOW_SIZE];
@@ -112,4 +112,22 @@ public class SegmentationPhase {
 
         return outputArr;
     }
+
+    /* Compute segmentation features */
+    private SegmentationFeatures computeSegmentationFeatures(double[] signal){
+        SegmentationFeatures curSegmentationFeatures = new SegmentationFeatures();
+
+        /* Autoc features */
+        double[] autoc = mRecoMath.computeAutocorrelation(signal);
+        List<Integer> autocPeaks = mRecoMath.computePeakIndices(autoc, NUM_SIDE_PEAK, HALF_SEC_DELAY);
+        curSegmentationFeatures.numAutocPeaks = autocPeaks.size();
+        curSegmentationFeatures.numProminentPeaks = mRecoMath.computeNumProminentPeaks(autoc, autocPeaks);
+        curSegmentationFeatures.numWeakPeaks = mRecoMath.computeNumWeakPeaks(autoc, autocPeaks);
+        curSegmentationFeatures.maxAutocValue = mRecoMath.findMaxPeakValue(autoc, autocPeaks);
+        curSegmentationFeatures.firstAutocPeakValue = autoc[autocPeaks.get(0)];
+
+        return curSegmentationFeatures;
+    }
+
+
 }

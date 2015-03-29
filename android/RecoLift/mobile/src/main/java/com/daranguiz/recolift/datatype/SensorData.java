@@ -1,4 +1,4 @@
-package com.daranguiz.recolift.utils;
+package com.daranguiz.recolift.datatype;
 
 import java.util.List;
 import java.util.Vector;
