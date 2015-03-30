@@ -12,9 +12,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import Jama.Matrix;
 
@@ -75,6 +78,7 @@ public class SegmentationPhase {
     // TODO: Refactor into: Get buffer -> Get axes -> Get features -> Classify -> Accumulate
     public void performBatchSegmentation() {
         while (isBufferAvailable()) {
+            /* Get current sliding window buffer */
             SensorData bufferAsSensorData = getNextBuffer();
             double[][] buffer = bufferToDoubleArray(bufferAsSensorData);
 
@@ -93,6 +97,10 @@ public class SegmentationPhase {
                 // Timestamp is messed up for first buffer for some reason, so ignore first
                 isFirstLogging = false;
             }
+
+            // TODO: Pass features into classifier
+
+            // TODO: Accumulator
         }
     }
 
@@ -193,6 +201,10 @@ public class SegmentationPhase {
             return;
         }
 
+        /* Doubles print in scientific notation otherwise, gross but necessary */
+        DecimalFormat df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        df.setMaximumFractionDigits(340);
+
         /* Construct feature string... gross */
         String csvLine = "";
         csvLine += timestamp + ", ";
@@ -201,31 +213,31 @@ public class SegmentationPhase {
         csvLine += features.numAutocPeaks + ", ";
         csvLine += features.numProminentAutocPeaks + ", ";
         csvLine += features.numWeakAutocPeaks + ", ";
-        csvLine += features.maxAutocPeakValue + ", ";
-        csvLine += features.firstAutocPeakValue + ", ";
+        csvLine += df.format(features.maxAutocPeakValue) + ", ";
+        csvLine += df.format(features.firstAutocPeakValue) + ", ";
         int firstAndMaxPeakValuesEqual = features.firstAndMaxPeakValuesEqual ? 1 : 0;
         csvLine += firstAndMaxPeakValuesEqual + ", ";
 
-        csvLine += features.fullRms + ", ";
-        csvLine += features.firstHalfRms + ", ";
-        csvLine += features.secondHalfRms + ", ";
-        csvLine += features.cusumRms + ", ";
+        csvLine += df.format(features.fullRms) + ", ";
+        csvLine += df.format(features.firstHalfRms) + ", ";
+        csvLine += df.format(features.secondHalfRms) + ", ";
+        csvLine += df.format(features.cusumRms) + ", ";
 
         for (int i = 0; i < features.powerBandMagnitudes.length; i++) {
-            csvLine += features.powerBandMagnitudes[i] + ", ";
+            csvLine += df.format(features.powerBandMagnitudes[i]) + ", ";
         }
 
-        csvLine += features.fullMean + ", ";
-        csvLine += features.firstHalfMean + ", ";
-        csvLine += features.secondHalfMean + ", ";
+        csvLine += df.format(features.fullMean) + ", ";
+        csvLine += df.format(features.firstHalfMean) + ", ";
+        csvLine += df.format(features.secondHalfMean) + ", ";
 
-        csvLine += features.fullStdDev + ", ";
-        csvLine += features.firstHalfStdDev + ", ";
-        csvLine += features.secondHalfStdDev + ", ";
+        csvLine += df.format(features.fullStdDev) + ", ";
+        csvLine += df.format(features.firstHalfStdDev) + ", ";
+        csvLine += df.format(features.secondHalfStdDev) + ", ";
 
-        csvLine += features.fullVariance + ", ";
-        csvLine += features.firstHalfVariance + ", ";
-        csvLine += features.secondHalfVariance;
+        csvLine += df.format(features.fullVariance) + ", ";
+        csvLine += df.format(features.firstHalfVariance) + ", ";
+        csvLine += df.format(features.secondHalfVariance);
 
         /* Write */
         writer.println(csvLine);
