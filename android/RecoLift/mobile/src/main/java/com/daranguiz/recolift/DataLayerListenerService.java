@@ -6,6 +6,7 @@ import android.util.Log;
 import com.daranguiz.recolift.utils.ButterworthLowPassFilter;
 import com.daranguiz.recolift.datatype.SensorData;
 import com.daranguiz.recolift.datatype.SensorValue;
+import com.daranguiz.recolift.utils.SegmentationPhase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataEvent;

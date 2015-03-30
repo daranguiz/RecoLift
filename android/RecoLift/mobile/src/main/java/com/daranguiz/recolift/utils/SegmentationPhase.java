@@ -1,4 +1,4 @@
-package com.daranguiz.recolift;
+package com.daranguiz.recolift.utils;
 
 import android.util.Log;
 
