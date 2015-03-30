@@ -3,9 +3,17 @@ package com.daranguiz.recolift;
 import android.util.Log;
 
 import com.daranguiz.recolift.datatype.SegmentationFeatures;
+import com.daranguiz.recolift.utils.RecoFileUtils;
 import com.daranguiz.recolift.utils.RecoMath;
 import com.daranguiz.recolift.datatype.SensorData;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import Jama.Matrix;
@@ -15,8 +23,14 @@ public class SegmentationPhase {
     public SegmentationPhase(SensorData sensorDataRef) {
         bufferPointer = 0;
         mSensorData = sensorDataRef;
+        isFirstLogging = true;
         mRecoMath = new RecoMath();
-        dataLogged = false;
+        mRecoFileUtils = new RecoFileUtils();
+
+        /* Get file pointer, don't open yet */
+        String timestamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        String filename = timestamp + "_segmentation_features.csv";
+        csvFile = mRecoFileUtils.getFileInDcimStorage(filename);
     }
 
     /* Constants */
@@ -31,7 +45,11 @@ public class SegmentationPhase {
     private int bufferPointer;
     private SensorData mSensorData;
     private RecoMath mRecoMath;
-    private boolean dataLogged;
+
+    /* Logging */
+    private static RecoFileUtils mRecoFileUtils;
+    private static File csvFile;
+    private static boolean isFirstLogging; // hack
 
     /* Okay, talking myself through on this one.
        I have a large vector of data that i'll have to grab a sliding window over.
@@ -57,23 +75,29 @@ public class SegmentationPhase {
     // TODO: Refactor into: Get buffer -> Get axes -> Get features -> Classify -> Accumulate
     public void performBatchSegmentation() {
         while (isBufferAvailable()) {
-            double[][] buffer = bufferToDoubleArray(getNextBuffer());
+            SensorData bufferAsSensorData = getNextBuffer();
+            double[][] buffer = bufferToDoubleArray(bufferAsSensorData);
 
             /* Condense axes to single principal component */
             Matrix firstPrincipalComponent = mRecoMath.computePCA(buffer, NUM_DOFS, WINDOW_SIZE);
             double[] primaryProjection = mRecoMath.projectPCA(buffer, firstPrincipalComponent);
 
-            if (primaryProjection.length == 0) {
-                Log.d(TAG, "Proj len = 0");
-            }
-
             /* Compute features on primaryProjection */
             SegmentationFeatures signalFeatures = computeSegmentationFeatures(primaryProjection);
 
+            /* Log features to CSV */
+            if (!isFirstLogging) {
+                long firstValueTimestamp = bufferAsSensorData.accel.get(0).timestamp;
+                logSegmentationFeatures(signalFeatures, firstValueTimestamp, 0);
+            } else {
+                // Timestamp is messed up for first buffer for some reason, so ignore first
+                isFirstLogging = false;
+            }
         }
     }
 
     /* Check if there are enough samples for a new buffer */
+    // TODO: Generalize to any source
     private boolean isBufferAvailable() {
         int nextBufferStart = bufferPointer + SLIDE_AMOUNT;
         int nextBufferEnd = nextBufferStart + WINDOW_SIZE;
@@ -91,6 +115,7 @@ public class SegmentationPhase {
      * Right now, this only accounts for single-source accelerometer data, but it'll be
      * extensible shortly.
      */
+    // TODO: Generalize to any source
     private SensorData getNextBuffer() {
         SensorData buffer = new SensorData();
         int nextBufferPointer = bufferPointer + WINDOW_SIZE;
@@ -126,11 +151,12 @@ public class SegmentationPhase {
         /* Autoc features */
         double[] autoc = mRecoMath.computeAutocorrelation(signal);
         List<Integer> autocPeaks = mRecoMath.computePeakIndices(autoc, NUM_SIDE_PEAK, HALF_SEC_DELAY);
-        curSegmentationFeatures.numAutocPeaks          = autocPeaks.size();
-        curSegmentationFeatures.numProminentAutocPeaks = mRecoMath.computeNumProminentPeaks(autoc, autocPeaks);
-        curSegmentationFeatures.numWeakAutocPeaks      = mRecoMath.computeNumWeakPeaks(autoc, autocPeaks);
-        curSegmentationFeatures.maxAutocValue          = mRecoMath.findMaxPeakValue(autoc, autocPeaks);
-        curSegmentationFeatures.firstAutocPeakValue    = mRecoMath.findFirstPeakValueAfterZc(autoc, autocPeaks);
+        curSegmentationFeatures.numAutocPeaks              = autocPeaks.size();
+        curSegmentationFeatures.numProminentAutocPeaks     = mRecoMath.computeNumProminentPeaks(autoc, autocPeaks);
+        curSegmentationFeatures.numWeakAutocPeaks          = mRecoMath.computeNumWeakPeaks(autoc, autocPeaks);
+        curSegmentationFeatures.maxAutocPeakValue          = mRecoMath.findMaxPeakValue(autoc, autocPeaks);
+        curSegmentationFeatures.firstAutocPeakValue        = mRecoMath.findFirstPeakValueAfterZc(autoc, autocPeaks);
+        curSegmentationFeatures.firstAndMaxPeakValuesEqual = curSegmentationFeatures.maxAutocPeakValue == curSegmentationFeatures.firstAutocPeakValue;
 
         /* Energy features */
         curSegmentationFeatures.fullRms             = mRecoMath.computeRms(signal, 0, signal.length);
@@ -155,5 +181,57 @@ public class SegmentationPhase {
         return curSegmentationFeatures;
     }
 
+    /* Log segmentation features to file */
+    private void logSegmentationFeatures(SegmentationFeatures features, long timestamp, int sensorType) {
+        PrintWriter writer;
+
+        /* Open a new PrintWriter every time to avoid unused open file descriptors */
+        try {
+            writer = new PrintWriter(new BufferedWriter(new FileWriter(csvFile, true)));
+        } catch (IOException e) {
+            Log.d(TAG, "Could not open file for writing segmentation features, disabling logging");
+            return;
+        }
+
+        /* Construct feature string... gross */
+        String csvLine = "";
+        csvLine += timestamp + ", ";
+        csvLine += sensorType + ", ";
+
+        csvLine += features.numAutocPeaks + ", ";
+        csvLine += features.numProminentAutocPeaks + ", ";
+        csvLine += features.numWeakAutocPeaks + ", ";
+        csvLine += features.maxAutocPeakValue + ", ";
+        csvLine += features.firstAutocPeakValue + ", ";
+        int firstAndMaxPeakValuesEqual = features.firstAndMaxPeakValuesEqual ? 1 : 0;
+        csvLine += firstAndMaxPeakValuesEqual + ", ";
+
+        csvLine += features.fullRms + ", ";
+        csvLine += features.firstHalfRms + ", ";
+        csvLine += features.secondHalfRms + ", ";
+        csvLine += features.cusumRms + ", ";
+
+        for (int i = 0; i < features.powerBandMagnitudes.length; i++) {
+            csvLine += features.powerBandMagnitudes[i] + ", ";
+        }
+
+        csvLine += features.fullMean + ", ";
+        csvLine += features.firstHalfMean + ", ";
+        csvLine += features.secondHalfMean + ", ";
+
+        csvLine += features.fullStdDev + ", ";
+        csvLine += features.firstHalfStdDev + ", ";
+        csvLine += features.secondHalfStdDev + ", ";
+
+        csvLine += features.fullVariance + ", ";
+        csvLine += features.firstHalfVariance + ", ";
+        csvLine += features.secondHalfVariance;
+
+        /* Write */
+        writer.println(csvLine);
+
+        /* Close PrintWriter every time */
+        writer.close();
+    }
 
 }

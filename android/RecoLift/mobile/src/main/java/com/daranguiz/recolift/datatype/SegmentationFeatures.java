@@ -10,8 +10,9 @@ public class SegmentationFeatures {
     public int numAutocPeaks;
     public int numProminentAutocPeaks;
     public int numWeakAutocPeaks;
-    public double maxAutocValue;
+    public double maxAutocPeakValue;
     public double firstAutocPeakValue;
+    public boolean firstAndMaxPeakValuesEqual;
 
 
     /* Energy-related features */
