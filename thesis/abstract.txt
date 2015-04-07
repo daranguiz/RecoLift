@@ -1,0 +1,15 @@
+just pretend you're talking to a friend.
+
+okay so tim. smartwatches are becoming more ubiquitous right? And right now, there aren't any good strength-related lifting trackers out there. Fitbit and jawbone are all the rage, but their processing capabilities are actually quite minimal. Most of their functionality is based off a simple pedometer - from calculating the number of steps and heart rate, you can extrapolate calories burned, distance traveled, etc.
+
+With smartwatches becoming a thing though, we now have an open platform for fitness tracking that anyone can hack into and start implementing. My passion outside of ECE is lifting, and my passion within ECE is signal processing. why not combine the two?
+
+There's a great new paper called RecoFit which proposes a solution for an IMU based on periodicity. I've tweaked the algorithm slightly and applied it to android, with the functionality as follows:
+
+Combining accelerometer and gyroscope sensor data from both the smartwatch and the smartphone, we separate classification into three phases. Firstly, we *segment* the data to determine whether an exercise is being performed. Secondly, we calculate signal features and *recognize* which exercise is being performed. Lastly, we *count* the number of repetitions.
+
+This is done unsupervised and online with high recognition accuracies and repetition counts within +/- 1 of the true count.
+
+------------------------------------------------------------------------
+
+Despite the plethora of fitness trackers on the market, few monitor signals other than number of steps and heart rate. With the increasing mainstream acceptance of general-purpose smartwatches however, we have the capability to track more complex activities. We propose RecoLift, an Android-based system to track exercises and repetitions in weight training and bodyweight training activities based on RecoFit, the work of Morris et al. Our goal is to provide a system which provides feedback to the user in an autonomous, online fashion, harnessing both smartwatch and smartphone sensors. This system is separated into three key phases: *segmentation*, during which we use the periodicity of the signals to determine if an exercise is being performed, *recognition*, which calculates signal features to determine which exercise is being performed, and *counting*, which uses periodicity to calculate the number of repetitions in a set.

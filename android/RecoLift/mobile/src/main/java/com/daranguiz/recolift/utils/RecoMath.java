@@ -2,6 +2,7 @@ package com.daranguiz.recolift.utils;
 
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,6 +65,7 @@ public class RecoMath {
     }
 
     /* Compute mean of an array */
+    // TODO: Deprecated, new version below that takes array indices as inputs
     public double getArrayMean(double[] arr) {
         double mean = 0;
 
@@ -391,6 +393,8 @@ public class RecoMath {
         }
 
         /* Sum bins */
+        // TODO: Clean, refactoring
+        /*
         int binWidth = (int) Math.ceil((double) n / numBins);
         double powerBandSums[] = new double[numBins];
         for (int i = 0; i < n; i++) {
@@ -398,6 +402,22 @@ public class RecoMath {
         }
 
         return powerBandSums;
+        */
+
+        return computeBinnedSignalSum(signalFft, numBins);
+    }
+
+    /* Divvy signal into bins and sum */
+    public double[] computeBinnedSignalSum(double[] signal, int numBins) {
+        double binnedSums[] = new double[numBins];
+
+        int n = signal.length;
+        int binWidth = (int) Math.ceil((double) n / numBins);
+        for (int i = 0; i < n; i++) {
+            binnedSums[i/binWidth] += signal[i];
+        }
+
+        return binnedSums;
     }
 
     /* Compute mean */
@@ -432,5 +452,37 @@ public class RecoMath {
     /* Compute std dev */
     public double computeStdDev(double signal[], int startIdx, int len) {
         return Math.sqrt(computeVariance(signal, startIdx, len));
+    }
+
+    /* Compute fourth standardized moment for kurtosis feature
+     * K = E[(X - mu)^4] / stdDev^4
+     */
+    public double computeFourthStandardizedMoment(double signal[], int startIdx, int len) {
+        double variance = computeVariance(signal, startIdx, len);
+        double mean = computeMean(signal, startIdx, len);
+        double fourthMoment = 0;
+
+        /* Compute 4th moment */
+        for (int i = 0; i < startIdx + len; i++) {
+             fourthMoment += sqr(sqr(signal[i] - mean));
+        }
+
+        fourthMoment = (fourthMoment / len) / sqr(variance);
+
+        return fourthMoment;
+    }
+
+    /* Compute IQR = 75% - 25% */
+    public double computeInterquartileRange(double[] signal) {
+        double [] sortedArray = signal.clone();
+
+        /* First sort */
+        Arrays.sort(sortedArray);
+
+        /* Find 25th and 75th percentiles */
+        double rangeHigh = sortedArray[signal.length * 3 / 4];
+        double rangeLow = sortedArray[signal.length / 4];
+
+        return rangeHigh - rangeLow;
     }
 }

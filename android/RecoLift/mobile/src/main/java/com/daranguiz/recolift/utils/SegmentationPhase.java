@@ -153,7 +153,7 @@ public class SegmentationPhase {
     /* Compute segmentation features */
     // TODO: Check for const correctness on inputs
     private static final int NUM_POWER_BAND_BINS = 10;
-    private SegmentationFeatures computeSegmentationFeatures(double[] signal){
+    private SegmentationFeatures computeSegmentationFeatures(double[] signal) {
         SegmentationFeatures curSegmentationFeatures = new SegmentationFeatures();
 
         /* Autoc features */

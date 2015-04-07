@@ -35,7 +35,39 @@
 			"file": "analysis/csv_segmentation.py",
 			"settings":
 			{
-				"buffer_size": 16443,
+				"buffer_size": 16564,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "analysis/timestamp_delta_check.py",
+			"settings":
+			{
+				"buffer_size": 26274,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Dario/Dropbox/SchoolWork/ece417/mp1/report/mp1_report.pdf",
+			"settings":
+			{
+				"buffer_size": 61735,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/Dario/Dropbox/SchoolWork/ece417/mp2/mp2_main.m",
+			"settings":
+			{
+				"buffer_size": 4423,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Dario/Dropbox/SchoolWork/ece417/mp2/computepca.m",
+			"settings":
+			{
+				"buffer_size": 1336,
 				"line_ending": "Windows"
 			}
 		},
@@ -48,17 +80,53 @@
 			}
 		}
 	],
-	"build_system": "",
+	"build_system": "Packages/Python/Python.sublime-build",
 	"build_system_choices":
 	[
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/SublimeREPL/sublimerepl_build_system_hack.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
 	],
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 135.0,
-		"last_filter": "",
+		"height": 185.0,
+		"last_filter": "synjava",
 		"selected_items":
 		[
+			[
+				"synjava",
+				"Set Syntax: Java"
+			],
+			[
+				"synmatlab",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"matlab",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"py",
+				"Set Syntax: Python"
+			],
 			[
 				"install",
 				"Package Control: Install Package"
@@ -124,7 +192,7 @@
 				":w - Save"
 			]
 		],
-		"width": 522.0
+		"width": 514.0
 	},
 	"console":
 	{
@@ -151,13 +219,17 @@
 	"expanded_folders":
 	[
 		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis",
-		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis",
-		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/data",
-		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/data/2014_11_1",
-		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/server"
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/server",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis"
 	],
 	"file_history":
 	[
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/abstract.txt",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/data/SyncedFromPhoneDCIM/2015.03.30.01.46.14_segmentation_features.csv",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/data/SyncedFromPhoneDCIM/2015.03.30.01.56.00_segmentation_features.csv",
+		"/C/Users/Dario/AppData/Local/Microsoft/Windows/INetCache/IE/I6CM5IT4/2015.03.30.01.46.14_segmentation_features[1].csv",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece417/mp2/computepca.m",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis/timestamp_delta_check.py",
 		"/C/Users/Dario/Dropbox/SchoolWork/ece417/mp3/report/mp3_report.tex",
 		"/C/Users/Dario/Desktop/test.py",
 		"/C/Users/Dario/Dropbox/SchoolWork/ece417/mp3/mp3_main.m",
@@ -279,13 +351,7 @@
 		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/Hudson/landmarks/wifiLandmark.txt",
 		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/UnLocData/Hudson/floorplan/floorplanInfo.txt",
 		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc client source code/UnLocClient/UnLocClient/src/com/synrg/utils/ParameterUtils.java",
-		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/Hudson/areas.txt",
-		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.Hudson/Hudson/googleEarthDrift.txt",
-		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/README.txt",
-		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/InstallationVideoTranscription.txt",
-		"/C/Users/Dario/Desktop/UnlocServerEnvironment/eclipse/eclipse.ini",
-		"/C/Users/Dario/Desktop/my.ini",
-		"/C/Program Files/MySQL/MySQL Server 5.5/my.ini"
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/Hudson/areas.txt"
 	],
 	"find":
 	{
@@ -304,6 +370,17 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"E",
+			"\", \";",
+			"full",
+			"arena",
+			"doubleBuffer",
+			"Received sensor data",
+			"ed sensor data,\n",
+			"%f",
+			"b",
+			"ed sensor data,\n",
+			"ed",
 			"y",
 			"     ",
 			"    ",
@@ -372,7 +449,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -388,8 +465,8 @@
 						"selection":
 						[
 							[
-								169,
-								169
+								3056,
+								3056
 							]
 						],
 						"settings":
@@ -399,10 +476,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1350.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -430,7 +507,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -439,15 +516,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 16443,
+						"buffer_size": 16564,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1071,
-								1071
+								12264,
+								12263
 							]
 						],
 						"settings":
@@ -457,14 +534,128 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 585.0,
+						"translation.y": 5175.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
+					"file": "analysis/timestamp_delta_check.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 26274,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								26274,
+								26274
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/Users/Dario/Dropbox/SchoolWork/ece417/mp1/report/mp1_report.pdf",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 61735,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/C/Users/Dario/Dropbox/SchoolWork/ece417/mp2/mp2_main.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4423,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								932,
+								932
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 135.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/C/Users/Dario/Dropbox/SchoolWork/ece417/mp2/computepca.m",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1336,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Matlab/Matlab.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
 					"file": "server/recofit_server.py",
 					"semi_transient": false,
 					"settings":
@@ -488,7 +679,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 7,
 					"type": "text"
 				}
 			]
@@ -496,7 +687,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 36.0
 	},
 	"input":
 	{

@@ -4,6 +4,8 @@
       <w>accel</w>
       <w>autoc</w>
       <w>autocorrelation</w>
+      <w>interquartile</w>
+      <w>kurtosis</w>
     </words>
   </dictionary>
 </component>
