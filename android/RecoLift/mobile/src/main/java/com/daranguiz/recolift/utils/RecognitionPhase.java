@@ -38,6 +38,7 @@ public class RecognitionPhase {
     private static final int NUM_DOFS = 3;
     private static final int NUM_SIDE_PEAK = 2;
     private static final String TAG = "RecognitionPhase";
+    private static final boolean collectGroundTruth = true;
 
     /* Buffer */
     private int bufferPointer;
@@ -49,7 +50,9 @@ public class RecognitionPhase {
 
     /* Run full recognition window in one batch */
     public void performBatchRecognition(int startIdx, int endIdx) {
-        bufferPointer = startIdx;
+        if (!collectGroundTruth) {
+            bufferPointer = startIdx;
+        }
 
         while (isBufferAvailable(endIdx)) {
             /* Get current sliding window buffer */
@@ -82,8 +85,14 @@ public class RecognitionPhase {
         int nextBufferEnd = nextBufferStart + WINDOW_SIZE;
 
         /* Only go up to the end of the noted exercise window */
-        if (nextBufferEnd >= endIdx) {
-            retVal = false;
+        if (collectGroundTruth) {
+            if (nextBufferEnd >= mSensorData.accel.size()) {
+                retVal = false;
+            }
+        } else {
+            if (nextBufferEnd >= endIdx) {
+                retVal = false;
+            }
         }
 
         return retVal;

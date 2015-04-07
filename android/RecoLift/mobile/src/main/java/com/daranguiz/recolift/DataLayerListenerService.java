@@ -6,6 +6,7 @@ import android.util.Log;
 import com.daranguiz.recolift.utils.ButterworthLowPassFilter;
 import com.daranguiz.recolift.datatype.SensorData;
 import com.daranguiz.recolift.datatype.SensorValue;
+import com.daranguiz.recolift.utils.RecognitionPhase;
 import com.daranguiz.recolift.utils.SegmentationPhase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -45,6 +46,7 @@ public class DataLayerListenerService extends WearableListenerService {
     /* Processing */
     private ButterworthLowPassFilter[] mAccelWatchFilt;
     private SegmentationPhase mSegmentationPhase;
+    private RecognitionPhase mRecognitionPhase;
 
     @Override
     public void onCreate() {
@@ -77,6 +79,7 @@ public class DataLayerListenerService extends WearableListenerService {
         /* Phase init */
         mSensorData = new SensorData();
         mSegmentationPhase = new SegmentationPhase(mSensorData);
+        mRecognitionPhase = new RecognitionPhase(mSensorData);
 
         /* Filter init */
         mAccelWatchFilt = new ButterworthLowPassFilter[NUM_DOFS];
@@ -158,6 +161,9 @@ public class DataLayerListenerService extends WearableListenerService {
 
             /* Begin segmentation */
             mSegmentationPhase.performBatchSegmentation();
+
+            /* Run recognition anyway to get ground truth data */
+            mRecognitionPhase.performBatchRecognition(0, 0);
         }
 
     }
