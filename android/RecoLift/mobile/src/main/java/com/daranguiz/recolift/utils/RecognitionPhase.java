@@ -28,6 +28,7 @@ public class RecognitionPhase {
         String timestamp = new SimpleDateFormat("yyy.MM.dd.HH.mm.ss").format(new Date());
         String filename = timestamp + "_recognition_features.csv";
         csvFile = new RecoFileUtils().getFileInDcimStorage(filename);
+        isFirstLogging = true;
     }
 
     /* Constants */
@@ -47,6 +48,7 @@ public class RecognitionPhase {
 
     /* Logging */
     private static File csvFile;
+    private static boolean isFirstLogging;
 
     /* Run full recognition window in one batch */
     public void performBatchRecognition(int startIdx, int endIdx) {
@@ -67,8 +69,13 @@ public class RecognitionPhase {
             RecognitionFeatures signalFeatures = computeRecognitionFeatures(primaryProjection);
 
             /* Log features to CSV */
-            long firstValueTimestamp = bufferAsSensorData.accel.get(0).timestamp;
-            logRecognitionFeatures(signalFeatures, firstValueTimestamp, 0);
+            if (!isFirstLogging) {
+                long firstValueTimestamp = bufferAsSensorData.accel.get(0).timestamp;
+                logRecognitionFeatures(signalFeatures, firstValueTimestamp, 0);
+            } else {
+                // Timestamp is messed up for the first buffer for some reason, so ignore first
+                isFirstLogging = false;
+            }
 
             // TODO: Pass features into classifier
 
