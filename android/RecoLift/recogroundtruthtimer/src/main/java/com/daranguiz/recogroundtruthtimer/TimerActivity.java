@@ -77,7 +77,8 @@ public class TimerActivity extends ActionBarActivity {
         spinnerLiftSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "Lift selected: " + parent.getItemAtPosition(position).toString());
+                curLift = parent.getItemAtPosition(position).toString();
+                Log.d(TAG, "Lift selected: " + curLift);
             }
 
             @Override
@@ -90,9 +91,11 @@ public class TimerActivity extends ActionBarActivity {
     /* Button Handlers */
     @OnClick(R.id.button_start_collection)
     public void startCSV() {
+        Log.d(TAG, "Starting collection");
+
         /* Get file pointer */
         String timestamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-        String filename = timestamp + "_ground_truth_.csv";
+        String filename = timestamp + "_ground_truth.csv";
         csvFile = getFileInDcimStorage(filename);
 
         /* Open a new PrintWriter every time to avoid unused open file descriptors */
@@ -109,13 +112,18 @@ public class TimerActivity extends ActionBarActivity {
         newLine += System.currentTimeMillis() + ", ";
         newLine += "StartCollection";
 
-        /* End */
+        /* End csv write */
         writer.println(newLine);
         writer.close();
+
+        /* Update UI */
+        textCollectionStatus.setText("Collection Started");
     }
 
     @OnClick(R.id.button_stop_collection)
     public void stopCSV() {
+        Log.d(TAG, "Stopping collection");
+
         /* Open a new PrintWriter every time to avoid unused open file descriptors */
         PrintWriter writer;
         try {
@@ -133,10 +141,15 @@ public class TimerActivity extends ActionBarActivity {
         /* End */
         writer.println(newLine);
         writer.close();
+
+        /* Update UI */
+        textCollectionStatus.setText("Collection Stopped");
     }
 
     @OnClick(R.id.button_start_lift)
     public void startLift() {
+        Log.d(TAG, "Starting lift: " + curLift);
+
         /* Open a new PrintWriter every time to avoid unused open file descriptors */
         PrintWriter writer;
         try {
@@ -155,10 +168,15 @@ public class TimerActivity extends ActionBarActivity {
         /* End */
         writer.println(newLine);
         writer.close();
+
+        /* Update UI */
+        textLiftStatus.setText("Lift Started");
     }
 
     @OnClick(R.id.button_stop_lift)
     public void stopLift() {
+        Log.d(TAG, "Stopping lift: " + curLift);
+
         /* Open a new PrintWriter every time to avoid unused open file descriptors */
         PrintWriter writer;
         try {
@@ -176,6 +194,9 @@ public class TimerActivity extends ActionBarActivity {
         /* End */
         writer.println(newLine);
         writer.close();
+
+        /* Update UI */
+        textLiftStatus.setText("Lift Stopped");
     }
 
     @Override
