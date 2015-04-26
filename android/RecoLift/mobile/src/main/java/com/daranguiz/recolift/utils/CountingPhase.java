@@ -2,6 +2,9 @@ package com.daranguiz.recolift.utils;
 
 import com.daranguiz.recolift.datatype.SensorData;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.math3.stat.descriptive.rank.Percentile;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -28,11 +31,12 @@ public class CountingPhase {
 
     /* Constants */
     private static final String TAG = "CountingPhase";
-    private static final double minPeriod = 0.75; // TODO: LUT for constants per lift
+    private static final double MIN_PERIOD_SECONDS = 0.75; // TODO: LUT for constants per lift
     private static final int NUM_DOFS = 3;
     private static final int NUM_PEAK_THRESHOLD = 2;
     private static final int F_S = 25;
-    private static final double MIN_PERIOD = 0.6 * F_S;
+    private static final int MIN_PERIOD = (int) 0.6 * F_S;
+    private static final int AUTOC_SIDE_WIDTH = (int) 2.5 * F_S;
 
     /* Sensor */
     private SensorData mSensorData;
@@ -76,11 +80,13 @@ public class CountingPhase {
         double[] primaryProjection = mRecoMath.projectPCA(accelBuffer, firstPrincipalComponent);
 
         /* #1, find local maxima in signal and do initial culling */
-        Set<Integer> initialCandidatePeakIndices = findInitialCandidatePeaks(primaryProjection);
+        Set<Integer> candidatePeakIndices = findInitialCandidatePeaks(primaryProjection);
 
-        // TODO: Cull peaks by period
+        /* #2, remove peaks that are too close via local periodicity */
+        cullPeaksByLocalPeriodicity(candidatePeakIndices, primaryProjection);
 
-        // TODO: Remove small peaks
+        /* #3, remove peaks that are too small */
+        removeSmallPeaks(candidatePeakIndices, primaryProjection);
     }
 
     // TODO: Incorporate all sensor sources
@@ -157,7 +163,79 @@ public class CountingPhase {
         }
     }
 
+    /* #2 in the algorithm */
     private void cullPeaksByLocalPeriodicity(Set<Integer> candidatePeakIndices, double[] signal) {
+        Set<Integer> candidatePeakIndicesCopy = new TreeSet<>(candidatePeakIndices);
 
+        /* Iterate over the copy, else we would be modifying a list we're iterating over */
+        for (int idx : candidatePeakIndicesCopy) {
+            /* We actually want to iterate over the changing list, so mimic that behavior */
+            if (!candidatePeakIndices.contains(idx)) {
+                continue;
+            }
+
+            /* Adjust offset such that a full autoc is performed at every candidate peak */
+            int autocOffset = 0;
+            if ((idx - AUTOC_SIDE_WIDTH) < 0) {
+                autocOffset = (int) Math.abs(idx - AUTOC_SIDE_WIDTH);
+            } else if ((idx + AUTOC_SIDE_WIDTH) > signal.length) {
+                autocOffset = -1 * (int) Math.abs(idx + AUTOC_SIDE_WIDTH - signal.length);
+            }
+
+            int autocLowIdx = idx - AUTOC_SIDE_WIDTH + autocOffset;
+            int autocHighIdx = idx + AUTOC_SIDE_WIDTH + autocOffset;
+            double[] windowedSignal = Arrays.copyOfRange(signal, autocLowIdx, autocHighIdx + 1);
+            double[] autocSignal = mRecoMath.computeAutocorrelation(windowedSignal);
+
+            /* Find peak in autoc sig to get estimate of local periodicity */
+            List<Integer> autocPeaks = mRecoMath.computePeakIndices(autocSignal, 2, MIN_PERIOD);
+            Collections.sort(autocPeaks, new PeakComparator(autocSignal)); // ascending order
+            int autocPeriod = autocPeaks.get(autocPeaks.size()-1);
+
+            /* Remove candidate peaks if 0.75 * minPeriod away */
+            for (int nearbyIdx : candidatePeakIndicesCopy) {
+                /* Again, pretend we're iterating over a changing list */
+                if (!candidatePeakIndices.contains(nearbyIdx) || !candidatePeakIndices.contains(idx)) {
+                    continue;
+                }
+                if (Math.abs(nearbyIdx - idx) < (0.75 * autocPeriod) && idx != nearbyIdx) {
+                    /* We have two close peaks, remove the smaller */
+                    if (signal[idx] < signal[nearbyIdx]) {
+                        candidatePeakIndices.remove(idx);
+                    } else {
+                        candidatePeakIndices.remove(nearbyIdx);
+                    }
+                }
+            }
+        }
+    }
+
+    private void removeSmallPeaks(Set<Integer> candidatePeakIndices, double[] signal) {
+        /* Normalize */
+        double[] normalizedSignal = signal.clone();
+        List<Double> sigAsList = Arrays.asList(ArrayUtils.toObject(normalizedSignal));
+        double absMinValue = Math.abs(Collections.min(sigAsList));
+        double maxValue = Collections.max(sigAsList) + absMinValue; // TODO: Double check this
+
+        for (int i = 0; i < normalizedSignal.length; i++) {
+            normalizedSignal[i] = (normalizedSignal[i] + absMinValue) / maxValue;
+        }
+
+        /* Find 40th percentile peak */
+        double[] candidatePeakValues = new double[candidatePeakIndices.size()];
+        int i = 0;
+        for (int peakIdx : candidatePeakIndices) {
+            candidatePeakValues[i] = normalizedSignal[peakIdx];
+            i++;
+        }
+        double peak40Percentile = new Percentile().evaluate(signal, 40.0);
+
+        /* Remove all peaks at less than half the 40th percentile peak */
+        Set<Integer> candidatePeakIndicesCopy = new TreeSet<>(candidatePeakIndices);
+        for (int idx : candidatePeakIndicesCopy) {
+            if (normalizedSignal[idx] < 0.5 * peak40Percentile) {
+                candidatePeakIndices.remove(idx);
+            }
+        }
     }
 }
