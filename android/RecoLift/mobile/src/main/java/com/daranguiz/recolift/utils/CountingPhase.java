@@ -1,11 +1,17 @@
 package com.daranguiz.recolift.utils;
 
+import android.util.Log;
+
 import com.daranguiz.recolift.datatype.SensorData;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,7 +75,7 @@ public class CountingPhase {
      *  - Reject any peaks smaller than half the amplitude of that peak
      *  - Return number of remaining peaks as final value
      */
-    public void performBatchCounting(int startIdx, int endIdx) {
+    public void performBatchCounting(int startIdx, int endIdx, String liftType) {
         /* Get the slice of sensor data */
         SensorData countingBuffer = getCountingBuffer(startIdx, endIdx);
         int bufferLen = countingBuffer.accel.size();
@@ -87,13 +93,17 @@ public class CountingPhase {
 
         /* #3, remove peaks that are too small */
         removeSmallPeaks(candidatePeakIndices, primaryProjection);
+
+        Log.d(TAG, "NumReps: " + candidatePeakIndices.size());
+        logCountingResults(candidatePeakIndices.size(), liftType, countingBuffer.accel.get(0).timestamp);
     }
 
     // TODO: Incorporate all sensor sources
-    public SensorData getCountingBuffer(int startIdx, int endIdx) {
+    private SensorData getCountingBuffer(int startIdx, int endIdx) {
         SensorData buffer = new SensorData();
 
         /* List is implemented as a vector */
+        Log.d(TAG, "Start: " + startIdx + ", End: " + endIdx);
         buffer.accel = mSensorData.accel.subList(startIdx, endIdx);
 
         return buffer;
@@ -190,7 +200,10 @@ public class CountingPhase {
             /* Find peak in autoc sig to get estimate of local periodicity */
             List<Integer> autocPeaks = mRecoMath.computePeakIndices(autocSignal, 2, MIN_PERIOD);
             Collections.sort(autocPeaks, new PeakComparator(autocSignal)); // ascending order
-            int autocPeriod = autocPeaks.get(autocPeaks.size()-1);
+            int autocPeriod = 0;
+            if (autocPeaks.size() > 0) {
+                autocPeriod = autocPeaks.get(autocPeaks.size()-1);
+            }
 
             /* Remove candidate peaks if 0.75 * minPeriod away */
             for (int nearbyIdx : candidatePeakIndicesCopy) {
@@ -237,5 +250,29 @@ public class CountingPhase {
                 candidatePeakIndices.remove(idx);
             }
         }
+    }
+
+    private void logCountingResults(int numReps, String liftType, long timestamp) {
+        PrintWriter writer;
+
+        /* Open a new PrintWriter every time to avoid unused open file descriptors */
+        try {
+            writer = new PrintWriter(new BufferedWriter(new FileWriter(csvFile, true)));
+        } catch (IOException e) {
+            Log.d(TAG, "Could not open file for writing counting results");
+            return;
+        }
+
+        /* Construct feature string */
+        String csvLine = "";
+        csvLine += timestamp + ", ";
+        csvLine += liftType + ", ";
+        csvLine += numReps;
+
+        /* Write */
+        writer.println(csvLine);
+
+        /* Close PrintWriter every time */
+        writer.close();
     }
 }

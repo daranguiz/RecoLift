@@ -1,5 +1,18 @@
 apply plugin: 'com.android.application'
 
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    wearApp project(':wear')
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'gov.nist.math:jama:1.0.2'
+    compile 'com.github.rwl:jtransforms:2.4.0'
+    compile 'org.apache.commons:commons-lang3:3.1'
+    compile 'org.apache.commons:commons-math3:3.0'
+//    compile project(':libraries:opencv')
+}
+
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
@@ -17,17 +30,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    wearApp project(':wear')
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.google.android.gms:play-services:6.5.87'
-    compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'gov.nist.math:jama:1.0.2'
-    compile 'com.github.rwl:jtransforms:2.4.0'
-    compile 'org.apache.commons:commons-lang3:3.1'
-    compile 'org.apache.commons:commons-math3:3.0'
-//    compile project(':libraries:opencv')
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
 }
