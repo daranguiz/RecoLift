@@ -9,6 +9,7 @@ import com.daranguiz.recolift.datatype.SensorValue;
 import com.daranguiz.recolift.utils.CountingPhase;
 import com.daranguiz.recolift.utils.RecognitionPhase;
 import com.daranguiz.recolift.utils.SegmentationPhase;
+import com.daranguiz.recolift.utils.ZohResample;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataEvent;
@@ -46,6 +47,7 @@ public class DataLayerListenerService extends WearableListenerService {
 
     /* Processing */
     private ButterworthLowPassFilter[] mAccelWatchFilt;
+    private ZohResample mAccelZohResample;
     private SegmentationPhase mSegmentationPhase;
     private RecognitionPhase mRecognitionPhase;
     private CountingPhase mCountingPhase;
@@ -94,6 +96,7 @@ public class DataLayerListenerService extends WearableListenerService {
         lastMessageSent = "";
         float[] emptyValues = {-1, -1, -1};
         lastSensorValue = new SensorValue(-1, emptyValues);
+        mAccelZohResample = new ZohResample(lastSensorValue, SAMPLING_DELTA_NS);
     }
 
     @Override
@@ -126,23 +129,7 @@ public class DataLayerListenerService extends WearableListenerService {
                         // TODO: HANDLE GYRO NOT JUST ACCEL, PHONE SENSORS AS WELL AS WATCH
 
                         /* Resample to 25Hz with ZOH */
-                        long nextSampleTime = lastSensorValue.timestamp + SAMPLING_DELTA_NS;
-                        if (lastSensorValue.timestamp == -1) {
-                            mSensorData.accel.add(new SensorValue(curSensorValue));
-
-                        } else {
-                            // If new sample happens before it should, take old sample
-                            if (dataTimestamp < nextSampleTime) {
-                                mSensorData.accel.add(new SensorValue(
-                                        nextSampleTime, lastSensorValue.values));
-//                                Log.d(TAG, "XVal: " + lastSensorValue.values[0]);
-                            } else {
-                                mSensorData.accel.add(new SensorValue(
-                                        nextSampleTime, curSensorValue.values));
-//                                Log.d(TAG, "XVal: " + curSensorValue.values[0]);
-                            }
-                        }
-                        lastSensorValue = new SensorValue(nextSampleTime, curSensorValue.values);
+                        mSensorData.accel.add(mAccelZohResample.resample(curSensorValue));
 
                         /* Filter just-added sample */
                         // TODO: Cur version is safe, but does get() return reference or value? Could optimize
@@ -154,7 +141,7 @@ public class DataLayerListenerService extends WearableListenerService {
                             mSensorData.accel.set(curIdx, curSensorVal);
 
                             /* Logging! Quick test */
-                            if (j == 0 & false) {
+                            if (j == 0 & true) {
                                 Log.d(TAG, "XVal: " + outputVal);
                             }
                         }
