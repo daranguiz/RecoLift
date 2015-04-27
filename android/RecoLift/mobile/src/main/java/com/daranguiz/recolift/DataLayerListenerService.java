@@ -1,10 +1,11 @@
 package com.daranguiz.recolift;
 
+import android.hardware.Sensor;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.daranguiz.recolift.datatype.SensorType;
 import com.daranguiz.recolift.utils.ButterworthLowPassFilter;
-import com.daranguiz.recolift.datatype.SensorData;
 import com.daranguiz.recolift.datatype.SensorValue;
 import com.daranguiz.recolift.utils.CountingPhase;
 import com.daranguiz.recolift.utils.RecognitionPhase;
@@ -24,6 +25,10 @@ import com.google.android.gms.wearable.WearableListenerService;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.Vector;
 
 public class DataLayerListenerService extends WearableListenerService {
     public DataLayerListenerService() {
@@ -43,11 +48,12 @@ public class DataLayerListenerService extends WearableListenerService {
 
     /* Sensor values */
     private SensorValue lastSensorValue;
-    public SensorData mSensorData;
+    public Map<SensorType, List<SensorValue>> mSensorData;
+    private static final SensorType[] sensorTypeCache = SensorType.values();
 
     /* Processing */
-    private ButterworthLowPassFilter[] mAccelWatchFilt;
-    private ZohResample mAccelZohResample;
+    private Map<SensorType, ButterworthLowPassFilter[]> mLowPassFilters;
+    private Map<SensorType, ZohResample> mZohResamplers;
     private SegmentationPhase mSegmentationPhase;
     private RecognitionPhase mRecognitionPhase;
     private CountingPhase mCountingPhase;
@@ -80,23 +86,36 @@ public class DataLayerListenerService extends WearableListenerService {
                 .build();
         mGoogleApiClient.connect();
 
+        /* Sensor data init */
+        mSensorData = new TreeMap<>();
+        for (SensorType sensor : SensorType.values()) {
+            mSensorData.put(sensor, new Vector<SensorValue>());
+        }
+
         /* Phase init */
-        mSensorData = new SensorData();
         mSegmentationPhase = new SegmentationPhase(mSensorData);
         mRecognitionPhase = new RecognitionPhase(mSensorData);
         mCountingPhase = new CountingPhase(mSensorData);
 
         /* Filter init */
-        mAccelWatchFilt = new ButterworthLowPassFilter[NUM_DOFS];
-        for (int i = 0; i < NUM_DOFS; i++) {
-            mAccelWatchFilt[i] = new ButterworthLowPassFilter();
+        mLowPassFilters = new TreeMap<>();
+        for (SensorType sensor : sensorTypeCache) {
+            mLowPassFilters.put(sensor, new ButterworthLowPassFilter[NUM_DOFS]);
+            for (int i = 0; i < NUM_DOFS; i++) {
+                mLowPassFilters.get(sensor)[i] = new ButterworthLowPassFilter();
+            }
+        }
+
+        /* Resampler init */
+        float[] emptyValues = {-1, -1, -1};
+        lastSensorValue = new SensorValue(-1, emptyValues);
+        mZohResamplers = new TreeMap<>();
+        for (SensorType sensor : sensorTypeCache) {
+            mZohResamplers.put(sensor, new ZohResample(lastSensorValue, SAMPLING_DELTA_NS));
         }
 
         /* Other init */
         lastMessageSent = "";
-        float[] emptyValues = {-1, -1, -1};
-        lastSensorValue = new SensorValue(-1, emptyValues);
-        mAccelZohResample = new ZohResample(lastSensorValue, SAMPLING_DELTA_NS);
     }
 
     @Override
@@ -106,6 +125,7 @@ public class DataLayerListenerService extends WearableListenerService {
         // TODO: Write to CSV, talk to server?
         Log.d(TAG, "Received sensor data");
 
+        /* If new sensor data has been received */
         if (lastMessageSent.equals(TrackerActivity.START_PATH)) {
             for (DataEvent event : dataEvents) {
                 if (event.getType() == DataEvent.TYPE_DELETED) {
@@ -122,29 +142,29 @@ public class DataLayerListenerService extends WearableListenerService {
 
                         /* Parse old data */
                         float[] dataArray = receivedDataMap.getFloatArray(valKey);
-                        int dataType = receivedDataMap.getInt(typeKey);
+                        SensorType dataSensorType = sensorTypeCache[receivedDataMap.getInt(typeKey)];
                         long dataTimestamp = receivedDataMap.getLong(timestampKey);
                         SensorValue curSensorValue = new SensorValue(dataTimestamp, dataArray);
 
                         // TODO: HANDLE GYRO NOT JUST ACCEL, PHONE SENSORS AS WELL AS WATCH
 
                         /* Resample to 25Hz with ZOH */
-                        mSensorData.accel.add(mAccelZohResample.resample(curSensorValue));
+                        mSensorData.get(dataSensorType).add(mZohResamplers.get(SensorType.ACCEL_WATCH).resample(curSensorValue));
 
                         /* Filter just-added sample */
-                        // TODO: Cur version is safe, but does get() return reference or value? Could optimize
+                        int curIdx = mSensorData.get(dataSensorType).size() - 1;
+                        SensorValue curSensorVal = mSensorData.get(dataSensorType).get(curIdx);
+                        ButterworthLowPassFilter[] curFilts = mLowPassFilters.get(dataSensorType);
                         for (int j = 0; j < NUM_DOFS; j++) {
-                            int curIdx = mSensorData.accel.size()-1;
-                            SensorValue curSensorVal = mSensorData.accel.get(curIdx);
-                            float outputVal = mAccelWatchFilt[j].singleFilt(curSensorVal.values[j]);
+                            float outputVal = curFilts[j].singleFilt(curSensorVal.values[j]);
                             curSensorVal.values[j] = outputVal;
-                            mSensorData.accel.set(curIdx, curSensorVal);
 
                             /* Logging! Quick test */
-                            if (j == 0 & true) {
+                            if (j == 0 & false) {
                                 Log.d(TAG, "XVal: " + outputVal);
                             }
                         }
+                        mSensorData.get(dataSensorType).set(curIdx, curSensorVal);
                     }
                 }
             }
@@ -156,8 +176,9 @@ public class DataLayerListenerService extends WearableListenerService {
             mRecognitionPhase.performBatchRecognition(0, 0);
 
             /* Run counting over the last 5 seconds anyway */
-            if (mSensorData.accel.size() > F_S * 5) {
-                mCountingPhase.performBatchCounting(mSensorData.accel.size() - F_S * 5, mSensorData.accel.size() - 1, "placeholderLiftType");
+            if (mSensorData.get(SensorType.ACCEL_WATCH).size() > F_S * 5) {
+                mCountingPhase.performBatchCounting(mSensorData.get(SensorType.ACCEL_WATCH).size() - F_S * 5,
+                        mSensorData.get(SensorType.ACCEL_WATCH).size() - 1, "placeholderLiftType");
             }
         }
 

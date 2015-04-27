@@ -29,11 +29,16 @@ public class WatchDataLayerListenerService extends WearableListenerService
     public WatchDataLayerListenerService() {
     }
 
+    /* Constants */
     private static final String TAG = "DataLayerListenerServ";
     public static String START_PATH = "config/start";
     public static String STOP_SERVICE_PATH = "config/stop_service";
     public static String STOP_COLLECTION_PATH = "config/stop_collection";
     public static final int MAX_EVENTS_IN_PACKET = 20;
+
+    /* Sensor types, match the enum in /mobile/src/datatypes/SensorType */
+    private static final int SENSOR_ACCEL = 1;
+    private static final int SENSOR_GYRO = 3;
 
     /* Communication */
     private GoogleApiClient mGoogleApiClient;
@@ -43,7 +48,6 @@ public class WatchDataLayerListenerService extends WearableListenerService
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private Sensor mGyroscope;
-    private Sensor mMagnet;
     private int mSensorCounter;
     private PutDataMapRequest sensorDataMap;
     // An aside, perhaps also incorporate orientation?
@@ -57,7 +61,6 @@ public class WatchDataLayerListenerService extends WearableListenerService
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mGyroscope     = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        mMagnet        = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         mSensorCounter = 0;
 
         /* Initialize wearable connection */
@@ -108,7 +111,6 @@ public class WatchDataLayerListenerService extends WearableListenerService
     public void registerListeners() {
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
 //        mSensorManager.registerListener(this, mGyroscope, SensorManager.SENSOR_DELAY_FASTEST);
-//        mSensorManager.registerListener(this, mMagnet, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     /******* SensorEventListener Methods ********/
@@ -142,8 +144,26 @@ public class WatchDataLayerListenerService extends WearableListenerService
         String typeKey = "sensor_type" + counterString;
         String timestampKey = "timestamp" + counterString;
 
+        /* Get sensor type to send to phone */
+        int sensorType = -1;
+        switch(event.sensor.getType()) {
+            case Sensor.TYPE_ACCELEROMETER:
+                sensorType = SENSOR_ACCEL;
+                break;
+            case Sensor.TYPE_GYROSCOPE:
+                sensorType = SENSOR_GYRO;
+                break;
+            default:
+                sensorType = -1;
+        }
+
+        if (sensorType == -1) {
+            Log.d(TAG, "Non-gyro/accelerometer event, not sending");
+            return;
+        }
+
         sensorDataMap.getDataMap().putFloatArray(valKey, event.values.clone());
-        sensorDataMap.getDataMap().putInt(typeKey, event.sensor.getType());
+        sensorDataMap.getDataMap().putInt(typeKey, sensorType);
         sensorDataMap.getDataMap().putLong(timestampKey, event.timestamp);
         mSensorCounter++;
 

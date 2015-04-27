@@ -3,9 +3,10 @@ package com.daranguiz.recolift.utils;
 import android.util.Log;
 
 import com.daranguiz.recolift.datatype.SegmentationFeatures;
+import com.daranguiz.recolift.datatype.SensorType;
+import com.daranguiz.recolift.datatype.SensorValue;
 import com.daranguiz.recolift.utils.RecoFileUtils;
 import com.daranguiz.recolift.utils.RecoMath;
-import com.daranguiz.recolift.datatype.SensorData;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,12 +19,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
 import Jama.Matrix;
 
 // TODO: Remove openCV, going to spin my own PCA instead
 public class SegmentationPhase {
-    public SegmentationPhase(SensorData sensorDataRef) {
+    public SegmentationPhase(Map<SensorType, List<SensorValue>> sensorDataRef) {
         bufferPointer = 0;
         mSensorData = sensorDataRef;
         isFirstLogging = true;
@@ -46,7 +49,8 @@ public class SegmentationPhase {
     private static final String TAG = "SegmentationPhase";
 
     private int bufferPointer;
-    private SensorData mSensorData;
+//    private SensorData mSensorData;
+    private Map<SensorType, List<SensorValue>> mSensorData;
     private RecoMath mRecoMath;
 
     /* Logging */
@@ -79,7 +83,7 @@ public class SegmentationPhase {
     public void performBatchSegmentation() {
         while (isBufferAvailable()) {
             /* Get current sliding window buffer */
-            SensorData bufferAsSensorData = getNextBuffer();
+            Map<SensorType, List<SensorValue>> bufferAsSensorData = getNextBuffer();
             double[][] buffer = bufferToDoubleArray(bufferAsSensorData);
 
             /* Condense axes to single principal component */
@@ -91,7 +95,7 @@ public class SegmentationPhase {
 
             /* Log features to CSV */
             if (!isFirstLogging) {
-                long firstValueTimestamp = bufferAsSensorData.accel.get(0).timestamp;
+                long firstValueTimestamp = bufferAsSensorData.get(SensorType.ACCEL_WATCH).get(0).timestamp;
                 logSegmentationFeatures(signalFeatures, firstValueTimestamp, 0);
             } else {
                 // Timestamp is messed up for first buffer for some reason, so ignore first
@@ -112,7 +116,7 @@ public class SegmentationPhase {
         boolean retVal = true;
 
         /* Corner case, size() == idx? */
-        if (nextBufferEnd >= mSensorData.accel.size()) {
+        if (nextBufferEnd >= mSensorData.get(SensorType.ACCEL_WATCH).size()) {
             retVal = false;
         }
 
@@ -124,12 +128,13 @@ public class SegmentationPhase {
      * extensible shortly.
      */
     // TODO: Generalize to any source
-    private SensorData getNextBuffer() {
-        SensorData buffer = new SensorData();
+    private Map<SensorType, List<SensorValue>> getNextBuffer() {
+        Map<SensorType, List<SensorValue>> buffer = new TreeMap<>();
         int nextBufferPointer = bufferPointer + WINDOW_SIZE;
 
         /* List is implemented as a vector */
-        buffer.accel = mSensorData.accel.subList(bufferPointer, nextBufferPointer);
+        List<SensorValue> newList = mSensorData.get(SensorType.ACCEL_WATCH).subList(bufferPointer, nextBufferPointer);
+        buffer.put(SensorType.ACCEL_WATCH, newList);
         bufferPointer = bufferPointer + SLIDE_AMOUNT;
 
         return buffer;
@@ -137,13 +142,13 @@ public class SegmentationPhase {
 
     // TODO: SensorValue is poorly optimized for quick array copies. Check if timing met.
     /* Convert our SensorValue buffer to a float array for easy computation */
-    private double[][] bufferToDoubleArray(SensorData buffer) {
+    private double[][] bufferToDoubleArray(Map<SensorType, List<SensorValue>> buffer) {
         double outputArr[][] = new double[NUM_DOFS][WINDOW_SIZE];
 
         /* No easy way to do quick array copies in current form */
         for (int i = 0; i < NUM_DOFS; i++) {
             for (int j = 0; j < WINDOW_SIZE; j++) {
-                outputArr[i][j] = (double) buffer.accel.get(j).values[i];
+                outputArr[i][j] = (double) buffer.get(SensorType.ACCEL_WATCH).get(j).values[i];
             }
         }
 

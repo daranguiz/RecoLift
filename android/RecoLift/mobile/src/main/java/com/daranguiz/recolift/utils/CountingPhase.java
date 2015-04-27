@@ -2,7 +2,8 @@ package com.daranguiz.recolift.utils;
 
 import android.util.Log;
 
-import com.daranguiz.recolift.datatype.SensorData;
+import com.daranguiz.recolift.datatype.SensorType;
+import com.daranguiz.recolift.datatype.SensorValue;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
@@ -18,14 +19,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
 import Jama.Matrix;
 
 public class CountingPhase {
-    public CountingPhase(SensorData sensorDataRef) {
+    public CountingPhase(Map<SensorType, List<SensorValue>> sensorDataRef) {
         mSensorData = sensorDataRef;
         mRecoMath = new RecoMath();
 
@@ -45,7 +48,7 @@ public class CountingPhase {
     private static final int AUTOC_SIDE_WIDTH = (int) 2.5 * F_S;
 
     /* Sensor */
-    private SensorData mSensorData;
+    private Map<SensorType, List<SensorValue>> mSensorData;
     private RecoMath mRecoMath;
 
     /* Logging */
@@ -77,8 +80,8 @@ public class CountingPhase {
      */
     public void performBatchCounting(int startIdx, int endIdx, String liftType) {
         /* Get the slice of sensor data */
-        SensorData countingBuffer = getCountingBuffer(startIdx, endIdx);
-        int bufferLen = countingBuffer.accel.size();
+        Map<SensorType, List<SensorValue>> countingBuffer = getCountingBuffer(startIdx, endIdx);
+        int bufferLen = countingBuffer.get(SensorType.ACCEL_WATCH).size();
         double[][] accelBuffer = bufferToDoubleArray(countingBuffer, bufferLen);
 
         /* Condense axes to single principal component */
@@ -95,29 +98,30 @@ public class CountingPhase {
         removeSmallPeaks(candidatePeakIndices, primaryProjection);
 
         Log.d(TAG, "NumReps: " + candidatePeakIndices.size());
-        logCountingResults(candidatePeakIndices.size(), liftType, countingBuffer.accel.get(0).timestamp);
+        logCountingResults(candidatePeakIndices.size(), liftType, countingBuffer.get(SensorType.ACCEL_WATCH).get(0).timestamp);
     }
 
     // TODO: Incorporate all sensor sources
-    private SensorData getCountingBuffer(int startIdx, int endIdx) {
-        SensorData buffer = new SensorData();
+    private Map<SensorType, List<SensorValue>> getCountingBuffer(int startIdx, int endIdx) {
+        Map<SensorType, List<SensorValue>> buffer = new TreeMap<>();
 
         /* List is implemented as a vector */
         Log.d(TAG, "Start: " + startIdx + ", End: " + endIdx);
-        buffer.accel = mSensorData.accel.subList(startIdx, endIdx);
+        List<SensorValue> accelSublist = mSensorData.get(SensorType.ACCEL_WATCH).subList(startIdx, endIdx);
+        buffer.put(SensorType.ACCEL_WATCH, accelSublist);
 
         return buffer;
     }
 
     // TODO: SensorValue is poorly optimized for quick array copies. Check if timing met.
     /* Convert our SensorValue buffer to a float array for easy computation */
-    private double[][] bufferToDoubleArray(SensorData buffer, int bufferLen) {
+    private double[][] bufferToDoubleArray(Map<SensorType, List<SensorValue>> buffer, int bufferLen) {
         double outputArr[][] = new double[NUM_DOFS][bufferLen];
 
         /* No easy way to do quick array copies in current form */
         for (int i = 0; i < NUM_DOFS; i++) {
             for (int j = 0; j < bufferLen; j++) {
-                outputArr[i][j] = (double) buffer.accel.get(j).values[i];
+                outputArr[i][j] = (double) buffer.get(SensorType.ACCEL_WATCH).get(j).values[i];
             }
         }
 

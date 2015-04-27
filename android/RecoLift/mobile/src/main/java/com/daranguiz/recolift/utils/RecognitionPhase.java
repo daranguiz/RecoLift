@@ -3,7 +3,8 @@ package com.daranguiz.recolift.utils;
 import android.util.Log;
 
 import com.daranguiz.recolift.datatype.RecognitionFeatures;
-import com.daranguiz.recolift.datatype.SensorData;
+import com.daranguiz.recolift.datatype.SensorType;
+import com.daranguiz.recolift.datatype.SensorValue;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,12 +15,15 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
 import Jama.Matrix;
 
 public class RecognitionPhase {
-    public RecognitionPhase(SensorData sensorDataRef) {
+    public RecognitionPhase(Map<SensorType, List<SensorValue>> sensorDataRef) {
         bufferPointer = 0;
         mSensorData = sensorDataRef;
         mRecoMath = new RecoMath();
@@ -43,7 +47,7 @@ public class RecognitionPhase {
 
     /* Buffer */
     private int bufferPointer;
-    private SensorData mSensorData;
+    private Map<SensorType, List<SensorValue>> mSensorData;
     private RecoMath mRecoMath;
 
     /* Logging */
@@ -58,7 +62,7 @@ public class RecognitionPhase {
 
         while (isBufferAvailable(endIdx)) {
             /* Get current sliding window buffer */
-            SensorData bufferAsSensorData = getNextBuffer();
+            Map<SensorType, List<SensorValue>> bufferAsSensorData = getNextBuffer();
             double[][] buffer = bufferToDoubleArray(bufferAsSensorData);
 
             /* Condense axes to single principal component */
@@ -70,7 +74,7 @@ public class RecognitionPhase {
 
             /* Log features to CSV */
             if (!isFirstLogging) {
-                long firstValueTimestamp = bufferAsSensorData.accel.get(0).timestamp;
+                long firstValueTimestamp = bufferAsSensorData.get(SensorType.ACCEL_WATCH).get(0).timestamp;
                 logRecognitionFeatures(signalFeatures, firstValueTimestamp, 0);
             } else {
                 // Timestamp is messed up for the first buffer for some reason, so ignore first
@@ -93,7 +97,7 @@ public class RecognitionPhase {
 
         /* Only go up to the end of the noted exercise window */
         if (collectGroundTruth) {
-            if (nextBufferEnd >= mSensorData.accel.size()) {
+            if (nextBufferEnd >= mSensorData.get(SensorType.ACCEL_WATCH).size()) {
                 retVal = false;
             }
         } else {
@@ -108,11 +112,12 @@ public class RecognitionPhase {
     /* Create a new SensorData instance with just the buffer of interest. */
     // TODO: Generalize to any source
     // TODO: Refactor
-    private SensorData getNextBuffer() {
-        SensorData buffer = new SensorData();
+    private Map<SensorType, List<SensorValue>> getNextBuffer() {
+        Map<SensorType, List<SensorValue>> buffer = new TreeMap<>();
         int nextBufferPointer = bufferPointer + WINDOW_SIZE;
 
-        buffer.accel = mSensorData.accel.subList(bufferPointer, nextBufferPointer);
+        List<SensorValue> accelSublist = mSensorData.get(SensorType.ACCEL_WATCH).subList(bufferPointer, nextBufferPointer);
+        buffer.put(SensorType.ACCEL_WATCH, accelSublist);
         bufferPointer = bufferPointer + SLIDE_AMOUNT;
 
         return buffer;
@@ -121,13 +126,13 @@ public class RecognitionPhase {
     /* Convert SensorValue buffer to a float array for easier computation */
     // TODO: Generalize to any source
     // TODO: Refactor
-    private double[][] bufferToDoubleArray(SensorData buffer) {
+    private double[][] bufferToDoubleArray(Map<SensorType, List<SensorValue>> buffer) {
         double outputArr[][] = new double[NUM_DOFS][WINDOW_SIZE];
 
         /* No easy way to do quick array copies in current form */
         for (int i = 0; i < NUM_DOFS; i++) {
             for (int j = 0; j < WINDOW_SIZE; j++) {
-                outputArr[i][j] = (double) buffer.accel.get(j).values[i];
+                outputArr[i][j] = (double) buffer.get(SensorType.ACCEL_WATCH).get(j).values[i];
             }
         }
 
