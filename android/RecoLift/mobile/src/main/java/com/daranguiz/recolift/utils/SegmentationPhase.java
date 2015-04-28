@@ -105,17 +105,15 @@ public class SegmentationPhase {
                 for (int i = 0; i < NUM_DOFS; i++) {
                     bufferSegmentationFeatures.get(sensor).add(computeSegmentationFeatures(buffer[i]));
                 }
+            }
 
-                /* Log features to CSV */
-                if (!isFirstLogging) {
-                    long firstValueTimestamp = bufferAsSensorData.get(sensor).get(0).timestamp;
-                    for (SegmentationFeatures curFeatures : bufferSegmentationFeatures.get(sensor)) {
-                        logSegmentationFeatures(curFeatures, firstValueTimestamp, sensor.getValue());
-                    }
-                } else {
-                    // Timestamp is messed up for first buffer for some reason, so ignore first
-                    isFirstLogging = false;
-                }
+            /* Log features to CSV */
+            if (!isFirstLogging) {
+                long firstValueTimestamp = bufferAsSensorData.get(sensorTypeCache[0]).get(0).timestamp;
+                logSegmentationFeatures(bufferSegmentationFeatures, firstValueTimestamp);
+            } else {
+                // Timestamp is messed up for first buffer for some reason, so ignore first
+                isFirstLogging = false;
             }
 
             // TODO: Pass features into classifier
@@ -211,7 +209,8 @@ public class SegmentationPhase {
     }
 
     /* Log segmentation features to file */
-    private void logSegmentationFeatures(SegmentationFeatures features, long timestamp, int sensorType) {
+    // TODO: Change to accept Map<> and iterate over all features, one line
+    private void logSegmentationFeatures(Map<SensorType, List<SegmentationFeatures>> bufferSegmentationFeatures, long timestamp) {
         PrintWriter writer;
 
         /* Open a new PrintWriter every time to avoid unused open file descriptors */
@@ -229,36 +228,42 @@ public class SegmentationPhase {
         /* Construct feature string... gross */
         String csvLine = "";
         csvLine += timestamp + ", ";
-        csvLine += sensorType + ", ";
 
-        csvLine += features.numAutocPeaks + ", ";
-        csvLine += features.numProminentAutocPeaks + ", ";
-        csvLine += features.numWeakAutocPeaks + ", ";
-        csvLine += df.format(features.maxAutocPeakValue) + ", ";
-        csvLine += df.format(features.firstAutocPeakValue) + ", ";
-        int firstAndMaxPeakValuesEqual = features.firstAndMaxPeakValuesEqual ? 1 : 0;
-        csvLine += firstAndMaxPeakValuesEqual + ", ";
+        for (SensorType sensor : sensorTypeCache) {
+            for (SegmentationFeatures features : bufferSegmentationFeatures.get(sensor)) {
+                csvLine += features.numAutocPeaks + ", ";
+                csvLine += features.numProminentAutocPeaks + ", ";
+                csvLine += features.numWeakAutocPeaks + ", ";
+                csvLine += df.format(features.maxAutocPeakValue) + ", ";
+                csvLine += df.format(features.firstAutocPeakValue) + ", ";
+                int firstAndMaxPeakValuesEqual = features.firstAndMaxPeakValuesEqual ? 1 : 0;
+                csvLine += firstAndMaxPeakValuesEqual + ", ";
 
-        csvLine += df.format(features.fullRms) + ", ";
-        csvLine += df.format(features.firstHalfRms) + ", ";
-        csvLine += df.format(features.secondHalfRms) + ", ";
-        csvLine += df.format(features.cusumRms) + ", ";
+                csvLine += df.format(features.fullRms) + ", ";
+                csvLine += df.format(features.firstHalfRms) + ", ";
+                csvLine += df.format(features.secondHalfRms) + ", ";
+                csvLine += df.format(features.cusumRms) + ", ";
 
-        for (int i = 0; i < features.powerBandMagnitudes.length; i++) {
-            csvLine += df.format(features.powerBandMagnitudes[i]) + ", ";
+                for (int i = 0; i < features.powerBandMagnitudes.length; i++) {
+                    csvLine += df.format(features.powerBandMagnitudes[i]) + ", ";
+                }
+
+                csvLine += df.format(features.fullMean) + ", ";
+                csvLine += df.format(features.firstHalfMean) + ", ";
+                csvLine += df.format(features.secondHalfMean) + ", ";
+
+                csvLine += df.format(features.fullStdDev) + ", ";
+                csvLine += df.format(features.firstHalfStdDev) + ", ";
+                csvLine += df.format(features.secondHalfStdDev) + ", ";
+
+                csvLine += df.format(features.fullVariance) + ", ";
+                csvLine += df.format(features.firstHalfVariance) + ", ";
+                csvLine += df.format(features.secondHalfVariance) + ", ";
+            }
         }
 
-        csvLine += df.format(features.fullMean) + ", ";
-        csvLine += df.format(features.firstHalfMean) + ", ";
-        csvLine += df.format(features.secondHalfMean) + ", ";
-
-        csvLine += df.format(features.fullStdDev) + ", ";
-        csvLine += df.format(features.firstHalfStdDev) + ", ";
-        csvLine += df.format(features.secondHalfStdDev) + ", ";
-
-        csvLine += df.format(features.fullVariance) + ", ";
-        csvLine += df.format(features.firstHalfVariance) + ", ";
-        csvLine += df.format(features.secondHalfVariance);
+        /* Remove the final comma */
+        csvLine = csvLine.substring(0, csvLine.length() - 2);
 
         /* Write */
         writer.println(csvLine);
