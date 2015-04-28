@@ -86,17 +86,15 @@ public class RecognitionPhase {
                 for (int i = 0; i < NUM_DOFS; i++) {
                     bufferRecognitionFeatures.get(sensor).add(computeRecognitionFeatures(buffer[i]));
                 }
+            }
 
-                /* Log features to CSV */
-                if (!isFirstLogging) {
-                    long firstValueTimestamp = bufferAsSensorData.get(sensor).get(0).timestamp;
-                    for (RecognitionFeatures curFeatures : bufferRecognitionFeatures.get(sensor)) {
-                         logRecognitionFeatures(curFeatures, firstValueTimestamp, sensor.getValue());
-                    }
-                } else {
-                    // Timestamp is messed up for the first buffer for some reason, so ignore first
-                    isFirstLogging = false;
-                }
+            /* Log features to CSV */
+            if (!isFirstLogging) {
+                long firstValueTimestamp = bufferAsSensorData.get(sensorTypeCache[0]).get(0).timestamp;
+                logRecognitionFeatures(bufferRecognitionFeatures, firstValueTimestamp);
+            } else {
+                // Timestamp is messed up for the first buffer for some reason, so ignore first
+                isFirstLogging = false;
             }
 
             // TODO: Pass features into classifier
@@ -180,7 +178,7 @@ public class RecognitionPhase {
     }
 
     /* Log recognition features to file */
-    private void logRecognitionFeatures(RecognitionFeatures features, long timestamp, int sensorType) {
+    private void logRecognitionFeatures(Map<SensorType, List<RecognitionFeatures>> bufferRecognitionFeatures, long timestamp) {
         PrintWriter writer;
 
         /* Open a new PrintWriter every time to avoid unused open file descriptors
@@ -200,24 +198,30 @@ public class RecognitionPhase {
         /* Construct feature string... gross but deal with it */
         String csvLine = "";
         csvLine += timestamp + ", ";
-        csvLine += sensorType + ", ";
 
-        /* Autoc features */
-        for (int i = 0; i < RecognitionFeatures.NUM_AUTOC_BINS; i++) {
-            csvLine += df.format(features.autocBins[i]) + ", ";
+        for (SensorType sensor : sensorTypeCache) {
+            for (RecognitionFeatures features : bufferRecognitionFeatures.get(sensor)) {
+                /* Autoc features */
+                for (int i = 0; i < RecognitionFeatures.NUM_AUTOC_BINS; i++) {
+                    csvLine += df.format(features.autocBins[i]) + ", ";
+                }
+
+                /* Energy features */
+                csvLine += df.format(features.rms) + ", ";
+                for (int i = 0; i < RecognitionFeatures.NUM_POWER_BAND_BINS; i++) {
+                    csvLine += df.format(features.powerBandMagnitudes[i]) + ", ";
+                }
+
+                /* Statistical features */
+                csvLine += df.format(features.mean) + ", ";
+                csvLine += df.format(features.stdDev) + ", ";
+                csvLine += df.format(features.kurtosis) + ", ";
+                csvLine += df.format(features.interquartileRange) + ", ";
+            }
         }
 
-        /* Energy features */
-        csvLine += df.format(features.rms) + ", ";
-        for (int i = 0; i < RecognitionFeatures.NUM_POWER_BAND_BINS; i++) {
-            csvLine += df.format(features.powerBandMagnitudes[i]) + ", ";
-        }
-
-        /* Statistical features */
-        csvLine += df.format(features.mean) + ", ";
-        csvLine += df.format(features.stdDev) + ", ";
-        csvLine += df.format(features.kurtosis) + ", ";
-        csvLine += df.format(features.interquartileRange) + ", ";
+        /* Remove the final comma */
+        csvLine = csvLine.substring(0, csvLine.length() - 2);
 
         /* Write */
         writer.println(csvLine);
