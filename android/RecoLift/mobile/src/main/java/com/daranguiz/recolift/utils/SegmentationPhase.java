@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Vector;
 
 import Jama.Matrix;
 
@@ -49,9 +50,9 @@ public class SegmentationPhase {
     private static final String TAG = "SegmentationPhase";
 
     private int bufferPointer;
-//    private SensorData mSensorData;
     private Map<SensorType, List<SensorValue>> mSensorData;
     private RecoMath mRecoMath;
+    private static final SensorType[] sensorTypeCache = SensorType.values();
 
     /* Logging */
     private static RecoFileUtils mRecoFileUtils;
@@ -81,25 +82,40 @@ public class SegmentationPhase {
      */
     // TODO: Refactor into: Get buffer -> Get axes -> Get features -> Classify -> Accumulate
     public void performBatchSegmentation() {
+        /* Only get buffer when all sensor sources have enough */
         while (isBufferAvailable()) {
             /* Get current sliding window buffer */
             Map<SensorType, List<SensorValue>> bufferAsSensorData = getNextBuffer();
-            double[][] buffer = bufferToDoubleArray(bufferAsSensorData);
 
-            /* Condense axes to single principal component */
-            Matrix firstPrincipalComponent = mRecoMath.computePCA(buffer, NUM_DOFS, WINDOW_SIZE);
-            double[] primaryProjection = mRecoMath.projectPCA(buffer, firstPrincipalComponent);
+            Map<SensorType, List<SegmentationFeatures>> bufferSegmentationFeatures = new TreeMap<>();
+            for (SensorType sensor : sensorTypeCache) {
+                bufferSegmentationFeatures.put(sensor, new Vector<SegmentationFeatures>());
+                double[][] buffer = bufferToDoubleArray(bufferAsSensorData, sensor);
 
-            /* Compute features on primaryProjection */
-            SegmentationFeatures signalFeatures = computeSegmentationFeatures(primaryProjection);
+                /* Condense axes to single principal component */
+                Matrix firstPrincipalComponent = mRecoMath.computePCA(buffer, NUM_DOFS, WINDOW_SIZE);
+                double[] primaryProjection = mRecoMath.projectPCA(buffer, firstPrincipalComponent);
 
-            /* Log features to CSV */
-            if (!isFirstLogging) {
-                long firstValueTimestamp = bufferAsSensorData.get(SensorType.ACCEL_WATCH).get(0).timestamp;
-                logSegmentationFeatures(signalFeatures, firstValueTimestamp, 0);
-            } else {
-                // Timestamp is messed up for first buffer for some reason, so ignore first
-                isFirstLogging = false;
+                /* Compute magnitude */
+                double[] signalMagnitude = mRecoMath.computeSignalMagnitude(buffer, NUM_DOFS, WINDOW_SIZE);
+
+                /* Compute features */
+                bufferSegmentationFeatures.get(sensor).add(computeSegmentationFeatures(primaryProjection));
+                bufferSegmentationFeatures.get(sensor).add(computeSegmentationFeatures(signalMagnitude));
+                for (int i = 0; i < NUM_DOFS; i++) {
+                    bufferSegmentationFeatures.get(sensor).add(computeSegmentationFeatures(buffer[i]));
+                }
+
+                /* Log features to CSV */
+                if (!isFirstLogging) {
+                    long firstValueTimestamp = bufferAsSensorData.get(sensor).get(0).timestamp;
+                    for (SegmentationFeatures curFeatures : bufferSegmentationFeatures.get(sensor)) {
+                        logSegmentationFeatures(curFeatures, firstValueTimestamp, sensor.getValue());
+                    }
+                } else {
+                    // Timestamp is messed up for first buffer for some reason, so ignore first
+                    isFirstLogging = false;
+                }
             }
 
             // TODO: Pass features into classifier
@@ -109,15 +125,16 @@ public class SegmentationPhase {
     }
 
     /* Check if there are enough samples for a new buffer */
-    // TODO: Generalize to any source
     private boolean isBufferAvailable() {
         int nextBufferStart = bufferPointer + SLIDE_AMOUNT;
         int nextBufferEnd = nextBufferStart + WINDOW_SIZE;
         boolean retVal = true;
 
-        /* Corner case, size() == idx? */
-        if (nextBufferEnd >= mSensorData.get(SensorType.ACCEL_WATCH).size()) {
-            retVal = false;
+        /* If any sensor streams don't have a full buffer, don't process */
+        for (SensorType sensor : sensorTypeCache) {
+            if (nextBufferEnd >= mSensorData.get(sensor).size()) {
+                retVal = false;
+            }
         }
 
         return retVal;
@@ -127,28 +144,28 @@ public class SegmentationPhase {
      * Right now, this only accounts for single-source accelerometer data, but it'll be
      * extensible shortly.
      */
-    // TODO: Generalize to any source
     private Map<SensorType, List<SensorValue>> getNextBuffer() {
         Map<SensorType, List<SensorValue>> buffer = new TreeMap<>();
         int nextBufferPointer = bufferPointer + WINDOW_SIZE;
 
         /* List is implemented as a vector */
-        List<SensorValue> newList = mSensorData.get(SensorType.ACCEL_WATCH).subList(bufferPointer, nextBufferPointer);
-        buffer.put(SensorType.ACCEL_WATCH, newList);
+        for (SensorType sensor : sensorTypeCache) {
+            List<SensorValue> newSubList = mSensorData.get(sensor).subList(bufferPointer, nextBufferPointer);
+            buffer.put(sensor, newSubList);
+        }
         bufferPointer = bufferPointer + SLIDE_AMOUNT;
 
         return buffer;
     }
 
-    // TODO: SensorValue is poorly optimized for quick array copies. Check if timing met.
     /* Convert our SensorValue buffer to a float array for easy computation */
-    private double[][] bufferToDoubleArray(Map<SensorType, List<SensorValue>> buffer) {
+    private double[][] bufferToDoubleArray(Map<SensorType, List<SensorValue>> buffer, SensorType sensor) {
         double outputArr[][] = new double[NUM_DOFS][WINDOW_SIZE];
 
         /* No easy way to do quick array copies in current form */
         for (int i = 0; i < NUM_DOFS; i++) {
             for (int j = 0; j < WINDOW_SIZE; j++) {
-                outputArr[i][j] = (double) buffer.get(SensorType.ACCEL_WATCH).get(j).values[i];
+                outputArr[i][j] = (double) buffer.get(sensor).get(j).values[i];
             }
         }
 
@@ -156,7 +173,6 @@ public class SegmentationPhase {
     }
 
     /* Compute segmentation features */
-    // TODO: Check for const correctness on inputs
     private static final int NUM_POWER_BAND_BINS = 10;
     private SegmentationFeatures computeSegmentationFeatures(double[] signal) {
         SegmentationFeatures curSegmentationFeatures = new SegmentationFeatures();

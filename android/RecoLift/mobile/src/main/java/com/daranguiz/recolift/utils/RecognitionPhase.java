@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Vector;
 
 import Jama.Matrix;
 
@@ -44,6 +45,7 @@ public class RecognitionPhase {
     private static final int NUM_SIDE_PEAK = 2;
     private static final String TAG = "RecognitionPhase";
     private static final boolean collectGroundTruth = true;
+    private static final SensorType[] sensorTypeCache = SensorType.values();
 
     /* Buffer */
     private int bufferPointer;
@@ -60,25 +62,41 @@ public class RecognitionPhase {
             bufferPointer = startIdx;
         }
 
+        /* Only get buffer when all sensor sources have enough */
         while (isBufferAvailable(endIdx)) {
             /* Get current sliding window buffer */
             Map<SensorType, List<SensorValue>> bufferAsSensorData = getNextBuffer();
-            double[][] buffer = bufferToDoubleArray(bufferAsSensorData);
 
-            /* Condense axes to single principal component */
-            Matrix firstPrincipalComponent = mRecoMath.computePCA(buffer, NUM_DOFS, WINDOW_SIZE);
-            double[] primaryProjection = mRecoMath.projectPCA(buffer, firstPrincipalComponent);
+            // TODO: Which features am I going to use?
+            Map<SensorType, List<RecognitionFeatures>> bufferRecognitionFeatures = new TreeMap<>();
+            for (SensorType sensor : sensorTypeCache) {
+                bufferRecognitionFeatures.put(sensor, new Vector<RecognitionFeatures>());
+                double[][] buffer = bufferToDoubleArray(bufferAsSensorData, sensor);
 
-            /* Compute features on primaryProjection */
-            RecognitionFeatures signalFeatures = computeRecognitionFeatures(primaryProjection);
+                /* Condense axes to single principal component */
+                Matrix firstPrincipalComponent = mRecoMath.computePCA(buffer, NUM_DOFS, WINDOW_SIZE);
+                double[] primaryProjection = mRecoMath.projectPCA(buffer, firstPrincipalComponent);
 
-            /* Log features to CSV */
-            if (!isFirstLogging) {
-                long firstValueTimestamp = bufferAsSensorData.get(SensorType.ACCEL_WATCH).get(0).timestamp;
-                logRecognitionFeatures(signalFeatures, firstValueTimestamp, 0);
-            } else {
-                // Timestamp is messed up for the first buffer for some reason, so ignore first
-                isFirstLogging = false;
+                /* Compute magnitude */
+                double[] signalMagnitude = mRecoMath.computeSignalMagnitude(buffer, NUM_DOFS, WINDOW_SIZE);
+
+                /* Compute features */
+                bufferRecognitionFeatures.get(sensor).add(computeRecognitionFeatures(primaryProjection));
+                bufferRecognitionFeatures.get(sensor).add(computeRecognitionFeatures(signalMagnitude));
+                for (int i = 0; i < NUM_DOFS; i++) {
+                    bufferRecognitionFeatures.get(sensor).add(computeRecognitionFeatures(buffer[i]));
+                }
+
+                /* Log features to CSV */
+                if (!isFirstLogging) {
+                    long firstValueTimestamp = bufferAsSensorData.get(sensor).get(0).timestamp;
+                    for (RecognitionFeatures curFeatures : bufferRecognitionFeatures.get(sensor)) {
+                         logRecognitionFeatures(curFeatures, firstValueTimestamp, sensor.getValue());
+                    }
+                } else {
+                    // Timestamp is messed up for the first buffer for some reason, so ignore first
+                    isFirstLogging = false;
+                }
             }
 
             // TODO: Pass features into classifier
@@ -88,7 +106,6 @@ public class RecognitionPhase {
     }
 
     /* Check if there are enough samples for a new buffer */
-    // TODO: Generalize to any source
     // TODO: Refactor? Very similar to SegmentationPhase
     private boolean isBufferAvailable(int endIdx) {
         boolean retVal = true;
@@ -97,8 +114,10 @@ public class RecognitionPhase {
 
         /* Only go up to the end of the noted exercise window */
         if (collectGroundTruth) {
-            if (nextBufferEnd >= mSensorData.get(SensorType.ACCEL_WATCH).size()) {
-                retVal = false;
+            for (SensorType sensor : sensorTypeCache) {
+                if (nextBufferEnd >= mSensorData.get(sensor).size()) {
+                    retVal = false;
+                }
             }
         } else {
             if (nextBufferEnd >= endIdx) {
@@ -110,29 +129,29 @@ public class RecognitionPhase {
     }
 
     /* Create a new SensorData instance with just the buffer of interest. */
-    // TODO: Generalize to any source
-    // TODO: Refactor
+    // TODO: Refactor, is same as SegmentationPhase.getNextBuffer()
     private Map<SensorType, List<SensorValue>> getNextBuffer() {
         Map<SensorType, List<SensorValue>> buffer = new TreeMap<>();
         int nextBufferPointer = bufferPointer + WINDOW_SIZE;
 
-        List<SensorValue> accelSublist = mSensorData.get(SensorType.ACCEL_WATCH).subList(bufferPointer, nextBufferPointer);
-        buffer.put(SensorType.ACCEL_WATCH, accelSublist);
+        for (SensorType sensor : sensorTypeCache) {
+            List<SensorValue> newSublist = mSensorData.get(sensor).subList(bufferPointer, nextBufferPointer);
+            buffer.put(sensor, newSublist);
+        }
         bufferPointer = bufferPointer + SLIDE_AMOUNT;
 
         return buffer;
     }
 
     /* Convert SensorValue buffer to a float array for easier computation */
-    // TODO: Generalize to any source
     // TODO: Refactor
-    private double[][] bufferToDoubleArray(Map<SensorType, List<SensorValue>> buffer) {
+    private double[][] bufferToDoubleArray(Map<SensorType, List<SensorValue>> buffer, SensorType sensor) {
         double outputArr[][] = new double[NUM_DOFS][WINDOW_SIZE];
 
         /* No easy way to do quick array copies in current form */
         for (int i = 0; i < NUM_DOFS; i++) {
             for (int j = 0; j < WINDOW_SIZE; j++) {
-                outputArr[i][j] = (double) buffer.get(SensorType.ACCEL_WATCH).get(j).values[i];
+                outputArr[i][j] = (double) buffer.get(sensor).get(j).values[i];
             }
         }
 

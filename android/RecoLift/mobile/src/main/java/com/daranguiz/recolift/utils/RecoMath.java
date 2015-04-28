@@ -485,4 +485,19 @@ public class RecoMath {
 
         return rangeHigh - rangeLow;
     }
+
+    /* Compute sqrt(x2 + y2 + z2) signal magnitude */
+    public double[] computeSignalMagnitude(double[][] signal, int numDofs, int length) {
+        double[] signalMagnitude = new double[length];
+
+        for (int i = 0; i < length; i++) {
+            signalMagnitude[i] = 0;
+            for (int j = 0; j < numDofs; j++) {
+                signalMagnitude[i] += signal[j][i] * signal[j][i];
+            }
+            signalMagnitude[i] = Math.sqrt(signalMagnitude[i]);
+        }
+
+        return signalMagnitude;
+    }
 }

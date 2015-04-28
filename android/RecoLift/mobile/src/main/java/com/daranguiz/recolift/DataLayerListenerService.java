@@ -146,10 +146,10 @@ public class DataLayerListenerService extends WearableListenerService {
                         long dataTimestamp = receivedDataMap.getLong(timestampKey);
                         SensorValue curSensorValue = new SensorValue(dataTimestamp, dataArray);
 
-                        // TODO: HANDLE GYRO NOT JUST ACCEL, PHONE SENSORS AS WELL AS WATCH
+                        // TODO: HANDLE PHONE SENSORS AS WELL AS WATCH
 
                         /* Resample to 25Hz with ZOH */
-                        mSensorData.get(dataSensorType).add(mZohResamplers.get(SensorType.ACCEL_WATCH).resample(curSensorValue));
+                        mSensorData.get(dataSensorType).add(mZohResamplers.get(dataSensorType).resample(curSensorValue));
 
                         /* Filter just-added sample */
                         int curIdx = mSensorData.get(dataSensorType).size() - 1;

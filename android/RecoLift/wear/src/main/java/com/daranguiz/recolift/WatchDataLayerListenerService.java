@@ -37,8 +37,8 @@ public class WatchDataLayerListenerService extends WearableListenerService
     public static final int MAX_EVENTS_IN_PACKET = 20;
 
     /* Sensor types, match the enum in /mobile/src/datatypes/SensorType */
-    private static final int SENSOR_ACCEL = 1;
-    private static final int SENSOR_GYRO = 3;
+    private static final int SENSOR_ACCEL = 0;
+    private static final int SENSOR_GYRO = 1;
 
     /* Communication */
     private GoogleApiClient mGoogleApiClient;
@@ -110,7 +110,7 @@ public class WatchDataLayerListenerService extends WearableListenerService
 
     public void registerListeners() {
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
-//        mSensorManager.registerListener(this, mGyroscope, SensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mGyroscope, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     /******* SensorEventListener Methods ********/
