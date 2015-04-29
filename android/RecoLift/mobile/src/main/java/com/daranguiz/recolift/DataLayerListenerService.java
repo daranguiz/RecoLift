@@ -93,7 +93,7 @@ public class DataLayerListenerService extends WearableListenerService {
         }
 
         /* Phase init */
-        mSegmentationPhase = new SegmentationPhase(mSensorData);
+        mSegmentationPhase = new SegmentationPhase(this, mSensorData);
         mRecognitionPhase = new RecognitionPhase(mSensorData);
         mCountingPhase = new CountingPhase(mSensorData);
 

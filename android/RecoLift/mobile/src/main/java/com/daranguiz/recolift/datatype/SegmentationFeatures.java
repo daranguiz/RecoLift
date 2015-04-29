@@ -8,6 +8,7 @@ public class SegmentationFeatures {
 
     /* Constants */
     public static final int NUM_POWER_BAND_BINS = 10;
+    public static final int NUM_FEATURES = 29;
 
     /* Autoc-related features */
     public int numAutocPeaks;

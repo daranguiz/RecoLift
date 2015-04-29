@@ -1,6 +1,8 @@
 package com.daranguiz.recolift.utils;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.daranguiz.recolift.datatype.SegmentationFeatures;
 import com.daranguiz.recolift.datatype.SensorType;
@@ -16,6 +18,7 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -24,20 +27,33 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import Jama.Matrix;
+import weka.classifiers.Classifier;
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
+import weka.core.Instances;
+import weka.core.SerializationHelper;
+import weka.core.SparseInstance;
 
 // TODO: Remove openCV, going to spin my own PCA instead
 public class SegmentationPhase {
-    public SegmentationPhase(Map<SensorType, List<SensorValue>> sensorDataRef) {
+    public SegmentationPhase(Context appContext, Map<SensorType, List<SensorValue>> sensorDataRef) {
         bufferPointer = 0;
         mSensorData = sensorDataRef;
         isFirstLogging = true;
         mRecoMath = new RecoMath();
         mRecoFileUtils = new RecoFileUtils();
+        this.appContext = appContext;
+
+        df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        df.setMaximumFractionDigits(340);
 
         /* Get file pointer, don't open yet */
         String timestamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
         String filename = timestamp + "_segmentation_features.csv";
         csvFile = mRecoFileUtils.getFileInDcimStorage(filename);
+
+        initClassifier();
     }
 
     /* Constants */
@@ -49,10 +65,19 @@ public class SegmentationPhase {
     private static final int NUM_SIDE_PEAK = 2;
     private static final String TAG = "SegmentationPhase";
 
+    /* Sensors */
     private int bufferPointer;
     private Map<SensorType, List<SensorValue>> mSensorData;
     private RecoMath mRecoMath;
     private static final SensorType[] sensorTypeCache = SensorType.values();
+    private Context appContext;
+    private static DecimalFormat df;
+
+    /* Classification */
+    private Classifier segmentationSvm;
+    private static final String segmentationSvmModelFilename = "RecoLiftSegmentationSVM.model";
+    private static final int NUM_ATTS = 291;
+    private Instances svmDataset;
 
     /* Logging */
     private static RecoFileUtils mRecoFileUtils;
@@ -117,8 +142,9 @@ public class SegmentationPhase {
             }
 
             // TODO: Pass features into classifier
+            performSegmentationClassification(bufferSegmentationFeatures);
 
-            // TODO: Accumulator
+            // TODO: Accumulator, two seconds?
         }
     }
 
@@ -221,10 +247,6 @@ public class SegmentationPhase {
             return;
         }
 
-        /* Doubles print in scientific notation otherwise, gross but necessary */
-        DecimalFormat df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-        df.setMaximumFractionDigits(340);
-
         /* Construct feature string... gross */
         String csvLine = "";
         csvLine += timestamp + ", ";
@@ -270,6 +292,99 @@ public class SegmentationPhase {
 
         /* Close PrintWriter every time */
         writer.close();
+    }
+
+    /* Return 0 for not lifting, 1 for lifting */
+    private int performSegmentationClassification(Map<SensorType, List<SegmentationFeatures>> featureMap) {
+        /* WEKA input works with double array */
+        double[] features = serializeSegmentationFeaturesMap(featureMap);
+
+        /* Create WEKA instance to pass into classifier */
+        // http://stackoverflow.com/questions/12151702/weka-core-unassigneddatasetexception-when-creating-an-unlabeled-instance
+        int weight = 1;
+        Instance segmentationInstance = new SparseInstance(weight, features);
+        segmentationInstance.setDataset(svmDataset);
+
+        /* This should be all I need? */
+        double classificationResultDouble = -8008;
+        try {
+            classificationResultDouble = segmentationSvm.classifyInstance(segmentationInstance);
+        } catch(Exception e) {
+            Log.e(TAG, "Error, segmentation classification failed! " + e.getLocalizedMessage());
+            Toast.makeText(appContext, "Error, segmentation classification failed!", Toast.LENGTH_SHORT).show();
+        }
+
+        Log.d(TAG, "Classification result: " + classificationResultDouble);
+
+        return (int)classificationResultDouble;
+    }
+
+    // TODO: This fucking sucks. Should redo way I'm handling features on the whole, this is redundant
+    private double[] serializeSegmentationFeaturesMap(Map<SensorType, List<SegmentationFeatures>> featureMap) {
+        double[] serializedFeatures;
+
+        List<Double> featureList = new Vector<>();
+        for (SensorType sensor : sensorTypeCache) {
+            for (SegmentationFeatures features : featureMap.get(sensor)) {
+                /* Yes, this is awful. I'm sorry. Crunch time. */
+                featureList.add((double)features.numAutocPeaks);
+                featureList.add((double)features.numProminentAutocPeaks);
+                featureList.add((double)features.numWeakAutocPeaks);
+                featureList.add((double)features.maxAutocPeakValue);
+                featureList.add((double)features.firstAutocPeakValue);
+                featureList.add((double)(features.firstAndMaxPeakValuesEqual ? 1 : 0));
+                featureList.add((double)features.fullRms);
+                featureList.add((double)features.firstHalfRms);
+                featureList.add((double)features.secondHalfRms);
+                featureList.add((double)features.cusumRms);
+                for (int i = 0; i < features.powerBandMagnitudes.length; i++) {
+                    featureList.add((double)features.powerBandMagnitudes[i]);
+                }
+                featureList.add((double)features.fullMean);
+                featureList.add((double)features.firstHalfMean);
+                featureList.add((double)features.secondHalfMean);
+                featureList.add((double)features.fullStdDev);
+                featureList.add((double)features.firstHalfStdDev);
+                featureList.add((double)features.secondHalfStdDev);
+                featureList.add((double)features.fullVariance);
+                featureList.add((double)features.firstHalfVariance);
+                featureList.add((double)features.secondHalfVariance);
+            }
+        }
+
+        serializedFeatures = new double[featureList.size()];
+        for (int i = 0; i < featureList.size(); i++) {
+            serializedFeatures[i] = featureList.get(i);
+        }
+
+        return serializedFeatures;
+    }
+
+    private void initClassifier() {
+        // TODO: Move model file from DCIM to... internal?
+        // http://stackoverflow.com/questions/20017957/how-to-reuse-saved-classifier-created-from-explorerin-weka-in-eclipse-java
+        try {
+            File modelFullPath = mRecoFileUtils.getFileInDcimStorage(segmentationSvmModelFilename);
+            segmentationSvm = (Classifier) SerializationHelper.read(modelFullPath.getAbsolutePath());
+        } catch(java.lang.Exception e) {
+            Log.e(TAG, "Segmentation SVM could not be loaded");
+            Toast.makeText(appContext, "Segmentation SVM could not be loaded", Toast.LENGTH_LONG).show();
+        }
+
+        /* Init attributes */
+        FastVector atts = new FastVector();
+        FastVector classVal = new FastVector();
+        classVal.addElement("NotLifting");
+        classVal.addElement("Lifting");
+
+        for (int i = 0; i < NUM_ATTS-1; i++) {
+            atts.addElement(new Attribute("attribute_" + Integer.toString(i)));
+        }
+        atts.addElement(new Attribute("attribute_" + NUM_ATTS, classVal));
+
+        /* Set! */
+        svmDataset = new Instances("SegmentationInstances", atts, 0);
+        svmDataset.setClassIndex(svmDataset.numAttributes() - 1);
     }
 
 }

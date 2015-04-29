@@ -1,0 +1,10 @@
+0, StartCollection,
+109153, StartLift, Bench
+138422, StopLift,
+226357, StartLift, Bench
+266560, StopLift,
+300712, StartLift, Bench
+323076, StopLift,
+398530, StartLift, Bench
+425382, StopLift,
+457948, StopCollection,
