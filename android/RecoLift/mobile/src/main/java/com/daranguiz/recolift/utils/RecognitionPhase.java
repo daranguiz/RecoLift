@@ -1,6 +1,8 @@
 package com.daranguiz.recolift.utils;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.daranguiz.recolift.datatype.RecognitionFeatures;
 import com.daranguiz.recolift.datatype.SensorType;
@@ -31,10 +33,11 @@ import weka.core.SerializationHelper;
 import weka.core.SparseInstance;
 
 public class RecognitionPhase {
-    public RecognitionPhase(Map<SensorType, List<SensorValue>> sensorDataRef) {
+    public RecognitionPhase(Context appContext, Map<SensorType, List<SensorValue>> sensorDataRef) {
         bufferPointer = 0;
         mSensorData = sensorDataRef;
         mRecoMath = new RecoMath();
+        this.appContext = appContext;
 
         /* Get file pointer, don't open yet */
         String timestamp = new SimpleDateFormat("yyy.MM.dd.HH.mm.ss").format(new Date());
@@ -53,28 +56,42 @@ public class RecognitionPhase {
     private static final int NUM_DOFS = 3;
     private static final int NUM_SIDE_PEAK = 2;
     private static final String TAG = "RecognitionPhase";
-    private static final boolean collectGroundTruth = true;
+    private static final boolean collectGroundTruth = false;
     private static final SensorType[] sensorTypeCache = SensorType.values();
 
     /* Buffer */
     private int bufferPointer;
     private Map<SensorType, List<SensorValue>> mSensorData;
     private RecoMath mRecoMath;
+    private Context appContext;
 
     /* Classification */
     private Classifier recognitionSvm;
     private static final String recognitionSvmModelFilename = "RecoLiftRecognitionSVM.model";
     private static final int NUM_ATTS = 201;
     private Instances svmDataset;
+    private static final String[] liftSet = {
+            "Squat",
+            "OverheadPress",
+            "Bench",
+            "PendlayRow",
+            "PreacherCurl"
+    };
 
     /* Logging */
     private static File csvFile;
     private static boolean isFirstLogging;
 
     /* Run full recognition window in one batch */
-    public void performBatchRecognition(int startIdx, int endIdx) {
+    public String performBatchRecognition(int startIdx, int endIdx) {
         if (!collectGroundTruth) {
             bufferPointer = startIdx;
+        }
+
+        /* Classification is done by vote, cast as double because I didn't templatize in RecoMath */
+        double[] classVotingArr = new double[liftSet.length];
+        for (int i = 0; i < classVotingArr.length; i++) {
+            classVotingArr[i] = 0;
         }
 
         /* Only get buffer when all sensor sources have enough */
@@ -112,19 +129,21 @@ public class RecognitionPhase {
                 isFirstLogging = false;
             }
 
-            // TODO: Pass features into classifier
-//            performRecognitionClassification(bufferRecognitionFeatures);
-
-            // TODO: Accumulator
+            int classificationResult = performRecognitionClassification(bufferRecognitionFeatures);
+            classVotingArr[classificationResult] += 1;
         }
+
+        /* Vote! */
+        int bestClassIdx = mRecoMath.getArrayMaxIdx(classVotingArr);
+        return liftSet[bestClassIdx];
     }
 
     /* Check if there are enough samples for a new buffer */
     // TODO: Refactor? Very similar to SegmentationPhase
     private boolean isBufferAvailable(int endIdx) {
-        boolean retVal = true;
-        int nextBufferStart = bufferPointer + SLIDE_AMOUNT;
+        int nextBufferStart = bufferPointer;
         int nextBufferEnd = nextBufferStart + WINDOW_SIZE;
+        boolean retVal = true;
 
         /* Only go up to the end of the noted exercise window */
         if (collectGroundTruth) {
@@ -260,6 +279,7 @@ public class RecognitionPhase {
             classificationResultDouble = recognitionSvm.classifyInstance(recognitionInstance);
         } catch(Exception e) {
             Log.e(TAG, "Error, recognition classification failed! " + e.getLocalizedMessage());
+            Toast.makeText(appContext, "Error, recognition classification failed!", Toast.LENGTH_SHORT).show();
         }
 
         Log.d(TAG, "Classification result: " + classificationResultDouble);
@@ -301,15 +321,16 @@ public class RecognitionPhase {
             recognitionSvm = (Classifier) SerializationHelper.read(modelFullPath.getAbsolutePath());
         } catch (Exception e) {
             Log.e(TAG, "Recognition SVM could not be loaded");
+            Toast.makeText(appContext, "Recognition SVM could not be loaded", Toast.LENGTH_SHORT).show();
         }
 
         /* Init attributes */
         FastVector atts = new FastVector();
         FastVector classVal = new FastVector();
 
-        // TODO: Relate this to actual class values
-        classVal.addElement("Lift1");
-        classVal.addElement("Lift2");
+        for (int i = 0; i < liftSet.length; i++) {
+            classVal.addElement(liftSet[i]);
+        }
 
         for (int i = 0; i < NUM_ATTS-1; i++) {
             atts.addElement(new Attribute("attribute_" + Integer.toString(i)));

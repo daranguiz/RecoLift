@@ -45,6 +45,14 @@ public class SegmentationPhase {
         mRecoFileUtils = new RecoFileUtils();
         this.appContext = appContext;
 
+        idleAccumulator = 0;
+        activeAccumulator = 0;
+        startActiveIdx = -1;
+        stopActiveIdx = -1;
+        fullStartLiftIdx = -1;
+        fullStopLiftIdx = -1;
+        isActive = false;
+
         df = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
         df.setMaximumFractionDigits(340);
 
@@ -55,6 +63,10 @@ public class SegmentationPhase {
 
         initClassifier();
     }
+
+    /* Public-facing start/stop indices */
+    public int fullStartLiftIdx;
+    public int fullStopLiftIdx;
 
     /* Constants */
     private static final int F_S = 25;
@@ -72,6 +84,15 @@ public class SegmentationPhase {
     private static final SensorType[] sensorTypeCache = SensorType.values();
     private Context appContext;
     private static DecimalFormat df;
+
+    /* Accumulator */
+    private int idleAccumulator;
+    private int activeAccumulator;
+    private boolean isActive;
+    private int startActiveIdx;
+    private int stopActiveIdx;
+    private static final int MAX_ACCUM_SEC = 2;
+    private static final int MAX_ACCUM = F_S / SLIDE_AMOUNT * MAX_ACCUM_SEC;
 
     /* Classification */
     private Classifier segmentationSvm;
@@ -106,7 +127,9 @@ public class SegmentationPhase {
        occurring in the window, it should be flagged. *matters on the ground truth input.
      */
     // TODO: Refactor into: Get buffer -> Get axes -> Get features -> Classify -> Accumulate
-    public void performBatchSegmentation() {
+    public boolean performBatchSegmentation() {
+        boolean hasSeenFullExercise = false;
+
         /* Only get buffer when all sensor sources have enough */
         while (isBufferAvailable()) {
             /* Get current sliding window buffer */
@@ -141,15 +164,22 @@ public class SegmentationPhase {
                 isFirstLogging = false;
             }
 
-            performSegmentationClassification(bufferSegmentationFeatures);
+            int classificationResult = performSegmentationClassification(bufferSegmentationFeatures);
 
-            // TODO: Accumulator, two seconds?
+            /* If we've seen a full window, return true so indices can be retrieved */
+            if (performSegmentationAccumulation(classificationResult)) {
+                hasSeenFullExercise = true;
+                fullStartLiftIdx = startActiveIdx;
+                fullStopLiftIdx = stopActiveIdx;
+            }
         }
+
+        return hasSeenFullExercise;
     }
 
     /* Check if there are enough samples for a new buffer */
     private boolean isBufferAvailable() {
-        int nextBufferStart = bufferPointer + SLIDE_AMOUNT;
+        int nextBufferStart = bufferPointer;
         int nextBufferEnd = nextBufferStart + WINDOW_SIZE;
         boolean retVal = true;
 
@@ -169,11 +199,11 @@ public class SegmentationPhase {
      */
     private Map<SensorType, List<SensorValue>> getNextBuffer() {
         Map<SensorType, List<SensorValue>> buffer = new TreeMap<>();
-        int nextBufferPointer = bufferPointer + WINDOW_SIZE;
+        int endBufferPointer = bufferPointer + WINDOW_SIZE;
 
         /* List is implemented as a vector */
         for (SensorType sensor : sensorTypeCache) {
-            List<SensorValue> newSubList = mSensorData.get(sensor).subList(bufferPointer, nextBufferPointer);
+            List<SensorValue> newSubList = mSensorData.get(sensor).subList(bufferPointer, endBufferPointer);
             buffer.put(sensor, newSubList);
         }
         bufferPointer = bufferPointer + SLIDE_AMOUNT;
@@ -386,4 +416,36 @@ public class SegmentationPhase {
         svmDataset.setClassIndex(svmDataset.numAttributes() - 1);
     }
 
+
+    private boolean performSegmentationAccumulation(int result) {
+        int curBufferStart = bufferPointer - SLIDE_AMOUNT;
+        boolean retVal = false;
+
+        /* Cap accumulators at 0 and 2 seconds on either end */
+        if (result == 0) {
+            activeAccumulator = Math.max(activeAccumulator - 1, 0);
+            idleAccumulator = Math.min(idleAccumulator + 1, MAX_ACCUM);
+        } else {
+            activeAccumulator = Math.min(activeAccumulator + 1, MAX_ACCUM);
+            idleAccumulator = Math.max(idleAccumulator - 1, 0);
+        }
+
+        /* If entering a period of activity, store the starting index by decrementing MAX_ACCUM seconds */
+        if (activeAccumulator == MAX_ACCUM && !isActive) {
+            isActive = true;
+            startActiveIdx = curBufferStart - MAX_ACCUM_SEC * F_S;
+        }
+        /* Else if entering a period of inactivity, store the final index by decrementing MAX_ACCUM seconds */
+        else if (idleAccumulator == MAX_ACCUM && isActive) {
+            isActive = false;
+            stopActiveIdx = curBufferStart - MAX_ACCUM_SEC * F_S;
+
+            /* If we ever were active and have stopped, we've seen a full exercise window.
+             * Report this back up to start recognition on the window.
+             */
+            retVal = true;
+        }
+
+        return retVal;
+    }
 }

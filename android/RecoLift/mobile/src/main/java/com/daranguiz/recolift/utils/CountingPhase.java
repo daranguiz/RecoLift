@@ -78,7 +78,7 @@ public class CountingPhase {
      *  - Reject any peaks smaller than half the amplitude of that peak
      *  - Return number of remaining peaks as final value
      */
-    public void performBatchCounting(int startIdx, int endIdx, String liftType) {
+    public int performBatchCounting(int startIdx, int endIdx, String liftType) {
         /* Get the slice of sensor data */
         Map<SensorType, List<SensorValue>> countingBuffer = getCountingBuffer(startIdx, endIdx);
         int bufferLen = countingBuffer.get(SensorType.ACCEL_WATCH).size();
@@ -99,6 +99,8 @@ public class CountingPhase {
 
         Log.d(TAG, "NumReps: " + candidatePeakIndices.size());
         logCountingResults(candidatePeakIndices.size(), liftType, countingBuffer.get(SensorType.ACCEL_WATCH).get(0).timestamp);
+
+        return candidatePeakIndices.size();
     }
 
     // TODO: Incorporate all sensor sources
@@ -198,7 +200,7 @@ public class CountingPhase {
 
             int autocLowIdx = idx - AUTOC_SIDE_WIDTH + autocOffset;
             int autocHighIdx = idx + AUTOC_SIDE_WIDTH + autocOffset;
-            double[] windowedSignal = Arrays.copyOfRange(signal, autocLowIdx, autocHighIdx + 1);
+            double[] windowedSignal = Arrays.copyOfRange(signal, autocLowIdx, autocHighIdx);
             double[] autocSignal = mRecoMath.computeAutocorrelation(windowedSignal);
 
             /* Find peak in autoc sig to get estimate of local periodicity */

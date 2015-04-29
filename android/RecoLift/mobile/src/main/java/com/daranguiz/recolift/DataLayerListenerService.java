@@ -3,6 +3,7 @@ package com.daranguiz.recolift;
 import android.hardware.Sensor;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.daranguiz.recolift.datatype.SensorType;
 import com.daranguiz.recolift.utils.ButterworthLowPassFilter;
@@ -94,7 +95,7 @@ public class DataLayerListenerService extends WearableListenerService {
 
         /* Phase init */
         mSegmentationPhase = new SegmentationPhase(this, mSensorData);
-        mRecognitionPhase = new RecognitionPhase(mSensorData);
+        mRecognitionPhase = new RecognitionPhase(this, mSensorData);
         mCountingPhase = new CountingPhase(mSensorData);
 
         /* Filter init */
@@ -123,7 +124,7 @@ public class DataLayerListenerService extends WearableListenerService {
     // ^ maybe that doesn't matter if you're in the gym, will be moving and not inactive ever?
     public void onDataChanged(DataEventBuffer dataEvents) {
         // TODO: Write to CSV, talk to server?
-        Log.d(TAG, "Received sensor data");
+//        Log.d(TAG, "Received sensor data");
 
         /* If new sensor data has been received */
         if (lastMessageSent.equals(TrackerActivity.START_PATH)) {
@@ -170,16 +171,34 @@ public class DataLayerListenerService extends WearableListenerService {
             }
 
             /* Begin segmentation */
-            mSegmentationPhase.performBatchSegmentation();
+            if (mSegmentationPhase.performBatchSegmentation()) {
+                /* If we've seen a full exercise window, let recognition know */
+                Log.d(TAG, "Full exercise seen!");
+//                Toast.makeText(getApplicationContext(), "Full exercise seen!", Toast.LENGTH_SHORT).show();
+
+                int startIdx = mSegmentationPhase.fullStartLiftIdx;
+                int stopIdx = mSegmentationPhase.fullStopLiftIdx;
+
+                /* Run recognition over window */
+                String curLift = mRecognitionPhase.performBatchRecognition(startIdx, stopIdx);
+                Log.d(TAG, "Lift classified: " + curLift);
+//                Toast.makeText(getApplicationContext(), "Completed lift: " + curLift, Toast.LENGTH_SHORT).show();
+
+                /* Run counting! */
+                int numReps = mCountingPhase.performBatchCounting(startIdx, stopIdx, curLift);
+
+                Log.d(TAG, "Num reps: " + numReps);
+                Toast.makeText(getApplicationContext(), curLift + ": " + numReps + " reps", Toast.LENGTH_LONG).show();
+            }
 
             /* Run recognition anyway to get ground truth data */
-            mRecognitionPhase.performBatchRecognition(0, 0);
-
-            /* Run counting over the last 5 seconds anyway */
-            if (mSensorData.get(SensorType.ACCEL_WATCH).size() > F_S * 5) {
-                mCountingPhase.performBatchCounting(mSensorData.get(SensorType.ACCEL_WATCH).size() - F_S * 5,
-                        mSensorData.get(SensorType.ACCEL_WATCH).size() - 1, "placeholderLiftType");
-            }
+//            mRecognitionPhase.performBatchRecognition(0, 0);
+//
+//            /* Run counting over the last 5 seconds anyway */
+//            if (mSensorData.get(SensorType.ACCEL_WATCH).size() > F_S * 5) {
+//                mCountingPhase.performBatchCounting(mSensorData.get(SensorType.ACCEL_WATCH).size() - F_S * 5,
+//                        mSensorData.get(SensorType.ACCEL_WATCH).size() - 1, "placeholderLiftType");
+//            }
         }
 
     }

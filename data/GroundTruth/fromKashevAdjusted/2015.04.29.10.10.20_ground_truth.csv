@@ -1,0 +1,12 @@
+0.0, StartCollection,
+17.8, StartLift, PreacherCurl
+37.3, StopLift,
+92.5, StartLift, PreacherCurl
+111.7, StopLift,
+190.9, StartLift, PreacherCurl
+212.1, StopLift,
+302.4, StartLift, PreacherCurl
+322.6, StopLift,
+408.5, StartLift, PreacherCurl
+429.2, StopLift,
+493.8, StopCollection,

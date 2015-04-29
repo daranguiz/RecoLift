@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -104,6 +105,7 @@ public class TimerActivity extends ActionBarActivity {
             writer = new PrintWriter(new BufferedWriter(new FileWriter(csvFile, true)));
         } catch (IOException e) {
             Log.d(TAG, "Could not open file for recording ground truth");
+            Toast.makeText(getApplicationContext(), "Error: could not open file for recording!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -118,6 +120,7 @@ public class TimerActivity extends ActionBarActivity {
 
         /* Update UI */
         textCollectionStatus.setText("Collection Started");
+        Toast.makeText(getApplicationContext(), "Collection Started", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.button_stop_collection)
@@ -130,6 +133,7 @@ public class TimerActivity extends ActionBarActivity {
             writer = new PrintWriter(new BufferedWriter(new FileWriter(csvFile, true)));
         } catch (IOException e) {
             Log.d(TAG, "Could not open file for recording ground truth");
+            Toast.makeText(getApplicationContext(), "Error: could not open file for recording!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -144,6 +148,7 @@ public class TimerActivity extends ActionBarActivity {
 
         /* Update UI */
         textCollectionStatus.setText("Collection Stopped");
+        Toast.makeText(getApplicationContext(), "Collection Stopped", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.button_start_lift)
@@ -156,6 +161,8 @@ public class TimerActivity extends ActionBarActivity {
             writer = new PrintWriter(new BufferedWriter(new FileWriter(csvFile, true)));
         } catch (IOException e) {
             Log.d(TAG, "Could not open file for recording ground truth");
+            Toast.makeText(getApplicationContext(), "Error: could not open file for recording!", Toast.LENGTH_SHORT).show();
+
             return;
         }
 
@@ -171,6 +178,8 @@ public class TimerActivity extends ActionBarActivity {
 
         /* Update UI */
         textLiftStatus.setText("Lift Started");
+        Toast.makeText(getApplicationContext(), "Lift Started: " + curLift, Toast.LENGTH_SHORT).show();
+
     }
 
     @OnClick(R.id.button_stop_lift)
@@ -183,6 +192,7 @@ public class TimerActivity extends ActionBarActivity {
             writer = new PrintWriter(new BufferedWriter(new FileWriter(csvFile, true)));
         } catch (IOException e) {
             Log.d(TAG, "Could not open file for recording ground truth");
+            Toast.makeText(getApplicationContext(), "Error: could not open file for recording!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -197,6 +207,7 @@ public class TimerActivity extends ActionBarActivity {
 
         /* Update UI */
         textLiftStatus.setText("Lift Stopped");
+        Toast.makeText(getApplicationContext(), "Lift Stopped", Toast.LENGTH_SHORT).show();
     }
 
     @Override
