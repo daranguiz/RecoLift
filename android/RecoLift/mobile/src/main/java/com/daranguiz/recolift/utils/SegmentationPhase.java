@@ -141,7 +141,6 @@ public class SegmentationPhase {
                 isFirstLogging = false;
             }
 
-            // TODO: Pass features into classifier
             performSegmentationClassification(bufferSegmentationFeatures);
 
             // TODO: Accumulator, two seconds?

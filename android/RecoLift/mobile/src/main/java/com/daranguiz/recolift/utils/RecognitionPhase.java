@@ -22,6 +22,13 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import Jama.Matrix;
+import weka.classifiers.Classifier;
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
+import weka.core.Instances;
+import weka.core.SerializationHelper;
+import weka.core.SparseInstance;
 
 public class RecognitionPhase {
     public RecognitionPhase(Map<SensorType, List<SensorValue>> sensorDataRef) {
@@ -34,6 +41,8 @@ public class RecognitionPhase {
         String filename = timestamp + "_recognition_features.csv";
         csvFile = new RecoFileUtils().getFileInDcimStorage(filename);
         isFirstLogging = true;
+
+        initClassifier();
     }
 
     /* Constants */
@@ -51,6 +60,12 @@ public class RecognitionPhase {
     private int bufferPointer;
     private Map<SensorType, List<SensorValue>> mSensorData;
     private RecoMath mRecoMath;
+
+    /* Classification */
+    private Classifier recognitionSvm;
+    private static final String recognitionSvmModelFilename = "RecoLiftRecognitionSVM.model";
+    private static final int NUM_ATTS = 201;
+    private Instances svmDataset;
 
     /* Logging */
     private static File csvFile;
@@ -98,6 +113,7 @@ public class RecognitionPhase {
             }
 
             // TODO: Pass features into classifier
+//            performRecognitionClassification(bufferRecognitionFeatures);
 
             // TODO: Accumulator
         }
@@ -228,5 +244,80 @@ public class RecognitionPhase {
 
         /* Close every time so there are no dangling file handles */
         writer.close();
+    }
+
+    private int performRecognitionClassification(Map<SensorType, List<RecognitionFeatures>> featureMap) {
+        /* WEKA input works with double array */
+        double[] features = serializeRecognitionFeaturesMap(featureMap);
+
+        /* Create WEKA instance to pass into classifier */
+        int weight = 1;
+        Instance recognitionInstance = new SparseInstance(weight, features);
+        recognitionInstance.setDataset(svmDataset);
+
+        double classificationResultDouble = -8008;
+        try {
+            classificationResultDouble = recognitionSvm.classifyInstance(recognitionInstance);
+        } catch(Exception e) {
+            Log.e(TAG, "Error, recognition classification failed! " + e.getLocalizedMessage());
+        }
+
+        Log.d(TAG, "Classification result: " + classificationResultDouble);
+
+        return (int)classificationResultDouble;
+    }
+
+    private double[] serializeRecognitionFeaturesMap(Map<SensorType, List<RecognitionFeatures>> featureMap) {
+        double[] serializedFeatures;
+
+        List<Double> featureList = new Vector<>();
+        for (SensorType sensor : sensorTypeCache) {
+            for (RecognitionFeatures features : featureMap.get(sensor)) {
+                for (int i = 0; i < RecognitionFeatures.NUM_AUTOC_BINS; i++) {
+                    featureList.add((double)features.autocBins[i]);
+                }
+                featureList.add((double)features.rms);
+                for (int i = 0; i < RecognitionFeatures.NUM_POWER_BAND_BINS; i++) {
+                    featureList.add((double)features.powerBandMagnitudes[i]);
+                }
+                featureList.add((double)features.mean);
+                featureList.add((double)features.stdDev);
+                featureList.add((double)features.kurtosis);
+                featureList.add((double)features.interquartileRange);
+            }
+        }
+
+        serializedFeatures = new double[featureList.size()];
+        for (int i = 0; i < featureList.size(); i++) {
+            serializedFeatures[i] = featureList.get(i);
+        }
+
+        return serializedFeatures;
+    }
+
+    private void initClassifier() {
+        try {
+            File modelFullPath = new RecoFileUtils().getFileInDcimStorage(recognitionSvmModelFilename);
+            recognitionSvm = (Classifier) SerializationHelper.read(modelFullPath.getAbsolutePath());
+        } catch (Exception e) {
+            Log.e(TAG, "Recognition SVM could not be loaded");
+        }
+
+        /* Init attributes */
+        FastVector atts = new FastVector();
+        FastVector classVal = new FastVector();
+
+        // TODO: Relate this to actual class values
+        classVal.addElement("Lift1");
+        classVal.addElement("Lift2");
+
+        for (int i = 0; i < NUM_ATTS-1; i++) {
+            atts.addElement(new Attribute("attribute_" + Integer.toString(i)));
+        }
+        atts.addElement(new Attribute("attribute_" + NUM_ATTS, classVal));
+
+        /* Set! */
+        svmDataset = new Instances("RecognitionInstances", atts, 0);
+        svmDataset.setClassIndex(svmDataset.numAttributes() - 1);
     }
 }
