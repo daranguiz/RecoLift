@@ -1,4 +1,18 @@
 \contentsline {chapter}{\MakeUppercase {List of Tables}}{vi}
 \contentsline {chapter}{\MakeUppercase {List of Figures}}{vii}
 \contentsline {chapter}{\MakeUppercase {LIST OF ABBREVIATIONS}}{viii}
-\contentsline {chapter}{\MakeUppercase {REFERENCES}}{5}
+\contentsline {chapter}{CHAPTER\ 1\hskip 1em\relax \MakeUppercase {Introduction}}{1}
+\contentsline {chapter}{CHAPTER\ 2\hskip 1em\relax \MakeUppercase {Literature Review}}{3}
+\contentsline {chapter}{CHAPTER\ 3\hskip 1em\relax \MakeUppercase {General Methodology}}{5}
+\contentsline {section}{\numberline {3.1}Problems}{5}
+\contentsline {section}{\numberline {3.2}System Design}{6}
+\contentsline {section}{\numberline {3.3}Equipment}{7}
+\contentsline {chapter}{CHAPTER\ 4\hskip 1em\relax \MakeUppercase {System Design}}{8}
+\contentsline {section}{\numberline {4.1}Preprocessing}{8}
+\contentsline {subsection}{\numberline {4.1.1}Resampling}{8}
+\contentsline {subsection}{\numberline {4.1.2}Filtering}{8}
+\contentsline {section}{\numberline {4.2}Segmentation}{9}
+\contentsline {subsection}{\numberline {4.2.1}Sliding Window Buffers}{9}
+\contentsline {section}{\numberline {4.3}Recognition}{9}
+\contentsline {section}{\numberline {4.4}Counting}{9}
+\contentsline {chapter}{\MakeUppercase {REFERENCES}}{10}

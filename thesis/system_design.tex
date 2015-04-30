@@ -1,0 +1,98 @@
+\chapter{System Design}
+
+%%======================================================================%%
+\section{Preprocessing}
+
+\subsection{Resampling}
+An unfortunate downside to the Android platform is that Android does not guarantee an even sampling rate on its sensors. In lieu of defining a sampling rate, Android allows the developer to request the delay amount between sensor readings. These delays can be \textit{NORMAL, GAME, UI,} or \textit{FASTEST}, going from a $200000\mu s$ delay down to a zero second delay.
+
+Likewise, although Android does not allow us to define a sampling rate, setting the delay to \textit{FASTEST} results in a sampling rate consistently near 25Hz. To be precise, the accelerometer was measured to have a sampling rate of approximately 24.67Hz on average. This is however an average, thus samples may come early or late, depending on how the Android scheduler prioritizes sensor readings. 
+
+Because of this, we resample with a Zero-Order Hold (ZOH). ZOH is very easy to implement, and considering how close our sampling rate is to our desired rate of 25Hz, we maintain a high fidelity signal. Any additional noise introduced due to resampling is effectively filtered out in our next step.
+
+\subsection{Filtering}
+Repetitions occur generally on the order of 1Hz, and bodybuilding exercises tend not to have many sharp movements due to the threat of injury, thus we decide on a frequency cutoff of 12Hz for our signal. This is conveniently in the middle of our (now resampled) sampling rate, and it will take care of noise added in the previous step.
+
+Our low-pass filter is implemented using a unity-gain five-tap IIR Butterworth filter generated in MATLAB. (TODO: INCLUDE PICTURE, WHAT IS CUTOFF, ETC)
+
+
+%%======================================================================%%
+\section{Segmentation}
+
+Sensor data is sent in batches from the watch to reduce message overhead and preserve battery life, thus large buffers of sensor data are sent to segmentation at a time.
+
+\subsection{Sliding Window Buffers}
+Before beginning computation, we separate our data into five second buffers using a sliding window with 4.8s overlap. This is done for the purposes of autocorrelation. Our guiding intuition behind segmentation is that exercises will exh
+
+okay fuck this. getting my thoughts down: 
+autocorrelation is great but we also want to allow for variation between repetitions. three adjacent reps will probably be pretty similar, but they may not have the same period as the last three reps. doing autoc over the full window would then not work. also, we don't know in advance how long a set is going to be, so we cant just do a sliding window over the full length of a set. we settle on an accumulation scheme. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%======================================================================%%
+\section{Recognition}
+
+
+
+
+
+
+
+%%======================================================================%%
+\section{Counting}

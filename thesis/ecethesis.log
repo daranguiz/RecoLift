@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  29 APR 2015 21:44
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  30 APR 2015 00:58
 entering extended mode
 **C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
 (C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
@@ -178,9 +178,7 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\literature_review.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\overall_methodology.aux)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\segmentation.aux)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\recognition.aux)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\counting.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\system_design.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.aux))
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
@@ -257,35 +255,40 @@ Underfull \vbox (badness 10000) detected at line 57
 ]
 [8
 
-] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.tex [1
+] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.tex
+CHAPTER 1.
+[1
 
 
-])
-[2]
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\literature_review.tex)
+
+]) [2]
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\literature_review.tex
+CHAPTER 2.
 [3
 
 
-] [4]
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\overall_methodology.tex)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\segmentation.tex)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\recognition.tex)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\counting.tex)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.tex)
+
+]) [4]
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\overall_methodology.tex
+CHAPTER 3.
+[5
+
+
+
+] [6]) [7]
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\system_design.tex
+CHAPTER 4.
+[8
+
+
+
+]) [9] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.tex)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.tex)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.bbl
 
 LaTeX Warning: Empty `thebibliography' environment on input line 25.
 
-) [5
-
-
-
-
-
-
-
-
+) [10
 
 
 
@@ -297,29 +300,28 @@ LaTeX Warning: Empty `thebibliography' environment on input line 25.
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\literature_review.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\overall_methodology.aux)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\segmentation.aux)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\recognition.aux)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\counting.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\system_design.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.aux)) ) 
 Here is how much of TeX's memory you used:
- 3193 strings out of 493921
- 50064 string characters out of 3144877
- 109477 words of memory out of 3000000
+ 3179 strings out of 493921
+ 49251 string characters out of 3144877
+ 108477 words of memory out of 3000000
  6413 multiletter control sequences out of 15000+200000
- 9541 words of font info for 34 fonts, out of 3000000 for 9000
+ 10138 words of font info for 36 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  36i,5n,38p,1400b,227s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Pr
-ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Progr
-am Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program 
-Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Fil
-es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files
- (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files (
-x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on ecethesis.pdf (13 pages, 103137 bytes).
+ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Prog
+ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program
+ Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Fi
+les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files (
+x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files (x8
+6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on ecethesis.pdf (18 pages, 133234 bytes).
 PDF statistics:
- 69 PDF objects out of 1000 (max. 8388607)
+ 88 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
