@@ -22,68 +22,55 @@ Our low-pass filter is implemented using a unity-gain five-tap IIR Butterworth f
 Sensor data is sent in batches from the watch to reduce message overhead and preserve battery life, thus large buffers of sensor data are sent to segmentation at a time.
 
 \subsection{Sliding Window Buffers}
-Before beginning computation, we separate our data into five second buffers using a sliding window with 4.8s overlap. This is done for the purposes of autocorrelation. Our guiding intuition behind segmentation is that exercises will exh
+First, our data is split into five second buffers using a sliding window with 4.8s overlap. This is done for the purposes of autocorrelation. As mentioned earlier, we expect exercise to be roughly periodic across the entire signal, exhibiting an autocorrelation similar to (TODO: INSERT PICTURE). This is not entirely true however. Anecdotally, when performing a set of ten repetitions, the first repetitions will be done better than the final repetitions. Bar speed is directly indicative of the quality of a repetition, thus early repetitions are performed quicker than later repetitions. Computing autocorrelation over the entire signal would not make sense then - concurrent repetitions will likely be similar, but the first is nearly guaranteed to have a different period than the last. Therefore, we compute segmentation over sliding windows. 
 
-okay fuck this. getting my thoughts down: 
-autocorrelation is great but we also want to allow for variation between repetitions. three adjacent reps will probably be pretty similar, but they may not have the same period as the last three reps. doing autoc over the full window would then not work. also, we don't know in advance how long a set is going to be, so we cant just do a sliding window over the full length of a set. we settle on an accumulation scheme. 
+\subsection{Signal Variants}
+Our system uses two three-axis sensor sources, the smartwatch's accelerometer and gyroscope. We derive the following signals from each sensor stream:
 
+\begin{enumerate}
+    \item \textbf{X-axis:} the X-axis of the accelerometer/gyroscope
+    \item \textbf{Y-axis:} the Y-axis of the accelerometer/gyroscope
+    \item \textbf{Z-axis:} the Z-axis of the accelerometer/gyroscope
+    \item \textbf{Magnitude:} the $\sqrt{x^2 + y^2 + z^2}$ magnitude of the accelerometer/gyroscope
+    \item \textbf{PCA:} the projection of the three-axis data onto its first principal component
+\end{enumerate}
 
+This results in ten total signals, five for each sensor. In the past, the orientation of the IMU could not be determined a priori, thus only the axis pointing along the direction of the arm could be used. We can make stronger assumptions however with the use of Android Wear, as a smartwatch has only one possible orientation on the wrist. This allows us to use all three axes as raw signals.
 
+Included in this set are two derived signals, magnitude and PCA. Both signals are attempts at illustrating the primary axis of movement, with magnitude being a crude estimate and the projection onto the raw signal's first principal component being a more refined estimate. In our trials, we have found that computing both the primary projection and the magnitude signals are computationally inexpensive, thus both are used. Further investigation is required to determine if using both is necessary for sufficient classification, although the gain in omitting one is minimal.
 
+\subsection{Feature Selection} 
+From each of the ten sensor streams, we compute 29 features: 
 
+\begin{enumerate}
+    \item \textbf{Autocorrelation Features:}
+    \begin{enumerate}
+        \item \textbf{Total Number of Autocorrelation Peaks:} After computing autocorrelation, the total number of local maxima across the signal is recorded. For exercise, we expect this number to be on the order of two to five. An autocorrelation with no peaks implies idling, and an autocorrelation with too many peaks implies random movement.
+        \item \textbf{Number of Prominent Autocorrelation Peaks:} Prominent peaks are determined using a threshold heuristic. If they are relatively isolated from surrounding peaks, and they are also larger in magnitude than surrounding peaks, they are considered prominent. We expect this to be close to the total number of autocorrelation peaks for exercise.
+        \item \textbf{Number of Weak Autocorrelation Peaks:} Likewise, weak peaks are determined using the inverse of the strategy above. This should be close to the total number of peaks during non-exercise.
+        \item \textbf{Maximum Autocorrelation Peak Value:} A large autocorrelation peak value implies high similarity between the original signal and the delayed version of the signal, indicating periodicity.
+        \item \textbf{First Autocorrelation Peak Value:} Likewise, we expect the first peak to be very large for exercise. There is no such expectation for non-exercise.
+        \item \textbf{First and Maximum Peak Values Equal:} Finally, the first peak is what we use to determine the period of the signal during exercise. If this first peak is also the largest in the autocorrelated signal, we are likely to be exercising.
+    \end{enumerate}        
+    \item \textbf{Energy Features:}
+    \begin{enumerate}
+        \item \textbf{RMS Amplitude:} RMS amplitude is computed for the full window, the first half of the window, and the second half of the window to account for when the window lies on an exercise boundary.
+        \item \textbf{Power Spectrum Bin Magnitudes:} The power spectrum is binned into ten equal width segments and recorded. 
+    \end{enumerate}
+    \item \textbf{Statistical Features:} Similar to RMS, the following features are computed for the full window, the first half of the window, and the second half of the window. 
+    \begin{enumerate}
+        \item \textbf{Mean} 
+        \item \textbf{Variance}
+        \item \textbf{Standard Deviation}
+    \end{enumerate}
+\end{enumerate}
 
+This results in a total of 291 features, which are passed into a classifier. 
 
+\subsection{Classification}
+These features are passed into a binary SVM trained using athletes familiar with each lift. We then use an accumulator-style voting system to determine when an exercise boundary has been crossed. If the SVM predicts that a lift is occurring, we increment the accumulator. Likewise, if it predicts non-exercise, we decrement the accumulator. Once an accumulator threshold is crossed, we can say with relative certainty that exercise is occuring. The same is done in reverse for computing the end of an exercise boundary.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+In practice, we set an accumulator threshold equal to two seconds of activity. Two seconds tends to be the time it takes to complete one full repetition and begin another repetition. This could be increased to reduce false positives, although computing an accurate exercise window boundary is important for counting the number of repetitions. This becomes more difficult as the accumulator threshold increases.
 
 %%======================================================================%%
 \section{Recognition}

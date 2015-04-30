@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  30 APR 2015 00:58
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  30 APR 2015 09:30
 entering extended mode
 **C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
 (C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
@@ -282,13 +282,20 @@ CHAPTER 4.
 
 
 
-]) [9] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.tex)
+]
+Overfull \hbox (20.88509pt too wide) in paragraph at lines 34--35
+[]\OT1/cmr/bx/n/12 Magnitude: \OT1/cmr/m/n/12 the $[]$ mag-ni-tude of the ac-ce
+lerom-e-ter/gyroscope 
+ []
+
+[9] [10]) [11] [12]
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.tex)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.tex)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.bbl
 
 LaTeX Warning: Empty `thebibliography' environment on input line 25.
 
-) [10
+) [13
 
 
 
@@ -304,24 +311,27 @@ LaTeX Warning: Empty `thebibliography' environment on input line 25.
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.aux)) ) 
 Here is how much of TeX's memory you used:
- 3179 strings out of 493921
- 49251 string characters out of 3144877
+ 3181 strings out of 493921
+ 49272 string characters out of 3144877
  108477 words of memory out of 3000000
- 6413 multiletter control sequences out of 15000+200000
- 10138 words of font info for 36 fonts, out of 3000000 for 9000
+ 6414 multiletter control sequences out of 15000+200000
+ 10445 words of font info for 37 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 36i,5n,38p,1400b,227s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,5n,38p,1400b,252s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Pr
-ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Prog
-ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program
- Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files
- (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files (
-x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files (x8
-6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on ecethesis.pdf (18 pages, 133234 bytes).
+ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Prog
+ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Progra
+m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program 
+Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Fil
+es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files 
+(x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x8
+6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files (x86)/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files (x86)/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on ecethesis.pdf (21 pages, 171308 bytes).
 PDF statistics:
- 88 PDF objects out of 1000 (max. 8388607)
+ 110 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
