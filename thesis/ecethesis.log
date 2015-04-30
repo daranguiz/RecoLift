@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.2.20)  29 APR 2015 17:45
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  29 APR 2015 21:44
 entering extended mode
 **C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
 (C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
@@ -15,7 +15,7 @@ an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
 ishmax, welsh, loaded.
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\uiucecethesis09.cls
 Document Class: uiucecethesis09 2010/06/23\ ECE3.10\ UIUC Thesis (PJC)
-(C:\Users\Dario\AppData\Roaming\MiKTeX\2.9\tex\latex\setspace\setspace.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\setspace\setspace.sty"
 Package: setspace 2011/12/19 v6.7a set line spacing
 )
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\tools\calc.sty"
@@ -158,10 +158,10 @@ LaTeX Info: Redefining \] on input line 2666.
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\graphics\lscape.sty"
 Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
 )
-(C:\Users\Dario\AppData\Roaming\MiKTeX\2.9\tex\latex\caption\caption.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\caption\caption.sty"
 Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
 
-(C:\Users\Dario\AppData\Roaming\MiKTeX\2.9\tex\latex\caption\caption3.sty
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\caption\caption3.sty"
 Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 57.
 \captionmargin=\dimen119
@@ -174,7 +174,15 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 )
 \c@ContinuedFloat=\count106
 )
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.aux
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\literature_review.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\overall_methodology.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\segmentation.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\recognition.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\counting.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.aux))
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
 LaTeX Font Info:    ... okay on input line 46.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 46.
@@ -189,7 +197,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 46.
 LaTeX Font Info:    ... okay on input line 46.
 \chapternumberheight=\dimen126
 
-(C:\Users\Dario\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
+("C:\Program Files (x86)\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count107
 \scratchdimen=\dimen127
@@ -249,23 +257,59 @@ Underfull \vbox (badness 10000) detected at line 57
 ]
 [8
 
-] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.bbl
+] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.tex [1
+
+
+])
+[2]
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\literature_review.tex)
+[3
+
+
+] [4]
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\overall_methodology.tex)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\segmentation.tex)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\recognition.tex)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\counting.tex)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.tex)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.tex)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.bbl
 
 LaTeX Warning: Empty `thebibliography' environment on input line 25.
 
-) [1
+) [5
 
 
 
-] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.aux) ) 
+
+
+
+
+
+
+
+
+
+
+
+
+] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.aux
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\literature_review.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\overall_methodology.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\segmentation.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\recognition.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\counting.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.aux)
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.aux)) ) 
 Here is how much of TeX's memory you used:
- 3129 strings out of 493921
- 46632 string characters out of 3144876
- 106477 words of memory out of 3000000
- 6405 multiletter control sequences out of 15000+200000
+ 3193 strings out of 493921
+ 50064 string characters out of 3144877
+ 109477 words of memory out of 3000000
+ 6413 multiletter control sequences out of 15000+200000
  9541 words of font info for 34 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 36i,5n,38p,1229b,227s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,5n,38p,1400b,227s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Pr
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Progr
 am Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program 
@@ -273,9 +317,9 @@ Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Fil
 es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files
  (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files (
 x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on ecethesis.pdf (9 pages, 91587 bytes).
+Output written on ecethesis.pdf (13 pages, 103137 bytes).
 PDF statistics:
- 56 PDF objects out of 1000 (max. 8388607)
+ 69 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

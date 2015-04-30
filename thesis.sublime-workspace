@@ -59,7 +59,7 @@
 			"file": "data/GroundTruth/2015_4_29_segmentation.arff",
 			"settings":
 			{
-				"buffer_size": 32733462,
+				"buffer_size": 32733951,
 				"line_ending": "Unix"
 			}
 		},
@@ -67,7 +67,7 @@
 			"file": "data/GroundTruth/2015_4_29_segmentation.csv",
 			"settings":
 			{
-				"buffer_size": 32724799,
+				"buffer_size": 32725289,
 				"line_ending": "Windows"
 			}
 		},
@@ -630,15 +630,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 32733462,
+						"buffer_size": 32733951,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								19547174,
-								19547185
+								0,
+								0
 							]
 						],
 						"settings":
@@ -646,7 +646,7 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1891589.0,
+						"translation.y": 1282199.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -658,15 +658,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 32724799,
+						"buffer_size": 32725289,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								32724799,
-								32724799
+								0,
+								0
 							]
 						],
 						"settings":

@@ -3,6 +3,10 @@
 	[
 		{
 			"path": "."
-		}
+		},
+        {
+            "path": "./thesis",
+            "file_include_patterns": [ "*.tex", "*.bib", "*.cls"]
+        }
 	]
 }
