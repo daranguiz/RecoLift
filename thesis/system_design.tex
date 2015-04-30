@@ -75,11 +75,36 @@ In practice, we set an accumulator threshold equal to two seconds of activity. T
 %%======================================================================%%
 \section{Recognition}
 
+The recognition phase follows a similar structure as the segmentation phase. From the segmentation phase, we receive a set of data indices bounding the beginning and end of an exercise window. This window is then broken down into five second buffers with 4.8s overlap. The same set of five signals per sensor source are also calculated, those being the \textbf{X, Y, and Z axes, the signal magnitude, and the signal's primary PCA projection}. The main difference however is in the features extracted.
 
+\subsection{Feature Selection}
+Autocorrelation is useful for estimating whether a signal is periodic as well what its period may be, but we cannot use that information for recognition. Training a classifier which depends on bar speed would be inherently erroneous, as bar speed varies wildly depending on strength, stamina, and lift intensity. To this end, we omit most autocorrelation features from the segmentation phase and focus on other features:
 
+\begin{enumerate}
+    \item \textbf{Autocorrelation Features:}
+    \begin{enumerate}
+        \item \textbf{Autocorrelation Bins:} Compute the autocorrelation of the window and instead of searching for peaks, compute the magnitude for ten evenly-spaced bins.
+    \end{enumerate}
+    \item \textbf{Energy Features:}
+    \begin{enumerate}
+        \item \textbf{RMS:} The RMS of the full window is computed. 
+        \item \textbf{Power Spectrum Bin Magnitudes:} Similar to the segmentation phase, the power spectrum is split into ten evenly-spaced bins, and the magnitudes of each are recorded.
+    \end{enumerate}
+    \item \textbf{Statistical Features:}
+    \begin{enumerate}
+        \item \textbf{Mean}
+        \item \textbf{Standard Deviation}
+        \item \textbf{Kurtosis}
+        \item \textbf{Interquartile Range}
+    \end{enumerate}
+\end{enumerate}
 
+This results in a total of 200 features, which are passed into a classifier.
 
-
+\subsection{Classification}
+Classification is performed using a multi-class SVM. Predictions are made for each sliding window across the full exercise buffer and aggregated, with a final majority voting system determining which lift was performed during this segment.
 
 %%======================================================================%%
 \section{Counting}
+
+\subsection{}

@@ -15,7 +15,7 @@
 \contentsline {subsection}{\numberline {4.2.1}Sliding Window Buffers}{9}
 \contentsline {subsection}{\numberline {4.2.2}Signal Variants}{9}
 \contentsline {subsection}{\numberline {4.2.3}Feature Selection}{10}
-\contentsline {subsection}{\numberline {4.2.4}Classification}{12}
+\contentsline {subsection}{\numberline {4.2.4}Classification}{11}
 \contentsline {section}{\numberline {4.3}Recognition}{12}
 \contentsline {section}{\numberline {4.4}Counting}{12}
 \contentsline {chapter}{\MakeUppercase {REFERENCES}}{13}
