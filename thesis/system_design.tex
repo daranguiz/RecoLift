@@ -54,7 +54,7 @@ From each of the ten sensor streams, we compute 29 features:
     \end{enumerate}        
     \item \textbf{Energy Features:}
     \begin{enumerate}
-        \item \textbf{RMS Amplitude:} RMS amplitude is computed for the full window, the first half of the window, and the second half of the window to account for when the window lies on an exercise boundary.
+        \item \textbf{RMS Amplitude:} RMS amplitude is computed for the full window, the first half of the window, and the second half of the window to account for when the window lies on an exercise boundary. Additionally, the CUSUM RMS amplitude is computed as a loose approximation of velocity RMS amplitude.
         \item \textbf{Power Spectrum Bin Magnitudes:} The power spectrum is binned into ten equal width segments and recorded. 
     \end{enumerate}
     \item \textbf{Statistical Features:} Similar to RMS, the following features are computed for the full window, the first half of the window, and the second half of the window. 
@@ -107,4 +107,45 @@ Classification is performed using a multi-class SVM. Predictions are made for ea
 %%======================================================================%%
 \section{Counting}
 
-\subsection{}
+The counting phase is performed over the primary PCA projection of the accelerometer, as this axis contains the majority of the signal's energy by definition. The accelerometer signal is chosen over the gyroscope signal as bar acceleration necessarily changes at the top and bottom of each lift, whereas rotation should not change at the top and bottom when performed correctly for most lifts.
+
+Our counting algorithm can be defined by the following algorithm: 
+\begin{enumerate}
+    \item 
+    \begin{enumerate}
+        \item Find all local maxima in the signal
+        \item Sort by amplitude
+        \item For each peak, add the index to a set of candidate peaks if the distance to any other peak already in the set is at least MIN\_PERIOD away
+    \end{enumerate}
+    \item For each candidate peak:
+    \begin{enumerate}
+        \item Compute autocorrelation in a five second window about the peak
+        \item Find the maximum value in the autocorrelation, determining local periodicity P
+        \item Remove peak from candidate set if it is $<0.75P$ away from any other peak
+    \end{enumerate}
+    \item 
+    \begin{enumerate}
+        \item Find the peak at the 40th percentile
+        \item Reject any peaks smaller than half the amplitude of the 40th percentile peak
+        \item Return the total number of remaining peaks as our final count
+    \end{enumerate}
+\end{enumerate}
+
+MIN\_PERIOD is defined as the minimum amount of time a particular lift has ever taken to complete. This number is typically around 0.5s. 
+
+(TODO: INSERT FIGURES) The above figures illustrate the difficulties with counting. For an isolation exercise such as a bicep curl, repetitions tend to be clean, and peaks can be easily counted. Contrast this with a compound movement such as a bench press or a squat; it can be difficult to discern repetitions even when manually examining the signal.
+
+\subsection{Algorithm Part 1}
+Our first step in counting repetitions is to compile an initial list of peaks. We make an assumption that two repetitions could never occur within MIN\_PERIOD of each other, and so if two peaks are ever within that range, we assume they correspond to the same repetition. A prime example of this occurring is on Pendlay row; if the repetition is explosive enough, the bar will first accelerate off the floor, then it will experience another spike when it collides with the user's chest. 
+
+\subsection{Algorithm Part 2}
+Next, we further cull the candidate peak set by iterating through the list and determining the local period about each peak. If any surrounding peaks are too close, we remove them from the list. This segment works on the principle of self-similarity between concurrent repetitions. 
+
+Speaking generally, Part 2 is a more liberal implementation of Part 1. In Part 1, we assume that the user could be lifting extremely quickly and allow for peaks that indicate rapid repetitions. In Part 2, we relax this assumption and compute what rate the user is actually lifting at, removing peaks that are notably faster. 
+
+\subsection{Algorithm Part 3}
+At this point, we have a well-formed candidate peak set, although there could still be peaks remaining that correspond to noise. For example, if a user stops at the top of a squat to catch his or her breath, there could be a peak when they readjust their position. This would not be removed using the autocorrelation method, thus it would be prudent to make one final pass through our candidate peak list to remove small peaks. 
+
+Sorting our list by peak value, a seemingly accurate threshold would be at half the 40th percentile peak value. Few true peaks are less than that, so we can safely remove them. 
+
+The size of the candidate peak set is then returned as our total number of repetitions.

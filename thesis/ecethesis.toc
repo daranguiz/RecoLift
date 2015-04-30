@@ -15,7 +15,11 @@
 \contentsline {subsection}{\numberline {4.2.1}Sliding Window Buffers}{9}
 \contentsline {subsection}{\numberline {4.2.2}Signal Variants}{9}
 \contentsline {subsection}{\numberline {4.2.3}Feature Selection}{10}
-\contentsline {subsection}{\numberline {4.2.4}Classification}{11}
+\contentsline {subsection}{\numberline {4.2.4}Classification}{12}
 \contentsline {section}{\numberline {4.3}Recognition}{12}
-\contentsline {section}{\numberline {4.4}Counting}{12}
-\contentsline {chapter}{\MakeUppercase {REFERENCES}}{13}
+\contentsline {subsection}{\numberline {4.3.1}Feature Selection}{12}
+\contentsline {subsection}{\numberline {4.3.2}Classification}{13}
+\contentsline {section}{\numberline {4.4}Counting}{13}
+\contentsline {subsection}{\numberline {4.4.1}Algorithm Part 1}{14}
+\contentsline {subsection}{\numberline {4.4.2}Algorithm Part 2}{15}
+\contentsline {chapter}{\MakeUppercase {REFERENCES}}{16}
