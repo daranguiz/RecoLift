@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  30 APR 2015 11:48
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  30 APR 2015 16:22
 entering extended mode
 **C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
 (C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
@@ -294,17 +294,23 @@ Overfull \hbox (18.13968pt too wide) in paragraph at lines 139--140
  within MIN[]PERIOD
  []
 
-) [14] [15] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.tex)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.tex)
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.bbl
-
-LaTeX Warning: Empty `thebibliography' environment on input line 25.
-
+[14]) [15] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.tex
+CHAPTER 5.
 ) [16
 
 
 
+] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.tex
+CHAPTER 6.
+) [17
 
+
+
+] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.bbl
+
+LaTeX Warning: Empty `thebibliography' environment on input line 25.
+
+) [18
 
 
 
@@ -318,7 +324,7 @@ LaTeX Warning: Empty `thebibliography' environment on input line 25.
 Here is how much of TeX's memory you used:
  3182 strings out of 493921
  49290 string characters out of 3144877
- 108477 words of memory out of 3000000
+ 108482 words of memory out of 3000000
  6415 multiletter control sequences out of 15000+200000
  10445 words of font info for 37 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
@@ -334,9 +340,9 @@ es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files
 iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files (x86)/MiK
 TeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files (x86)/MiKTe
 X 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on ecethesis.pdf (24 pages, 180168 bytes).
+Output written on ecethesis.pdf (26 pages, 184035 bytes).
 PDF statistics:
- 119 PDF objects out of 1000 (max. 8388607)
+ 126 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

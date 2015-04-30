@@ -36,7 +36,7 @@ public class DataLayerListenerService extends WearableListenerService {
     }
 
     /* Constants */
-    private static final String TAG = "DataLayerListenerServ";
+    private static final String TAG = "RecoDataLayerListenerServ";
     private static final int MAX_EVENTS_IN_PACKET = 20;
     private static final int SEC_TO_NS = 1000000000;
     private static final int MS_TO_NS = 1000000;
@@ -173,7 +173,7 @@ public class DataLayerListenerService extends WearableListenerService {
             /* Begin segmentation */
             if (mSegmentationPhase.performBatchSegmentation()) {
                 /* If we've seen a full exercise window, let recognition know */
-                Log.d(TAG, "Full exercise seen!");
+//                Log.d(TAG, "Full exercise seen!");
 //                Toast.makeText(getApplicationContext(), "Full exercise seen!", Toast.LENGTH_SHORT).show();
 
                 int startIdx = mSegmentationPhase.fullStartLiftIdx;

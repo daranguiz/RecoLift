@@ -75,7 +75,7 @@ public class SegmentationPhase {
     private static final int SLIDE_AMOUNT = 5;
     private static final int NUM_DOFS = 3;
     private static final int NUM_SIDE_PEAK = 2;
-    private static final String TAG = "SegmentationPhase";
+    private static final String TAG = "RecoSegmentationPhase";
 
     /* Sensors */
     private int bufferPointer;
@@ -91,7 +91,7 @@ public class SegmentationPhase {
     private boolean isActive;
     private int startActiveIdx;
     private int stopActiveIdx;
-    private static final int MAX_ACCUM_SEC = 2;
+    private static final int MAX_ACCUM_SEC = 5;
     private static final int MAX_ACCUM = F_S / SLIDE_AMOUNT * MAX_ACCUM_SEC;
 
     /* Classification */
@@ -171,6 +171,7 @@ public class SegmentationPhase {
                 hasSeenFullExercise = true;
                 fullStartLiftIdx = startActiveIdx;
                 fullStopLiftIdx = stopActiveIdx;
+                Log.d(TAG, "Window length in sec: " + Double.toString((double)(stopActiveIdx - startActiveIdx)/F_S));
             }
         }
 
@@ -343,7 +344,7 @@ public class SegmentationPhase {
             Toast.makeText(appContext, "Error, segmentation classification failed!", Toast.LENGTH_SHORT).show();
         }
 
-        Log.d(TAG, "Classification result: " + classificationResultDouble);
+//        Log.d(TAG, "Classification result: " + classificationResultDouble);
 
         return (int)classificationResultDouble;
     }
@@ -429,6 +430,9 @@ public class SegmentationPhase {
             activeAccumulator = Math.min(activeAccumulator + 1, MAX_ACCUM);
             idleAccumulator = Math.max(idleAccumulator - 1, 0);
         }
+
+        Log.d(TAG, "Active accumulator: " + activeAccumulator);
+//        Log.d(TAG, "Idle accumulator:   " + idleAccumulator);
 
         /* If entering a period of activity, store the starting index by decrementing MAX_ACCUM seconds */
         if (activeAccumulator == MAX_ACCUM && !isActive) {

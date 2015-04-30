@@ -1,0 +1,7 @@
+\chapter{Conclusion}
+
+An unsatisfactorily resolved issue inherent with the design of the system is dependence on bar speed. Many of the features computed for our SVM classifiers deal directly or indirectly with bar speed, which can vary greatly from set to set and user to user. Currently, our approach deals with this issue by drastically increasing the dataset and attempting to replicate every possible bar speed in the training data. Not only is this approach inelegant, but in its current state, it is insufficient. Comparison to a baseline repetition using DTW may solve the problem, but that has yet to be explored.
+
+Another issue involves the core intuition that concurrent repetitions will be similar. When performing high-intensity lifts, form often breaks down and users end up ``grinding'' through the repetition, meaning that users pause partway through the lift and slowly push/pull the bar up. This violates our intuition, and in our current system, there is no way to deal with this. As such, our system is recommended only for bodybuilding-esque lifting, not low-repetition weightlifting or powerlifting.
+
+Despite these shortcomings, our system functions well enough to be of use to the everyday bodybuilder. Further training data would continue to improve this system.
