@@ -7,9 +7,11 @@ from scipy.constants import pi
 
 start_autoc = 400
 end_autoc = 600
+# start_autoc = 0
+# end_autoc = 200
 
 thesis_dir = "C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/"
-data_dir = thesis_dir + "data/SyncedFromPhoneDCIM/"
+data_dir = thesis_dir + "data/SyncedFromPhoneDCIM_old/"
 
 filename = [
             "sensor_csv_1421204195054squat20",
@@ -21,7 +23,7 @@ filename = [
            ]
 
 curls_raw_data = []
-with open(data_dir + filename[0] + ".csv", 'rb') as csvfile:
+with open(data_dir + filename[3] + ".csv", 'rb') as csvfile:
     curls_csv = csv.reader(csvfile, delimiter=",")
     for row in curls_csv:
         curls_raw_data.append(row)
@@ -90,8 +92,7 @@ str_cur_sensor = 'TYPE_ACCELEROMETER'
 cur_sensor = dict_sensor_type[str_cur_sensor]
 num_vals = len(dict_val_data[cur_sensor])
 
-
-if 0:
+if 1:
     for i in xrange(num_vals):
         plt.subplot(num_vals,1,i+1)
         plt.plot(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i])
@@ -138,7 +139,7 @@ for i in xrange(num_vals):
     f_acc[i] = interpolate.interp1d(dict_timestamp_data[cur_sensor], dict_val_data[cur_sensor][i], kind='cubic', fill_value=0, bounds_error=False)
     vals_20hz[i] = f_acc[i](timestamp_20hz)
 
-if 0:
+if 1:
     plt.figure(0)
     for i in xrange(num_vals):
         plt.subplot(num_vals,1,i+1)
@@ -164,7 +165,7 @@ if 0:
 Fs = 20
 
 # Compute FFT just for area of interest, roughly samples 200-1200
-if 0:
+if 1:
     plt.figure(1)
     for i in xrange(num_vals):
         cur_fft = np.absolute(np.fft.fft(vals_20hz[i]))
@@ -198,11 +199,11 @@ lpf = remez(20, [0, end_passband, start_stopband, end_stopband], [1.0, 0.0])
 # plt.show()
 
 vals_filtered = []
-if 0:
+if 1:
     plt.figure()
 for i in xrange(num_vals):
     vals_filtered.append(lfilter(lpf, 1, vals_20hz[i]))
-    if 0:
+    if 1:
         plt.subplot(num_vals,1,i+1)
         plt.plot(vals_filtered[i])
         plt.ylabel('Sensor Value')
@@ -229,7 +230,7 @@ t = np.linspace(0, 1, 500, endpoint=False)
 # plt.plot(autocorr(tmp_wave))
 # plt.show()
 
-if 0:
+if 1:
     plt.figure()
     for i in xrange(num_vals):
         plt.subplot(num_vals,1,i+1)
@@ -253,22 +254,36 @@ regression_coefs = np.polyfit(autoc_x_vals, magnitude_autoc, 1)
 magnitude_autoc_corrected = [magnitude_autoc[i] - (regression_coefs[0] * autoc_x_vals[i] \
                                 + regression_coefs[1]) for i in xrange(len(magnitude_autoc))]
 
-if 0:
-    plt.figure(4)
-    plt.subplot(3,1,1)
+magnitude_autoc_corrected /= magnitude_autoc_corrected[0]
+
+if 1:
+    # plt.figure(4)
+    # plt.subplot(3,1,1)
+    # plt.plot(vals_magnitude)
+    # plt.ylabel('Magnitude')
+    # plt.title('x^2 + y^2 + z^2 Magnitude of ' + str_cur_sensor)
+    # plt.subplot(3,1,2)
+    # plt.plot(magnitude_autoc)
+    # plt.ylabel('Autocorrelation Value')
+    # plt.title('Autocorrelation from ' + str(start_autoc) + ':' + str(end_autoc))
+    # plt.subplot(3,1,3)
+    # plt.plot(magnitude_autoc_corrected)
+    # plt.ylabel('Autocorrelation Value')
+    # plt.title('Slope-Corrected Autocorrelation')
+    # plt.grid(True)
+    # plt.xlabel('time (ns)')
+    plt.figure()
+    plt.subplot(2,1,1)
     plt.plot(vals_magnitude)
     plt.ylabel('Magnitude')
     plt.title('x^2 + y^2 + z^2 Magnitude of ' + str_cur_sensor)
-    plt.subplot(3,1,2)
-    plt.plot(magnitude_autoc)
-    plt.ylabel('Autocorrelation Value')
-    plt.title('Autocorrelation from ' + str(start_autoc) + ':' + str(end_autoc))
-    plt.subplot(3,1,3)
+    plt.subplot(2,1,2)
     plt.plot(magnitude_autoc_corrected)
     plt.ylabel('Autocorrelation Value')
     plt.title('Slope-Corrected Autocorrelation')
     plt.grid(True)
     plt.xlabel('time (ns)')
+
 
 if 0:
     plt.figure()
@@ -298,7 +313,7 @@ from matplotlib.mlab import PCA
 vals_pca = PCA(np.array(vals_filtered).T)
 pca_primary_proj = vals_pca.Y[:,0]
 
-if 0:
+if 1:
     plt.figure()
     plt.plot(pca_primary_proj)
     plt.title('PCA Projected onto Primary Axis')
@@ -365,6 +380,10 @@ def autocorrelation(sample_list):
 
 plot_rep_counter = True
 
+# Normalize
+windowed_sig = windowed_sig + abs(min(windowed_sig))
+windowed_sig = windowed_sig / max(windowed_sig)
+
 # Find peak indices and sort by height
 # http://stackoverflow.com/questions/403421/how-to-sort-a-list-of-objects-in-python-based-on-an-attribute-of-the-objects
 peak_indices = findPeaks(windowed_sig)
@@ -381,6 +400,14 @@ for idx in sorted_peak_indices:
             do_not_add = True
     if not do_not_add:
         candidate_peak_indices.append(idx)
+
+if plot_rep_counter:
+    plt.figure()
+    plt.plot(windowed_sig)
+    plt.xlabel('Sample number')
+    plt.ylabel('Sensor Value')
+    plt.title('Windowed Data Projected onto Primary Component Axis (1)')
+    plt.plot(candidate_peak_indices, windowed_sig[candidate_peak_indices], 'go')
 
 # 2:
 # For each candidate peak:
@@ -427,14 +454,19 @@ for idx in candidate_peak_indices:
             else:
                 candidate_peak_indices.remove(idx_close)
 
+if plot_rep_counter:
+    plt.figure()
+    plt.plot(windowed_sig)
+    plt.xlabel('Sample number')
+    plt.ylabel('Sensor Value')
+    plt.title('Windowed Data Projected onto Primary Component Axis (2)')
+    plt.plot(candidate_peak_indices, windowed_sig[candidate_peak_indices], 'go')
+
 # 3:
 # - Normalize between 0 and 1
 # - Find peak at 40th percentile
 # - Reject all peaks smaller than half the amplitude of that peak
 
-# Normalize
-windowed_sig = windowed_sig + abs(min(windowed_sig))
-windowed_sig = windowed_sig / max(windowed_sig)
 
 # Find 40th percentile peak and cull
 candidate_peaks = windowed_sig[candidate_peak_indices]

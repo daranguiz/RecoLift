@@ -1,0 +1,798 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"timesta",
+				"acc_20hz_timestamp"
+			],
+			[
+				"TYPE",
+				"TYPE_LINEAR_ACCELERATION"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "thesis/ecethesis.tex",
+			"settings":
+			{
+				"buffer_size": 4699,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "thesis/abs.tex",
+			"settings":
+			{
+				"buffer_size": 1131,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "thesis/ack.tex",
+			"settings":
+			{
+				"buffer_size": 29,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/LaTeXTools/LaTeX.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					""
+				],
+				[
+					"Packages/SublimeREPL/sublimerepl_build_system_hack.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/LaTeXTools/LaTeX.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/SublimeREPL/sublimerepl_build_system_hack.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 35.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"java",
+				"Set Syntax: Java"
+			],
+			[
+				"synjava",
+				"Set Syntax: Java"
+			],
+			[
+				"synmatlab",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"matlab",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"py",
+				"Set Syntax: Python"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"packageremove",
+				"Package Control: Remove Package"
+			],
+			[
+				"python",
+				"Set Syntax: Python"
+			],
+			[
+				"latexreconf",
+				"LaTeXTools: Reconfigure and migrate settings"
+			],
+			[
+				"tex",
+				"Set Syntax: LaTeX"
+			],
+			[
+				"trailing",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"packageinst",
+				"Package Control: Install Package"
+			],
+			[
+				"align",
+				"Preferences: Alignment Key Bindings – User"
+			],
+			[
+				"alignment",
+				"Preferences: Alignment Key Bindings – Default"
+			],
+			[
+				"syntaxpython",
+				"Set Syntax: Python"
+			],
+			[
+				"syntaxpy",
+				"Set Syntax: Python"
+			],
+			[
+				"syntajava",
+				"Set Syntax: Java"
+			],
+			[
+				"syntaxjava",
+				"Set Syntax: Java"
+			],
+			[
+				"syntaxmat",
+				"Set Syntax: MATLAB"
+			],
+			[
+				":w",
+				":w - Save"
+			]
+		],
+		"width": 514.0
+	},
+	"console":
+	{
+		"height": 524.0,
+		"history":
+		[
+			"import urllib.request,os; pr='Preferences.sublime-settings'; ip='ignored_packages'; n='Package Control'; s=sublime.load_settings(pr); ig=s.get(ip); ig.append(n); s.set(ip,ig); sublime.save_settings('Preferences.sublime-settings'); pf=n+'.sublime-package'; urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler())); by=urllib.request.urlopen('https://packagecontrol.io/'+pf.replace(' ','%20')).read(); open(os.path.join(sublime.installed_packages_path(),pf),'wb').write(by); ig.remove(n); s.set(ip,ig); sublime.save_settings(pr); print('Package Control: 3.0.0 upgrade successful!')",
+			"sublime.log_commands(False)",
+			"stop",
+			"end",
+			"sublime.log_commands(True)",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/server",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis"
+	],
+	"file_history":
+	[
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/uiucecethesis09.cls",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/abstract.txt",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/server/recofit_server.py",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece417/mp2/computepca.m",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece417/mp2/mp2_main.m",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece417/mp1/report/mp1_report.pdf",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/data/GroundTruth/2015_4_29_segmentation.csv",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis/csv_counting.py",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis/csv_recognition.py",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis/csv_segmentation.py",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis/timestamp_delta_check.py",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/data/GroundTruth/2015_4_29_segmentation.arff",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/data/SyncedFromPhoneDCIM/2015.03.30.01.46.14_segmentation_features.csv",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/data/SyncedFromPhoneDCIM/2015.03.30.01.56.00_segmentation_features.csv",
+		"/C/Users/Dario/AppData/Local/Microsoft/Windows/INetCache/IE/I6CM5IT4/2015.03.30.01.46.14_segmentation_features[1].csv",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece417/mp3/report/mp3_report.tex",
+		"/C/Users/Dario/Desktop/test.py",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece417/mp3/mp3_main.m",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece340/hw6/hw6.tex",
+		"/C/Users/Dario/Dropbox/Save/chado_to_remember.txt",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/android/RecoLift/build.gradle",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece417/mp3/README.txt",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece340/hw5/hw5.tex",
+		"/C/Users/Dario/AppData/Local/Temp/7zOE34B.tmp/READ_ME_FIRST.txt",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/analysis/csv_parser.py",
+		"/C/Users/Dario/Desktop/GitHubLog.txt",
+		"/C/Users/Dario/Dropbox/Save/len_face.ahk",
+		"/C/Users/Dario/Desktop/kingmaker.css",
+		"/C/Users/Dario/Dropbox/SchoolWork/cs425/hw3/hw3.tex",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/android/SensorDataCollection/wear/src/main/java/com/daranguiz/sensordatacollection/SensorBackgroundService.java",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/data/2014_11_1/barbell curls.csv",
+		"/C/Users/Dario/Dropbox/SchoolWork/cs425/hw2/hw2.tex",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/android/sensors_available_moto360.txt",
+		"/C/Users/Dario/Dropbox/SchoolWork/SeniorThesis/android/SensorDataCollection/settings.gradle",
+		"/C/Users/Dario/Desktop/plot_test.py",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece498rc3/DeadReckoning/src/com/aranguizherr/deadreckoning/Tracker.java",
+		"/C/Users/Dario/Downloads/opencv.sh",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece398bd/lab7/data/test.json",
+		"/C/Users/Dario/test_csv.txt",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece498rc3/Pedometer/SensorCSV/src/ca/aranguiz/sensorcsv/DataToCSV.java",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece498rc3/Pedometer/SensorCSV/AndroidManifest.xml",
+		"/C/Users/Dario/Dropbox/SchoolWork/ece398bd/lab7/data/data.json",
+		"/C/Users/Dario/Dropbox/SchoolWork/HKN/tutoring_kc_explanation",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/QLearningAgent.java",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/1b_episodes.txt",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/mp1.tex",
+		"/C/Users/Dario/Dropbox/School Work/ece398bd/lab5/dario_aranguiz_lab5.ipynb",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/RandomAgent.java",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/Agent.java",
+		"/C/Users/Dario/Dropbox/School Work/SeniorThesis/search/fitness_tracker_brainstorming.txt",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/episodes.txt",
+		"/C/Users/Dario/Dropbox/School Work/cs440/mp1/Platform/QAgent.java.todo",
+		"/C/Users/Dario/Dropbox/School Work/ece398bd/lab2/dario_aranguiz_lab2.ipynb",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/TrailingSpaces/trailing_spaces.sublime-settings",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/User/trailing_spaces.sublime-settings",
+		"/C/Users/Dario/Dropbox/School Work/ece398bd/lab3/lab3_test.py",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/Alignment/Default (Windows).sublime-keymap",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/Dario/Dropbox/School Work/CS 440/hw1.txt",
+		"/C/Users/Dario/Downloads/out.facebook-wosn-links",
+		"/C/Users/Dario/Dropbox/Jobs/2014_8_26_jawbone_cover_letter",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/notes_for_friday.txt",
+		"/C/Users/Dario/Dropbox/Save/Random/Colemak_toggleable.ahk",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/14/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/6/groundtruth/markerdata.txt",
+		"/C/Users/Dario/.android/debug.keystore",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/csl_deployment_todo.txt",
+		"/C/Users/Dario/Downloads/Seedbox/Office ProPlus 2013 VL (x86 and x64) EN/README.txt",
+		"/C/Users/Dario/Downloads/Seedbox/Office ProPlus 2013 VL (x86 and x64) EN/Office 2013 KMSmicro Activator v3.10/KMSmicro v3.10/Office 2010&2013 Install & Activate_EN.txt",
+		"/C/Users/Dario/Downloads/Seedbox/Office ProPlus 2013 VL (x86 and x64) EN/Office 2013 KMSmicro Activator v3.10/KMSmicro v3.10/Readme_EN.txt",
+		"/C/Users/Dario/Dropbox/HKN/Course Resources Wiki/Systems/systems.",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Dario/Dropbox/HKN/Course Resources Wiki/mock_article.txt",
+		"/C/Users/Dario/Documents/GitHub/nextwave/README.md",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/User/Matlab.sublime-settings",
+		"/C/Users/Dario/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/Dario/Documents/GitHub/pebble-sdk-examples-master/weather-demo/WeatherDemo-Android/src/com/example/PebbleKitExample/ExampleWeatherActivity.java",
+		"/C/Users/Dario/Documents/GitHub/pebble-sdk-examples-master/weather-demo/WeatherDemo-Android/res/layout/activity_weather.xml",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/src/com/synrg/utils/FileUtil.java",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/inertialLandmark_upper_square.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.Hudson/Hudson/1/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/5/groundtruth/2014-03-31-04-22-29-562/knownLocation.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/problems_4_2_2014",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/src/com/synrg/UnLocClientActivity.java",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.1/CSL/1/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/9/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/5/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/8/groundtruth/2014-04-02-12-20-29-347/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/7/groundtruth/2014-04-02-12-19-04-718/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/6/groundtruth/2014-04-02-12-17-46-407/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/5/groundtruth/2014-03-31-04-22-29-562/Time.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/6/groundtruth/2014-03-31-04-23-52-355/Time.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/6/groundtruth/2014-03-31-04-23-52-355/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/4/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.1/Hudson/1/groundtruth/2013-05-02-09-18-21-225/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.1/CSL/2/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/4/data/2014-03-31-04-22-05-326/Sensor.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/landmarks/magneticLandmark.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/landmarks/inertialLandmark.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/markerdata.txt.1",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/landmarks/magneticLandmark.txtN",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData.1/CSL/1/groundtruth/2013-10-23-07-40-21-193/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/Timestamps/2014-03-31-04-22-29-562/Time.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc client source code/SDCard/landmarks/2/directionFlow.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc client source code/SDCard/landmarks/2/inertialLandmark.txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/UnLocData/Hudson/1/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/inertialLandmark.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/Timestamps/2014-03-31-04-23-52-355/timestamps.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/2014-03-31-12-44-58-756/Time.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/2/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/landmarks/2/inertialLandmark.txt",
+		"/C/Users/Dario/AppData/Local/Microsoft/Windows/INetCache/IE/EJ5M4U4N/wifiLandmark[1].txt",
+		"/C/Users/Dario/AppData/Local/Microsoft/Windows/INetCache/IE/AN6JT150/inertialLandmark[1].txt",
+		"/C/Users/Dario/AppData/Local/Microsoft/Windows/INetCache/IE/AN6JT150/inertialLandmark[2].txt",
+		"/C/Users/Dario/Dropbox/ChoudhuryResearch/SyNRG-UnLoc-codebase/UnLoc server source code and data/UnLocData/Hudson/1/groundtruth/2013-05-02-09-18-21-225/knownLocation.txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/inertialLandmark_lower_square.txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/InertialLandmark.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/1/groundtruth/2013-10-23-07-40-21-193/knownLocation.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/landmarks/inertialLandmark.txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/SDCard/InertialLandmarks.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/1/groundtruth/markerdata.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/floorplan/floorplanInfo.txt",
+		"/C/Users/Dario/Desktop/UnlocServerEnvironment/UnLocData/CSL/1/data/2013-10-23-07-41-09-122/Sensor.txt",
+		"/C/Users/Dario/AppData/Local/Microsoft/Windows/INetCache/IE/NT9IMT9G/timestamps[1].txt",
+		"/C/Users/Dario/Documents/GitHub/unloc-client/proguard-project.txt"
+	],
+	"find":
+	{
+		"height": 46.0
+	},
+	"find_in_files":
+	{
+		"height": 117.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Received sensor data",
+			"ed sensor data\n",
+			"data",
+			"E",
+			"\", \";",
+			"full",
+			"arena",
+			"doubleBuffer",
+			"Received sensor data",
+			"ed sensor data,\n",
+			"%f",
+			"b",
+			"ed sensor data,\n",
+			"ed",
+			"y",
+			"     ",
+			"    ",
+			"Weight",
+			"Face",
+			"    ",
+			"probs",
+			"=",
+			"&=",
+			"& ",
+			"F_n - E_f",
+			"n_0",
+			"acc_20hz_timestamp",
+			"acc_20hz_vals",
+			"acc_20hz",
+			"acc_filtered",
+			"plt.show()",
+			"acc_filtered",
+			"sout",
+			"Accelerometer",
+			"ANDREWID",
+			"Acceleration",
+			"Accelerometer",
+			"dict_sensor['TYPE_ACCELEROMETER']",
+			"1",
+			"timestamp_data",
+			"1414901294187233010",
+			"int",
+			"curls_data",
+			"/",
+			"SENSOR_DELAY_NORMAL",
+			"mRotVector",
+			"knows_thief",
+			"_",
+			"\\epsilon",
+			"HWNUM",
+			"ECE",
+			"qValue",
+			"QAgent",
+			"numOfActions",
+			"=",
+			"l2",
+			"calculated_source_node",
+			"buildDatasetGraph",
+			"8",
+			"<node_list>",
+			"tuple",
+			",{\"",
+			"floorplan",
+			"isWatchConnected",
+			"conne"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "thesis/ecethesis.tex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4699,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								934,
+								934
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content"
+							],
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 116.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "thesis/abs.tex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1131,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1131,
+								1131
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content"
+							],
+							"open_with_edit": true,
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "thesis/ack.tex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 29,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								29,
+								29
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content"
+							],
+							"open_with_edit": true,
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 36.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 178.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "thesis.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"android\\SensorDataCollection\\wear\\src\\main\\java\\com\\daranguiz\\sensordatacollection\\SensorBackgroundService.java"
+			],
+			[
+				"sensor",
+				"android\\SensorDataCollection\\wear\\src\\main\\java\\com\\daranguiz\\sensordatacollection\\SensorBackgroundService.java"
+			],
+			[
+				"culr",
+				"data\\2014_11_1\\barbell curls.csv"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 288.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

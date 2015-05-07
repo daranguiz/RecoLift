@@ -1,0 +1,97 @@
+1: Intro
+    - "RecoLift: An Android Wear Strength-Training Fitness Tracker"
+
+2: Motivation
+    - Wanted to marry my interests in lifting, mobile, and signal processing
+    - The end goal: create an application that I can just turn on at the beginning of my gym session and let run without having to interact with it. Then at the end, I can look back and see how many sets and reps I did of which exercises.
+    - Nothing like this on the market yet
+        > There are a select few (Moov, Atlas), but they are standalone and not particularly well integrated
+
+3: Motivation p2, Platform
+    - Smartwatches are booming, with an estimated 1mil apple watches being bought on opening day [1]
+    - Likewise, almost 1mil android wear devices were sold in 2014
+    - Apple and Google are both opening health APIs and investing a lot in smartwatches
+    - To this end, I used a Moto 360 (which I already owned) and an android phone
+
+4: Challenges
+    - Running/steps are pretty easy to track. Low pass filter to say 3Hz and count the peaks.
+    - Lifting is much more difficult.
+    - Main problem, how do you differentiate lifting from non-lifting? This is actually a fundamental problem in machine learning - it's easy for us to look at something and determine what it is, but attaching sensors and trying to determine based on a sensor stream is hard.
+    - Secondary problem, how do you differentiate between lifts? For example, an OHP looks just like a BP from the wrist's point of view
+    - Third problem, how do you count reps when you have a noisy signal? (TODO: SQUAT PIC)
+
+5: System Overview
+    - The system is split into 3 parts to address each of these three challenges separately:
+        > Segmentation
+        > Recognition
+        > Counting
+
+6: Preprocessing
+    - Resample
+        > Android only lets you choose the rough speed that the sensor samples at, not the exact rate
+        > Resample using ZOH from juuust about 25Hz to 25Hz exactly
+    - LP Filter
+        > Butterworth LP filter is applied at 12Hz
+        > Note: there is a HW filter before the ADC on-chip, so we don't have to worry about aliasing
+    - Signal derivation
+        > From the 3 signals (X,Y,Z), we compute magnitude and projection of signal onto first principal component of PCA analysis. (TODO: picture of PCA)[5]
+        > NOTE: Tbh not sure if magnitude/pca is required, need to do some comparison
+
+7: Segmentation
+    - So our primary intuition guiding most of this system is the idea of repetition and autocorrelation. (TODO: gif on autocorrelation [3])
+    - Autocorrelation is convolution of the signal with itself, resulting in the correlation at varying lag values. When the signal aligns with itself, you'll see a peak. Likewise, when it misaligns, you see a trough (TODO: Picture of good autocorrelation w curls vs bad w squats vs random noise)
+    - After autocorrelation is computed, various features are extracted, such as number of peaks, max peak values, etc etc.
+    - Other features such as signal energy, std dev, variance, etc are calculated.
+    - These are all calculated over 5 second sliding windows for each of the 5 signals, 4.8s overlap, and voted on by an SVM.
+    - Accumulator corresponding to ~5sec is used to smooth the classifier noise.
+    -NOTE: There is one activity we do that is very periodic, and that's walking, so...
+
+    - This is done to start and end an exercise. Once this happens, we have a starting and ending index, which is then sent to recognition...
+
+8: Recognition
+    - At this point, we have a full exercise buffer. This is broken up similarly into 5 second sliding windows
+    - More features are computed:
+        > Autoc (binned energy)
+        > Power band (binned energy)
+        > Mean
+        > StdDev
+        > Kurtosis
+        > IQR
+    - These are passed into a multi-class SVM and voted on at the end
+    - Ideally, these features should capture all the small differences - do you tilt your wrist slightly at the end of bench but not at OHP? Do you peak differently?
+
+9: Counting
+    - (TODO: Two figures, one with bicep curls and one with squat)
+    - Step 1:
+        > Find all local maxima that aren't within MIN_PERIOD of any other peaks
+    - Step 2:
+        > Perform autoc around each peak and determine LOCAL_PERIOD
+        > Cull any peaks within 0.75 * LOCAL_PERIOD
+    - Step 3:
+        > Find peak at 40th percentile
+        > Remove any peaks at less than half that value
+
+10: Results
+    - Still in progress
+    - System is completed, but I need to do more training before I get solid numbers
+        > Injured foot makes it particularly difficult to get to the gym
+    - Battery life is actually pretty swell, 10% drain per hour ish for both phone and watch with my bad phone
+
+
+
+
+
+Refs:
+1 - http://fortune.com/2015/04/13/how-many-apple-watches-were-sold-worldwide-on-friday/
+2 - http://www.androidcentral.com/more-720000-android-wear-devices-were-sold-2014-lead-moto-360
+3 - http://bmia.bmt.tue.nl/education/courses/fev/course/notebooks/blockblockconvolution.gif
+4 - http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/DM00059856.pdf
+5 - http://weigend.com/files/teaching/stanford/2008/stanford2008.wikispaces.com/file/view/pca_example.gif
+dan green: http://www.jtsstrength.com/wp-content/uploads/2013/01/527541_4042061092697_2097026545_n.jpg
+sony watch - http://www-static.se-mc.com/blogs.dir/0/files/2013/05/smartwatch-notification-620x390-1bcb79bfa38f5e5cb80806ed8435499b.jpg
+
+first i discuss the motivation. why is this something you should care about? why do i think this was worth investing a year of my life into?
+
+NO talk about challenges next
+
+next i should break into the primary intuition, repetition and autocorrelation.
