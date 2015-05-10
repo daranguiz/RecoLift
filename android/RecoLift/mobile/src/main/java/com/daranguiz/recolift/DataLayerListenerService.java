@@ -1,7 +1,9 @@
 package com.daranguiz.recolift;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -36,16 +38,22 @@ public class DataLayerListenerService extends WearableListenerService {
     }
 
     /* Constants */
-    private static final String TAG = "RecoDataLayerListenerServ";
+    private static final String TAG = "RecoDataLayerServ";
     private static final int MAX_EVENTS_IN_PACKET = 20;
     private static final int SEC_TO_NS = 1000000000;
     private static final int MS_TO_NS = 1000000;
     private static final int F_S = 25;
     private static final int SAMPLING_DELTA_NS = Math.round(SEC_TO_NS * 0.04f);
     private static final int NUM_DOFS = 3;
+    public  static final String RECO_RESULT = "com.daranguiz.recolift.DataLayerListenerService.RECO_RESULT";
+    public  static final String RECO_SENSOR_STATUS_MESSAGE = "com.daranguiz.recolift.DataLayerListenerService.RECO_SENSOR_STATUS";
+    public  static final String RECO_LIFT_MESSAGE = "com.daranguiz.recolift.DataLayerListenerService.RECO_LIFT";
 
     private GoogleApiClient mGoogleApiClient;
     private String lastMessageSent;
+    private LocalBroadcastManager broadcaster;
+    private String lastLiftAllResults;
+    private String lastSensorStatus;
 
     /* Sensor values */
     private SensorValue lastSensorValue;
@@ -63,6 +71,8 @@ public class DataLayerListenerService extends WearableListenerService {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Service started");
+        lastLiftAllResults = "";
+        lastSensorStatus = "";
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
@@ -86,6 +96,11 @@ public class DataLayerListenerService extends WearableListenerService {
                 })
                 .build();
         mGoogleApiClient.connect();
+
+        /* Activity-Service connection init
+         * http://stackoverflow.com/questions/14695537/android-update-activity-ui-from-service
+         */
+        broadcaster = LocalBroadcastManager.getInstance(this);
 
         /* Sensor data init */
         mSensorData = new TreeMap<>();
@@ -124,7 +139,7 @@ public class DataLayerListenerService extends WearableListenerService {
     // ^ maybe that doesn't matter if you're in the gym, will be moving and not inactive ever?
     public void onDataChanged(DataEventBuffer dataEvents) {
         // TODO: Write to CSV, talk to server?
-//        Log.d(TAG, "Received sensor data");
+        Log.d(TAG, "Received sensor data");
 
         /* If new sensor data has been received */
         if (lastMessageSent.equals(TrackerActivity.START_PATH)) {
@@ -134,6 +149,8 @@ public class DataLayerListenerService extends WearableListenerService {
 
                 } else if (event.getType() == DataEvent.TYPE_CHANGED) {
                     DataMap receivedDataMap = DataMap.fromByteArray(event.getDataItem().getData());
+                    lastSensorStatus = "Received sensor data at: " + receivedDataMap.getLong("timestamp0");
+                    updateActivityUI();
 
                     for (int i = 0; i < MAX_EVENTS_IN_PACKET; i++) {
                         String counterString = Integer.toString(i);
@@ -189,16 +206,17 @@ public class DataLayerListenerService extends WearableListenerService {
 
                 Log.d(TAG, "Num reps: " + numReps);
                 Toast.makeText(getApplicationContext(), curLift + ": " + numReps + " reps", Toast.LENGTH_LONG).show();
+
+                /* Send to UI */
+                double liftLen = (double) (stopIdx - startIdx) / F_S;
+                String resultString = curLift + ": " + numReps + ", Length: " + liftLen + "\n";
+                lastLiftAllResults += resultString;
+                updateActivityUI();
             }
 
             /* Run recognition anyway to get ground truth data */
 //            mRecognitionPhase.performBatchRecognition(0, 0);
 //
-//            /* Run counting over the last 5 seconds anyway */
-//            if (mSensorData.get(SensorType.ACCEL_WATCH).size() > F_S * 5) {
-//                mCountingPhase.performBatchCounting(mSensorData.get(SensorType.ACCEL_WATCH).size() - F_S * 5,
-//                        mSensorData.get(SensorType.ACCEL_WATCH).size() - 1, "placeholderLiftType");
-//            }
         }
 
     }
@@ -241,6 +259,13 @@ public class DataLayerListenerService extends WearableListenerService {
             mGoogleApiClient.disconnect();
             stopSelf();
         }
+    }
+
+    private void updateActivityUI() {
+        Intent intent = new Intent(RECO_RESULT);
+        intent.putExtra(RECO_SENSOR_STATUS_MESSAGE, lastSensorStatus);
+        intent.putExtra(RECO_LIFT_MESSAGE, lastLiftAllResults);
+        broadcaster.sendBroadcast(intent);
     }
 
     private Collection<String> sendWatchMessage(String message) {
