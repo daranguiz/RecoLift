@@ -1,8 +1,0 @@
-0, StartCollection,
-66.117, StartLift, PendlayRow
-80.642, StopLift,
-199.179, StartLift, PendlayRow
-261.036, StopLift,
-281.619, StartLift, OverheadPress
-343.324, StopLift,
-414.741, StopCollection,
