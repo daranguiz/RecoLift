@@ -91,8 +91,11 @@ public class SegmentationPhase {
     private boolean isActive;
     private int startActiveIdx;
     private int stopActiveIdx;
-    private static final int MAX_ACCUM_SEC = 5;
-    private static final int MAX_ACCUM = F_S / SLIDE_AMOUNT * MAX_ACCUM_SEC;
+    private static final double MAX_ACCUM_SEC = 5;
+    private static final int MAX_ACCUM = (int) (F_S / SLIDE_AMOUNT * MAX_ACCUM_SEC);
+
+    /* 92% classfication accuracy on segmentation, assume 8% error */
+    private static final double ACCUM_GRACE_PERIOD_SEC = 2.0 * 0.08 * MAX_ACCUM_SEC;
 
     /* Classification */
     private Classifier segmentationSvm;
@@ -437,12 +440,13 @@ public class SegmentationPhase {
         /* If entering a period of activity, store the starting index by decrementing MAX_ACCUM seconds */
         if (activeAccumulator == MAX_ACCUM && !isActive) {
             isActive = true;
-            startActiveIdx = curBufferStart - MAX_ACCUM_SEC * F_S;
+            startActiveIdx = curBufferStart - (int) ((MAX_ACCUM_SEC + ACCUM_GRACE_PERIOD_SEC) * F_S);
+            Toast.makeText(appContext, "Exercise Started", Toast.LENGTH_SHORT).show();
         }
         /* Else if entering a period of inactivity, store the final index by decrementing MAX_ACCUM seconds */
         else if (idleAccumulator == MAX_ACCUM && isActive) {
             isActive = false;
-            stopActiveIdx = curBufferStart - MAX_ACCUM_SEC * F_S;
+            stopActiveIdx = curBufferStart - (int) (MAX_ACCUM_SEC * F_S);
 
             /* If we ever were active and have stopped, we've seen a full exercise window.
              * Report this back up to start recognition on the window.
