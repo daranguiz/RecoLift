@@ -1,0 +1,345 @@
+=== Run information ===
+
+Scheme:weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -C 250007 -E 1.0"
+Relation:     2015_5_10_segmentation_tot
+Instances:    29060
+Attributes:   291
+[list of attributes omitted]
+Test mode:10-fold cross-validation
+
+=== Classifier model (full training set) ===
+
+SMO
+
+Kernel used:
+  Linear Kernel: K(x,y) = <x,y>
+
+Classifier for classes: 0, 1
+
+BinarySMO
+
+Machine linear: showing attribute weights, not support vectors.
+
+         0.3008 * (normalized) attribute_0
+ +      -0.3756 * (normalized) attribute_1
+ +      -0.6294 * (normalized) attribute_2
+ +       0.0368 * (normalized) attribute_3
+ +       0.1874 * (normalized) attribute_4
+ +      -0.099  * (normalized) attribute_5
+ +      -0.9654 * (normalized) attribute_6
+ +      -0.3294 * (normalized) attribute_7
+ +      -1.0646 * (normalized) attribute_8
+ +       0.0176 * (normalized) attribute_9
+ +      -0.1319 * (normalized) attribute_10
+ +       0.3781 * (normalized) attribute_11
+ +      -1.093  * (normalized) attribute_12
+ +      -0.0622 * (normalized) attribute_13
+ +       1.1409 * (normalized) attribute_14
+ +       1.2082 * (normalized) attribute_15
+ +      -0.5244 * (normalized) attribute_16
+ +       0.1324 * (normalized) attribute_17
+ +      -0.1617 * (normalized) attribute_18
+ +      -0.0687 * (normalized) attribute_19
+ +       0.2137 * (normalized) attribute_20
+ +       0.0232 * (normalized) attribute_21
+ +      -0.1575 * (normalized) attribute_22
+ +      -0.9642 * (normalized) attribute_23
+ +      -0.4932 * (normalized) attribute_24
+ +      -0.4932 * (normalized) attribute_25
+ +      -1.7771 * (normalized) attribute_26
+ +      -0.4636 * (normalized) attribute_27
+ +      -0.4636 * (normalized) attribute_28
+ +       0.3577 * (normalized) attribute_29
+ +      -0.4118 * (normalized) attribute_30
+ +      -0.509  * (normalized) attribute_31
+ +      -0.182  * (normalized) attribute_32
+ +       0.4064 * (normalized) attribute_33
+ +      -0.3799 * (normalized) attribute_34
+ +       0.5613 * (normalized) attribute_35
+ +       0.4547 * (normalized) attribute_36
+ +       0.2818 * (normalized) attribute_37
+ +       1.5334 * (normalized) attribute_38
+ +       0.0123 * (normalized) attribute_39
+ +       0.4828 * (normalized) attribute_40
+ +       0.3318 * (normalized) attribute_41
+ +      -0.4894 * (normalized) attribute_42
+ +      -0.1419 * (normalized) attribute_43
+ +      -0.7624 * (normalized) attribute_44
+ +      -0.0952 * (normalized) attribute_45
+ +       0.0295 * (normalized) attribute_46
+ +      -0.081  * (normalized) attribute_47
+ +      -0.4822 * (normalized) attribute_48
+ +       1.9716 * (normalized) attribute_49
+ +       1.5883 * (normalized) attribute_50
+ +       0.7018 * (normalized) attribute_51
+ +       0.5749 * (normalized) attribute_52
+ +       0.3021 * (normalized) attribute_53
+ +       0.3021 * (normalized) attribute_54
+ +      -0.9246 * (normalized) attribute_55
+ +      -0.2511 * (normalized) attribute_56
+ +      -0.2511 * (normalized) attribute_57
+ +      -0.108  * (normalized) attribute_58
+ +      -0.2898 * (normalized) attribute_59
+ +      -0.3174 * (normalized) attribute_60
+ +      -1.3221 * (normalized) attribute_61
+ +      -0.3088 * (normalized) attribute_62
+ +      -0.0655 * (normalized) attribute_63
+ +       0.6325 * (normalized) attribute_64
+ +       0.6972 * (normalized) attribute_65
+ +      -0.3073 * (normalized) attribute_66
+ +      -0.363  * (normalized) attribute_67
+ +       0.0339 * (normalized) attribute_68
+ +      -0.7991 * (normalized) attribute_69
+ +       0.8264 * (normalized) attribute_70
+ +       0.5953 * (normalized) attribute_71
+ +      -0.8202 * (normalized) attribute_72
+ +       0.4767 * (normalized) attribute_73
+ +      -0.3406 * (normalized) attribute_74
+ +       0.1068 * (normalized) attribute_75
+ +       0.083  * (normalized) attribute_76
+ +       0.3091 * (normalized) attribute_77
+ +       2.2626 * (normalized) attribute_78
+ +       2.9155 * (normalized) attribute_79
+ +      -1.9551 * (normalized) attribute_80
+ +       0.6329 * (normalized) attribute_81
+ +       0.2358 * (normalized) attribute_82
+ +       0.2358 * (normalized) attribute_83
+ +       0.6756 * (normalized) attribute_84
+ +       0.6368 * (normalized) attribute_85
+ +       0.6368 * (normalized) attribute_86
+ +      -1.5856 * (normalized) attribute_87
+ +       0.2439 * (normalized) attribute_88
+ +       1.6728 * (normalized) attribute_89
+ +       0.3623 * (normalized) attribute_90
+ +      -0.0823 * (normalized) attribute_91
+ +      -0.1295 * (normalized) attribute_92
+ +       1.1266 * (normalized) attribute_93
+ +       0.8629 * (normalized) attribute_94
+ +       0.8233 * (normalized) attribute_95
+ +       0.6369 * (normalized) attribute_96
+ +       0.0377 * (normalized) attribute_97
+ +      -0.067  * (normalized) attribute_98
+ +       0.7747 * (normalized) attribute_99
+ +       0.1262 * (normalized) attribute_100
+ +      -1.1723 * (normalized) attribute_101
+ +       0.0304 * (normalized) attribute_102
+ +      -0.2377 * (normalized) attribute_103
+ +       0.2927 * (normalized) attribute_104
+ +       0.1636 * (normalized) attribute_105
+ +       0.079  * (normalized) attribute_106
+ +      -0.2338 * (normalized) attribute_107
+ +      -0.4402 * (normalized) attribute_108
+ +       0.1992 * (normalized) attribute_109
+ +       1.1268 * (normalized) attribute_110
+ +       1.0648 * (normalized) attribute_111
+ +       1.0648 * (normalized) attribute_112
+ +      -1.3195 * (normalized) attribute_113
+ +      -0.2614 * (normalized) attribute_114
+ +      -0.2614 * (normalized) attribute_115
+ +      -0.2088 * (normalized) attribute_116
+ +       0.0214 * (normalized) attribute_117
+ +       0.0619 * (normalized) attribute_118
+ +       0.4818 * (normalized) attribute_119
+ +       0.5364 * (normalized) attribute_120
+ +      -0.0076 * (normalized) attribute_121
+ +       1.3957 * (normalized) attribute_122
+ +       0.4405 * (normalized) attribute_123
+ +       1.6365 * (normalized) attribute_124
+ +      -0.4801 * (normalized) attribute_125
+ +       0.553  * (normalized) attribute_126
+ +      -0.0015 * (normalized) attribute_127
+ +      -0.5843 * (normalized) attribute_128
+ +      -0.4565 * (normalized) attribute_129
+ +       0.1725 * (normalized) attribute_130
+ +      -0.4072 * (normalized) attribute_131
+ +      -0.2267 * (normalized) attribute_132
+ +       0.1408 * (normalized) attribute_133
+ +       0.243  * (normalized) attribute_134
+ +      -0.0146 * (normalized) attribute_135
+ +       0.0257 * (normalized) attribute_136
+ +      -0.5021 * (normalized) attribute_137
+ +       0.4221 * (normalized) attribute_138
+ +       1.3966 * (normalized) attribute_139
+ +       0.832  * (normalized) attribute_140
+ +       0.832  * (normalized) attribute_141
+ +      -1.1354 * (normalized) attribute_142
+ +      -0.8415 * (normalized) attribute_143
+ +      -0.8415 * (normalized) attribute_144
+ +       0.4814 * (normalized) attribute_145
+ +       0.51   * (normalized) attribute_146
+ +      -0.0346 * (normalized) attribute_147
+ +      -0.0434 * (normalized) attribute_148
+ +       0.1172 * (normalized) attribute_149
+ +      -0.0789 * (normalized) attribute_150
+ +      -0.0643 * (normalized) attribute_151
+ +       2.5013 * (normalized) attribute_152
+ +      -1.593  * (normalized) attribute_153
+ +      -1.3223 * (normalized) attribute_154
+ +      -0.0439 * (normalized) attribute_155
+ +       0.4466 * (normalized) attribute_156
+ +       0.7909 * (normalized) attribute_157
+ +      -0.9664 * (normalized) attribute_158
+ +      -0.7466 * (normalized) attribute_159
+ +       0.6116 * (normalized) attribute_160
+ +      -0.9603 * (normalized) attribute_161
+ +      -0.4848 * (normalized) attribute_162
+ +       0.021  * (normalized) attribute_163
+ +       0.4475 * (normalized) attribute_164
+ +      -0.4896 * (normalized) attribute_165
+ +      -0.4521 * (normalized) attribute_166
+ +       0.486  * (normalized) attribute_167
+ +      -0.0665 * (normalized) attribute_168
+ +       1.5797 * (normalized) attribute_169
+ +       1.5797 * (normalized) attribute_170
+ +      -0.6823 * (normalized) attribute_171
+ +       2.5939 * (normalized) attribute_172
+ +       2.5939 * (normalized) attribute_173
+ +       0.4091 * (normalized) attribute_174
+ +       0.3364 * (normalized) attribute_175
+ +      -0.0335 * (normalized) attribute_176
+ +      -0.1232 * (normalized) attribute_177
+ +       1.1935 * (normalized) attribute_178
+ +      -0.2169 * (normalized) attribute_179
+ +      -2.6713 * (normalized) attribute_180
+ +      -0.6377 * (normalized) attribute_181
+ +      -1.3039 * (normalized) attribute_182
+ +       1.4631 * (normalized) attribute_183
+ +      -1.6021 * (normalized) attribute_184
+ +       0.698  * (normalized) attribute_185
+ +       0.5335 * (normalized) attribute_186
+ +      -0.0045 * (normalized) attribute_187
+ +       0.7516 * (normalized) attribute_188
+ +       0.5475 * (normalized) attribute_189
+ +       1.4313 * (normalized) attribute_190
+ +      -0.3463 * (normalized) attribute_191
+ +       0.5031 * (normalized) attribute_192
+ +       0.9746 * (normalized) attribute_193
+ +      -1.1722 * (normalized) attribute_194
+ +       1.0541 * (normalized) attribute_195
+ +      -2.5453 * (normalized) attribute_196
+ +       0.6664 * (normalized) attribute_197
+ +      -2.1605 * (normalized) attribute_198
+ +      -2.1605 * (normalized) attribute_199
+ +       1.7291 * (normalized) attribute_200
+ +       1.6703 * (normalized) attribute_201
+ +       1.6703 * (normalized) attribute_202
+ +      -0.1062 * (normalized) attribute_203
+ +      -0.5956 * (normalized) attribute_204
+ +      -0.0172 * (normalized) attribute_205
+ +      -0.2643 * (normalized) attribute_206
+ +      -0.7312 * (normalized) attribute_207
+ +      -0.0165 * (normalized) attribute_208
+ +       0.2885 * (normalized) attribute_209
+ +      -4.6116 * (normalized) attribute_210
+ +       2.6719 * (normalized) attribute_211
+ +      -0.4891 * (normalized) attribute_212
+ +       1.3371 * (normalized) attribute_213
+ +      -0.5562 * (normalized) attribute_214
+ +      -0.7916 * (normalized) attribute_215
+ +       0.1743 * (normalized) attribute_216
+ +      -0.8761 * (normalized) attribute_217
+ +      -1.8136 * (normalized) attribute_218
+ +      -0.0128 * (normalized) attribute_219
+ +       0.0535 * (normalized) attribute_220
+ +      -0.2477 * (normalized) attribute_221
+ +       0.119  * (normalized) attribute_222
+ +      -0.0379 * (normalized) attribute_223
+ +       0.9772 * (normalized) attribute_224
+ +      -0.3004 * (normalized) attribute_225
+ +       0.2921 * (normalized) attribute_226
+ +      -5.9048 * (normalized) attribute_227
+ +      -5.9048 * (normalized) attribute_228
+ +       1.4415 * (normalized) attribute_229
+ +       1.5368 * (normalized) attribute_230
+ +       1.5368 * (normalized) attribute_231
+ +       1.2835 * (normalized) attribute_232
+ +      -0.6249 * (normalized) attribute_233
+ +      -0.996  * (normalized) attribute_234
+ +       1.3599 * (normalized) attribute_235
+ +       0.4151 * (normalized) attribute_236
+ +      -0.2989 * (normalized) attribute_237
+ +       0.4064 * (normalized) attribute_238
+ +       4.1918 * (normalized) attribute_239
+ +       4.0346 * (normalized) attribute_240
+ +       0.3784 * (normalized) attribute_241
+ +      -0.0717 * (normalized) attribute_242
+ +      -0.0282 * (normalized) attribute_243
+ +      -0.5963 * (normalized) attribute_244
+ +       0.1818 * (normalized) attribute_245
+ +       1.8021 * (normalized) attribute_246
+ +      -0.5345 * (normalized) attribute_247
+ +      -0.6337 * (normalized) attribute_248
+ +       0.6321 * (normalized) attribute_249
+ +       0.126  * (normalized) attribute_250
+ +      -0.4489 * (normalized) attribute_251
+ +      -0.007  * (normalized) attribute_252
+ +      -0.3145 * (normalized) attribute_253
+ +       0.4094 * (normalized) attribute_254
+ +       0.4022 * (normalized) attribute_255
+ +       2.3206 * (normalized) attribute_256
+ +       2.3206 * (normalized) attribute_257
+ +      -6.4395 * (normalized) attribute_258
+ +      -1.5215 * (normalized) attribute_259
+ +      -1.5215 * (normalized) attribute_260
+ +       0.6113 * (normalized) attribute_261
+ +       0.2535 * (normalized) attribute_262
+ +      -0.5584 * (normalized) attribute_263
+ +       0.2779 * (normalized) attribute_264
+ +       0.082  * (normalized) attribute_265
+ +      -0.1096 * (normalized) attribute_266
+ +       0.9648 * (normalized) attribute_267
+ +      -0.0708 * (normalized) attribute_268
+ +       1.9796 * (normalized) attribute_269
+ +      -0.9654 * (normalized) attribute_270
+ +       0.216  * (normalized) attribute_271
+ +       0.1144 * (normalized) attribute_272
+ +      -0.7395 * (normalized) attribute_273
+ +      -1.0033 * (normalized) attribute_274
+ +       2.6823 * (normalized) attribute_275
+ +       0.1102 * (normalized) attribute_276
+ +      -1.0812 * (normalized) attribute_277
+ +      -0.4901 * (normalized) attribute_278
+ +       0.1843 * (normalized) attribute_279
+ +       0.3386 * (normalized) attribute_280
+ +       0.4132 * (normalized) attribute_281
+ +       0.8121 * (normalized) attribute_282
+ +      -0.4435 * (normalized) attribute_283
+ +       0.9597 * (normalized) attribute_284
+ +       0.34   * (normalized) attribute_285
+ +       0.34   * (normalized) attribute_286
+ +      -1.7798 * (normalized) attribute_287
+ +      -2.3501 * (normalized) attribute_288
+ +      -2.3501 * (normalized) attribute_289
+ -       5.6224
+
+Number of kernel evaluations: 1123265128 (22.442% cached)
+
+
+
+Time taken to build model: 987.03 seconds
+
+=== Stratified cross-validation ===
+=== Summary ===
+
+Correctly Classified Instances       26819               92.2884 %
+Incorrectly Classified Instances      2241                7.7116 %
+Kappa statistic                          0.7787
+Mean absolute error                      0.0771
+Root mean squared error                  0.2777
+Relative absolute error                 22.0221 %
+Root relative squared error             66.3668 %
+Total Number of Instances            29060     
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.952     0.177      0.948     0.952     0.95       0.887    0
+                 0.823     0.048      0.834     0.823     0.828      0.887    1
+Weighted Avg.    0.923     0.148      0.923     0.923     0.923      0.887
+
+=== Confusion Matrix ===
+
+     a     b   <-- classified as
+ 21408  1076 |     a = 0
+  1165  5411 |     b = 1
+

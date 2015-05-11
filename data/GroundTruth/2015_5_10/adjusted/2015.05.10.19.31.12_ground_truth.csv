@@ -1,0 +1,22 @@
+0.0, StartCollection,
+18.4, StartLift, OverheadPress
+35.7, StopLift,
+72.2, StartLift, OverheadPress
+88.9, StopLift,
+138.3, StartLift, OverheadPress
+154.2, StopLift,
+280.8, StartLift, OverheadPress
+296.6, StopLift,
+338.4, StartLift, OverheadPress
+353.6, StopLift,
+431.4, StartLift, OverheadPress
+449.5, StopLift,
+510.7, StartLift, OverheadPress
+528.6, StopLift,
+649.2, StartLift, OverheadPress
+665.8, StopLift,
+762.6, StartLift, OverheadPress
+779.2, StopLift,
+876.7, StartLift, OverheadPress
+885.3, StopLift,
+971.8, StopCollection,

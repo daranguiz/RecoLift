@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.daranguiz.recolift.utils.RecognitionPhase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
@@ -36,6 +37,7 @@ public class TrackerActivity extends ActionBarActivity implements
     /* UI */
     @InjectView(R.id.textviewRecordedLifts) TextView recordedLiftsText;
     @InjectView(R.id.textviewConnectivityStatus) TextView connectivityStatusText;
+    @InjectView(R.id.textviewCollectGroundTruth) TextView collectGroundTruthText;
     private BroadcastReceiver broadcastReceiver;
     private static String totalLiftString;
 
@@ -49,6 +51,11 @@ public class TrackerActivity extends ActionBarActivity implements
 
         /* Layout init */
         ButterKnife.inject(this);
+        if (RecognitionPhase.collectGroundTruth) {
+            collectGroundTruthText.setText("Collecting Ground Truth");
+        } else {
+            collectGroundTruthText.setText("Not Collecting Ground Truth");
+        }
         totalLiftString = "";
 
         /* Start service to initialize GoogleAPI connections */

@@ -56,8 +56,8 @@ public class RecognitionPhase {
     private static final int NUM_DOFS = 3;
     private static final int NUM_SIDE_PEAK = 2;
     private static final String TAG = "RecognitionPhase";
-    private static final boolean collectGroundTruth = false;
     private static final SensorType[] sensorTypeCache = SensorType.values();
+    public static final boolean collectGroundTruth = false;
 
     /* Buffer */
     private int bufferPointer;
@@ -70,6 +70,8 @@ public class RecognitionPhase {
     private static final String recognitionSvmModelFilename = "RecoLiftRecognitionSVM.model";
     private static final int NUM_ATTS = 201;
     private Instances svmDataset;
+
+    /* Inverted for some reason in model
     private static final String[] liftSet = {
             "Squat",
             "OverheadPress",
@@ -77,6 +79,15 @@ public class RecognitionPhase {
             "PendlayRow",
             "PreacherCurl"
     };
+    */
+    private static final String[] liftSet = {
+            "Curl",
+            "Pendlay Row",
+            "Bench Press",
+            "Overhead Press",
+            "Squat"
+    };
+
 
     /* Logging */
     private static File csvFile;

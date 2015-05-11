@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.CheckBox;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -14,7 +15,11 @@ import butterknife.OnClick;
 
 public class LandingActivity extends ActionBarActivity {
 
+    /* Constants */
+    public static final String GROUND_TRUTH_CHECKBOX = "GROUND_TRUTH_CHECKBOX";
+
     @InjectView(R.id.button_begin_workout) Button beginWorkoutButton;
+    @InjectView(R.id.checkBox_collect_ground_truth) CheckBox collectGroundTruthCheckbox;
 
     @OnClick(R.id.button_begin_workout)
     public void beginWorkout() {
@@ -22,6 +27,8 @@ public class LandingActivity extends ActionBarActivity {
 
         /* Start tracker activity */
         Intent intent = new Intent(this, TrackerActivity.class);
+        boolean checkboxVal = collectGroundTruthCheckbox.isChecked();
+        intent.putExtra(GROUND_TRUTH_CHECKBOX, checkboxVal);
         startActivity(intent);
     }
 

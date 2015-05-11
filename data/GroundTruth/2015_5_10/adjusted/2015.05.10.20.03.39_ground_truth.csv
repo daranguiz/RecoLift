@@ -1,0 +1,22 @@
+0.0, StartCollection,
+22.1, StartLift, PendlayRow
+35.5, StopLift,
+78.8, StartLift, PendlayRow
+92.7, StopLift,
+194.7, StartLift, PendlayRow
+209.0, StopLift,
+263.2, StartLift, PendlayRow
+277.4, StopLift,
+352.7, StartLift, PendlayRow
+366.7, StopLift,
+418.8, StartLift, PendlayRow
+432.3, StopLift,
+497.2, StartLift, PendlayRow
+511.7, StopLift,
+564.3, StartLift, PendlayRow
+578.7, StopLift,
+616.7, StartLift, PendlayRow
+631.8, StopLift,
+675.1, StartLift, PendlayRow
+691.7, StopLift,
+701.6, StopCollection,

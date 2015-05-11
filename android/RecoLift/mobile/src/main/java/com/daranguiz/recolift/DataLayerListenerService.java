@@ -74,6 +74,8 @@ public class DataLayerListenerService extends WearableListenerService {
         lastLiftAllResults = "";
         lastSensorStatus = "";
 
+
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -190,8 +192,8 @@ public class DataLayerListenerService extends WearableListenerService {
             /* Begin segmentation */
             if (mSegmentationPhase.performBatchSegmentation()) {
                 /* If we've seen a full exercise window, let recognition know */
-//                Log.d(TAG, "Full exercise seen!");
-//                Toast.makeText(getApplicationContext(), "Full exercise seen!", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Full exercise seen!");
+                Toast.makeText(getApplicationContext(), "Full exercise seen!", Toast.LENGTH_SHORT).show();
 
                 int startIdx = mSegmentationPhase.fullStartLiftIdx;
                 int stopIdx = mSegmentationPhase.fullStopLiftIdx;
