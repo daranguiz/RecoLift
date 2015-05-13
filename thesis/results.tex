@@ -12,7 +12,7 @@ Our accuracy can be characterized by three factors:
 
 To test our system, we trained our classifiers on five lifts: low bar squat, overhead press, bench press, Pendlay row, and barbell curl. Testing comprised of performing 5 sets of each lift at 8 repetitions each, totaling 40 repetitions for each lift. An empty barbell weighing 45 lbs was used. 
 
-\begin{figure}
+\begin{table}
     \centering
     \begin{tabular}{l r r r}
         \toprule
@@ -28,7 +28,7 @@ To test our system, we trained our classifiers on five lifts: low bar squat, ove
         \bottomrule
     \end{tabular}
     \caption{Difference in reported repetition count versus actual repetition count}
-\end{figure}
+\end{table}
 
 \section{Final Results}
 We achieved 100\% accuracy both on segmentation and recognition. Every set performed was noted and classified correctly, and no misclassification of idle movement occurred. The watch was given to a different user at the gym for a single set, however, and that set was misclassified. Perfect consistency with one user and variable accuracy with another user implies a lack of training data; in the future, our dataset will be trained on more than a single user.
