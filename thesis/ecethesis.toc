@@ -23,6 +23,6 @@
 \contentsline {subsection}{\numberline {4.4.3}Algorithm Part 3}{15}
 \contentsline {chapter}{CHAPTER\ 5\hskip 1em\relax \MakeUppercase {Results}}{16}
 \contentsline {section}{\numberline {5.1}Methods}{16}
-\contentsline {section}{\numberline {5.2}Final Results}{16}
+\contentsline {section}{\numberline {5.2}Final Results}{17}
 \contentsline {chapter}{CHAPTER\ 6\hskip 1em\relax \MakeUppercase {Conclusion}}{18}
 \contentsline {chapter}{\MakeUppercase {REFERENCES}}{19}

@@ -12,10 +12,6 @@ Our accuracy can be characterized by three factors:
 
 To test our system, we trained our classifiers on five lifts: low bar squat, overhead press, bench press, Pendlay row, and barbell curl. Testing comprised of performing 5 sets of each lift at 8 repetitions each, totaling 40 repetitions for each lift. An empty barbell weighing 45 lbs was used. 
 
-
-\section{Final Results}
-We achieved 100\% accuracy both on segmentation and recognition. Every set performed was noted and classified correctly, and no misclassification of idle movement occurred. 
-
 \begin{figure}
     \centering
     \begin{tabular}{l r r r}
@@ -28,8 +24,15 @@ We achieved 100\% accuracy both on segmentation and recognition. Every set perfo
         Pendlay Row    & 40 \%    & 80 \%     & 100 \% \\
         Curl           & 20 \%    & 100 \%    & 100 \% \\
         \midrule
-        Overall        & 44 \%   & 80 \%    & 96 \%    \\
+        Overall        & 44 \%   & 80 \%      & 96 \%  \\
         \bottomrule
     \end{tabular}
     \caption{Difference in reported repetition count versus actual repetition count}
 \end{figure}
+
+\section{Final Results}
+We achieved 100\% accuracy both on segmentation and recognition. Every set performed was noted and classified correctly, and no misclassification of idle movement occurred. The watch was given to a different user at the gym for a single set, however, and that set was misclassified. Perfect consistency with one user and variable accuracy with another user implies a lack of training data; in the future, our dataset will be trained on more than a single user.
+
+Recognition achieved permissible levels of accuracy, with 80\% of sets being reported within one repetition of their true count. 
+
+Considering this system was physically implemented, we can make inferences regarding battery life. The Moto 360 smartwatch used in this system lost approximately 25\% of its battery life during our one hour testing session, and the Galaxy S4 smartphone used in this system lost approximately 15\% of its battery life. Further user study will determine whether this is permissible or not; conserving battery life is an important factor for many in the mobile space, and a two hour gym session draining 50\% of the watch's battery may not be acceptable. Future iterations of Android Wear devices should allay battery life concerns, however.
