@@ -4,7 +4,7 @@
 \section{Preprocessing}
 
 \subsection{Resampling}
-An unfortunate downside to the Android platform is that Android does not guarantee an even sampling rate on its sensors. In lieu of defining a sampling rate, Android allows the developer to request the delay amount between sensor readings. These delays can be \textit{NORMAL, GAME, UI,} or \textit{FASTEST}, going from a $200000\mu s$ delay down to a zero second delay.
+An unfortunate disadvantage of the Android platform is that Android does not guarantee an even sampling rate on its sensors. In lieu of defining a sampling rate, Android allows the developer to request the delay amount between sensor readings. These delays can be \textit{NORMAL, GAME, UI,} or \textit{FASTEST}, going from a $200000\mu s$ delay down to a zero second delay.
 
 Likewise, although Android does not allow us to define a sampling rate, setting the delay to \textit{FASTEST} results in a sampling rate consistently near 25Hz. To be precise, the accelerometer was measured to have a sampling rate of approximately 24.67Hz on average. This is however an average, thus samples may come early or late, depending on how the Android scheduler prioritizes sensor readings. 
 
@@ -19,7 +19,7 @@ Our low-pass filter is implemented using a unity-gain five-tap IIR Butterworth f
 %%======================================================================%%
 \section{Segmentation}
 
-Sensor data is sent in batches from the watch to reduce message overhead and preserve battery life, thus large buffers of sensor data are sent to segmentation at a time.
+Sensor data is sent in batches from the watch to reduce message overhead and preserve battery life, thus segmentation must be able to handle large amounts of data at each iteration.
 
 \begin{figure}
     \centering
@@ -38,10 +38,10 @@ Sensor data is sent in batches from the watch to reduce message overhead and pre
 \end{figure}
 
 \subsection{Sliding Window Buffers}
-First, our data is split into five second buffers using a sliding window with 4.8s overlap. This is done for the purposes of autocorrelation. As mentioned earlier, we expect exercise to be roughly periodic across the entire signal, exhibiting an autocorrelation similar to Figure 4.1, contrasted to aperiodic movement as in Figure 4.2. This is not entirely true however. Anecdotally, when performing a set of ten repetitions, the first repetitions will be done better than the final repetitions. Bar speed is directly indicative of the quality of a repetition, thus early repetitions are performed quicker than later repetitions. Computing autocorrelation over the entire signal would not make sense then - concurrent repetitions will likely be similar, but the first is nearly guaranteed to have a different period than the last. Therefore, we compute segmentation over sliding windows. 
+First, our data is split into 5s buffers using a sliding window with 4.8s overlap. This is done for the purposes of autocorrelation. As mentioned earlier, we expect exercise to be roughly periodic across the entire signal, exhibiting an autocorrelation similar to Figure 4.1, contrasted to aperiodic movement as in Figure 4.2. This is not entirely the case, however. Anecdotally, when performing a set of ten repetitions, the first repetitions will be done better than the final repetitions. Bar speed is directly indicative of the quality of a repetition, thus early repetitions are performed quicker than later repetitions. Computing autocorrelation over the entire signal would not make sense then - concurrent repetitions will likely be similar, but the first is nearly guaranteed to have a different period than the last. Therefore, we compute segmentation over sliding windows. 
 
 \subsection{Signal Variants}
-Our system uses two three-axis sensor sources, the smartwatch's accelerometer and gyroscope. We derive the following signals from each sensor stream:
+Our system uses two three-axis sensor sources: the smartwatch's accelerometer and gyroscope. We derive the following signals from each sensor stream:
 
 \begin{enumerate}
     \item \textbf{X-axis:} the X-axis of the accelerometer/gyroscope
@@ -51,9 +51,9 @@ Our system uses two three-axis sensor sources, the smartwatch's accelerometer an
     \item \textbf{PCA:} the projection of the three-axis data onto its first principal component
 \end{enumerate}
 
-This results in ten total signals, five for each sensor. In the past, the orientation of the IMU could not be determined a priori, thus only the axis pointing along the direction of the arm could be used. We can make stronger assumptions however with the use of Android Wear, as a smartwatch has only one possible orientation on the wrist. This allows us to use all three axes as raw signals.
+This results in 10 total signals, 5 for each sensor. In the past, the orientation of the IMU could not be determined a priori, thus only the axis pointing along the direction of the arm could be used. We can make stronger assumptions however with the use of Android Wear, as a smartwatch has only one possible orientation on the wrist. This allows us to use all three axes as raw signals.
 
-Included in this set are two derived signals, magnitude and PCA. Both signals are attempts at illustrating the primary axis of movement, with magnitude being a crude estimate and the projection onto the raw signal's first principal component being a more refined estimate. In our trials, we have found that computing both the primary projection and the magnitude signals are computationally inexpensive, thus both are used. Further investigation is required to determine if using both is necessary for sufficient classification, although the gain in omitting one is minimal.
+Included in this set are two derived signals, magnitude and PCA. Both signals are attempts at illustrating the primary axis of movement, with magnitude being a crude estimate and the projection onto the raw signal's first principal component being a more refined estimate. In our trials, we have found that computing both the primary projection and the magnitude signals is computationally inexpensive, thus both are used. Further investigation is required to determine if using both is necessary for sufficient classification, although the gain in omitting one is minimal.
 
 \subsection{Feature Selection} 
 From each of the ten sensor streams, we compute 29 features: 
@@ -62,7 +62,7 @@ From each of the ten sensor streams, we compute 29 features:
     \item \textbf{Autocorrelation Features:}
     \begin{enumerate}
         \item \textbf{Total Number of Autocorrelation Peaks:} After computing autocorrelation, the total number of local maxima across the signal is recorded. For exercise, we expect this number to be on the order of two to five. An autocorrelation with no peaks implies idling, and an autocorrelation with too many peaks implies random movement.
-        \item \textbf{Number of Prominent Autocorrelation Peaks:} Prominent peaks are determined using a threshold heuristic. If they are relatively isolated from surrounding peaks, and they are also larger in magnitude than surrounding peaks, they are considered prominent. We expect this to be close to the total number of autocorrelation peaks for exercise.
+        \item \textbf{Number of Prominent Autocorrelation Peaks:} Prominent peaks are determined using a threshold heuristic. If they are relatively isolated from surrounding peaks, and they are also greater in magnitude than surrounding peaks, they are considered prominent. We expect this to be close to the total number of autocorrelation peaks for exercise.
         \item \textbf{Number of Weak Autocorrelation Peaks:} Likewise, weak peaks are determined using the inverse of the strategy above. This should be close to the total number of peaks during non-exercise.
         \item \textbf{Maximum Autocorrelation Peak Value:} A large autocorrelation peak value implies high similarity between the original signal and the delayed version of the signal, indicating periodicity.
         \item \textbf{First Autocorrelation Peak Value:} Likewise, we expect the first peak to be very large for exercise. There is no such expectation for non-exercise.
@@ -71,9 +71,9 @@ From each of the ten sensor streams, we compute 29 features:
     \item \textbf{Energy Features:}
     \begin{enumerate}
         \item \textbf{RMS Amplitude:} RMS amplitude is computed for the full window, the first half of the window, and the second half of the window to account for when the window lies on an exercise boundary. Additionally, the CUSUM RMS amplitude is computed as a loose approximation of velocity RMS amplitude.
-        \item \textbf{Power Spectrum Bin Magnitudes:} The power spectrum is binned into ten equal width segments and recorded. 
+        \item \textbf{Power Spectrum Bin Magnitudes:} The power spectrum is binned into 10 equally wide segments and recorded. 
     \end{enumerate}
-    \item \textbf{Statistical Features:} Similar to RMS, the following features are computed for the full window, the first half of the window, and the second half of the window. 
+    \item \textbf{Statistical Features:} Similar to RMS, the following features are computed for the full window, the first half of the window, and the second half of the window: 
     \begin{enumerate}
         \item \textbf{Mean} 
         \item \textbf{Variance}
@@ -84,14 +84,14 @@ From each of the ten sensor streams, we compute 29 features:
 This results in a total of 291 features, which are passed into a classifier. 
 
 \subsection{Classification}
-These features are passed into a binary SVM trained using athletes familiar with each lift. We then use an accumulator-style voting system to determine when an exercise boundary has been crossed. If the SVM predicts that a lift is occurring, we increment the accumulator. Likewise, if it predicts non-exercise, we decrement the accumulator. Once an accumulator threshold is crossed, we can say with relative certainty that exercise is occuring. The same is done in reverse for computing the end of an exercise boundary.
+These features are passed into a binary SVM trained using athletes familiar with each lift. We then use an accumulator-style voting system to determine when an exercise boundary has been crossed. If the SVM predicts that a lift is occurring, we increment the accumulator. Likewise, if it predicts non-exercise, we decrement the accumulator. Once an accumulator threshold is crossed, we can say with relative certainty that exercise is occurring. The same is done in reverse for computing the end of an exercise boundary.
 
 In practice, we set an accumulator threshold equal to two seconds of activity. Two seconds tends to be the time it takes to complete one full repetition and begin another repetition. This could be increased to reduce false positives, although computing an accurate exercise window boundary is important for counting the number of repetitions. This becomes more difficult as the accumulator threshold increases.
 
 %%======================================================================%%
 \section{Recognition}
 
-The recognition phase follows a similar structure as the segmentation phase. From the segmentation phase, we receive a set of data indices bounding the beginning and end of an exercise window. This window is then broken down into five second buffers with 4.8s overlap. The same set of five signals per sensor source are also calculated, those being the \textbf{X, Y, and Z axes, the signal magnitude, and the signal's primary PCA projection}. The main difference however is in the features extracted.
+The recognition phase follows a similar structure as the segmentation phase. From the segmentation phase, we receive a set of data indices bounding the beginning and end of an exercise window. This window is then broken down into five second buffers with 4.8s overlap. The same set of five signals per sensor source is also calculated, those being the \textbf{X, Y, and Z axes, the signal magnitude, and the signal's primary PCA projection}. The main difference however is in the features extracted.
 
 \subsection{Feature Selection}
 Autocorrelation is useful for estimating whether a signal is periodic as well what its period may be, but we cannot use that information for recognition. Training a classifier which depends on bar speed would be inherently erroneous, as bar speed varies wildly depending on strength, stamina, and lift intensity. To this end, we omit most autocorrelation features from the segmentation phase and focus on other features:
@@ -99,12 +99,12 @@ Autocorrelation is useful for estimating whether a signal is periodic as well wh
 \begin{enumerate}
     \item \textbf{Autocorrelation Features:}
     \begin{enumerate}
-        \item \textbf{Autocorrelation Bins:} Compute the autocorrelation of the window and instead of searching for peaks, compute the magnitude for ten evenly-spaced bins.
+        \item \textbf{Autocorrelation Bins:} Compute the autocorrelation of the window and instead of searching for peaks, compute the magnitude for 10 evenly-spaced bins.
     \end{enumerate}
     \item \textbf{Energy Features:}
     \begin{enumerate}
         \item \textbf{RMS:} The RMS of the full window is computed. 
-        \item \textbf{Power Spectrum Bin Magnitudes:} Similar to the segmentation phase, the power spectrum is split into ten evenly-spaced bins, and the magnitudes of each are recorded.
+        \item \textbf{Power Spectrum Bin Magnitudes:} Similar to the segmentation phase, the power spectrum is split into 10 evenly-spaced bins, and the magnitudes of each are recorded.
     \end{enumerate}
     \item \textbf{Statistical Features:}
     \begin{enumerate}
@@ -135,7 +135,7 @@ Our counting algorithm can be defined by the following algorithm:
     \end{enumerate}
     \item For each candidate peak:
     \begin{enumerate}
-        \item Compute autocorrelation in a five second window about the peak
+        \item Compute autocorrelation in a 5s window about the peak
         \item Find the maximum value in the autocorrelation, determining local periodicity P
         \item Remove peak from candidate set if it is $<0.75P$ away from any other peak
     \end{enumerate}

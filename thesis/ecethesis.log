@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  13 MAY 2015 03:19
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  13 MAY 2015 03:43
 entering extended mode
 **C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
 (C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
@@ -51,8 +51,6 @@ File: bk12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip45
 \bibindent=\dimen105
 )
-\timehh=\count91
-\timemm=\count92
 \degree@dept@max=\skip46
 \degree@dept@wid=\skip47
 \degree@dept@test=\box26
@@ -89,7 +87,7 @@ Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 )
-\Gread@gobject=\count93
+\Gread@gobject=\count91
 ))
 \Gin@req@height=\dimen106
 \Gin@req@width=\dimen107
@@ -117,13 +115,13 @@ Package: amsbsy 1999/11/29 v1.2d
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty"
 Package: amsopn 1999/12/14 v2.01 operator names
 )
-\inf@bad=\count94
+\inf@bad=\count92
 LaTeX Info: Redefining \frac on input line 210.
-\uproot@=\count95
-\leftroot@=\count96
+\uproot@=\count93
+\leftroot@=\count94
 LaTeX Info: Redefining \overline on input line 306.
-\classnum@=\count97
-\DOTSCASE@=\count98
+\classnum@=\count95
+\DOTSCASE@=\count96
 LaTeX Info: Redefining \ldots on input line 378.
 LaTeX Info: Redefining \dots on input line 381.
 LaTeX Info: Redefining \cdots on input line 466.
@@ -132,15 +130,15 @@ LaTeX Info: Redefining \cdots on input line 466.
 \big@size=\dimen112
 LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
-\macc@depth=\count99
-\c@MaxMatrixCols=\count100
+\macc@depth=\count97
+\c@MaxMatrixCols=\count98
 \dotsspace@=\muskip10
-\c@parentequation=\count101
-\dspbrk@lvl=\count102
+\c@parentequation=\count99
+\dspbrk@lvl=\count100
 \tag@help=\toks16
-\row@=\count103
-\column@=\count104
-\maxfields@=\count105
+\row@=\count101
+\column@=\count102
+\maxfields@=\count103
 \andhelp@=\toks17
 \eqnshift@=\dimen113
 \alignsep@=\dimen114
@@ -172,7 +170,7 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 \caption@parindent=\dimen124
 \caption@hangindent=\dimen125
 )
-\c@ContinuedFloat=\count106
+\c@ContinuedFloat=\count104
 )
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty"
 Package: booktabs 2005/04/14 v1.61803 publication quality tables
@@ -186,12 +184,12 @@ Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \cmidrulesep=\dimen133
 \cmidrulekern=\dimen134
 \defaultaddspace=\dimen135
-\@cmidla=\count107
-\@cmidlb=\count108
+\@cmidla=\count105
+\@cmidlb=\count106
 \@aboverulesep=\dimen136
 \@belowrulesep=\dimen137
-\@thisruleclass=\count109
-\@lastruleclass=\count110
+\@thisruleclass=\count107
+\@lastruleclass=\count108
 \@thisrulewidth=\dimen138
 )
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.aux
@@ -217,20 +215,29 @@ LaTeX Font Info:    ... okay on input line 49.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count111
+\scratchcounter=\count109
 \scratchdimen=\dimen140
 \scratchbox=\box29
-\nofMPsegments=\count112
-\nofMParguments=\count113
+\nofMPsegments=\count110
+\nofMParguments=\count111
 \everyMPshowfont=\toks20
-\MPscratchCnt=\count114
+\MPscratchCnt=\count112
 \MPscratchDim=\dimen141
-\MPnumerator=\count115
-\makeMPintoPDFobject=\count116
+\MPnumerator=\count113
+\makeMPintoPDFobject=\count114
 \everyMPtoPDFconversion=\toks21
 )
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 60.
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 60.
+ [1
+
+{C:/Users/Dario/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 \thesis@dim=\dimen142
 
 Underfull \vbox (badness 10000) detected at line 60
@@ -248,14 +255,11 @@ Underfull \vbox (badness 10000) detected at line 60
 Underfull \vbox (badness 10000) detected at line 60
  []
 
-[1
-
-{C:/Users/Dario/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\abs.tex) [2
+[2] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\abs.tex) [2
 
 
-] [3]
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ack.tex) [4
+]
+[3] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ack.tex) [4
 
 ]
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.toc)
@@ -281,14 +285,14 @@ CHAPTER 2.
 ]) [4]
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\overall_methodology.tex
 CHAPTER 3.
-<idling_raw_accelerometer.png, id=39, 410.9754pt x 96.36pt>
+<idling_raw_accelerometer.png, id=42, 410.9754pt x 96.36pt>
 File: idling_raw_accelerometer.png Graphic file (type png)
 
 <use idling_raw_accelerometer.png>
 Package pdftex.def Info: idling_raw_accelerometer.png used on input line 11.
 (pdftex.def)             Requested size: 410.9744pt x 96.35974pt.
 
-<curl_raw_accelerometer.png, id=41, 705.38531pt x 164.86594pt>
+<curl_raw_accelerometer.png, id=44, 705.38531pt x 164.86594pt>
 File: curl_raw_accelerometer.png Graphic file (type png)
 
 <use curl_raw_accelerometer.png>
@@ -300,7 +304,7 @@ Package pdftex.def Info: curl_raw_accelerometer.png used on input line 19.
 
  <C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/idling_raw_acceleromete
 r.png>]
-<squat_raw_accelerometer.png, id=46, 1050.17343pt x 159.59625pt>
+<squat_raw_accelerometer.png, id=49, 1050.17343pt x 159.59625pt>
 File: squat_raw_accelerometer.png Graphic file (type png)
 
 <use squat_raw_accelerometer.png>
@@ -315,14 +319,14 @@ CHAPTER 4.
 
 
 
-] <curl_magnitude_autoc.png, id=63, 578.16pt x 431.4519pt>
+] <curl_magnitude_autoc.png, id=66, 578.16pt x 431.4519pt>
 File: curl_magnitude_autoc.png Graphic file (type png)
 
 <use curl_magnitude_autoc.png>
 Package pdftex.def Info: curl_magnitude_autoc.png used on input line 28.
 (pdftex.def)             Requested size: 578.15858pt x 431.45085pt.
 
-<noisy_no_exercise_autoc.png, id=64, 578.16pt x 431.4519pt>
+<noisy_no_exercise_autoc.png, id=67, 578.16pt x 431.4519pt>
 File: noisy_no_exercise_autoc.png Graphic file (type png)
 
 <use noisy_no_exercise_autoc.png>
@@ -382,13 +386,13 @@ Underfull \hbox (badness 1028) in paragraph at lines 75--79
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.aux)) ) 
 Here is how much of TeX's memory you used:
- 3274 strings out of 493921
- 50763 string characters out of 3144877
- 109482 words of memory out of 3000000
- 6503 multiletter control sequences out of 15000+200000
- 10445 words of font info for 37 fonts, out of 3000000 for 9000
+ 3287 strings out of 493921
+ 51040 string characters out of 3144877
+ 109515 words of memory out of 3000000
+ 6515 multiletter control sequences out of 15000+200000
+ 9740 words of font info for 35 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 36i,7n,39p,1413b,273s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,7n,39p,1415b,273s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Pr
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Prog
 ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Progra
@@ -397,12 +401,11 @@ Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Fil
 es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files 
 (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files (x8
 6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/M
-iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files (x86)/MiK
-TeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files (x86)/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on ecethesis.pdf (28 pages, 456720 bytes).
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on ecethesis.pdf (29 pages, 441335 bytes).
 PDF statistics:
- 143 PDF objects out of 1000 (max. 8388607)
+ 142 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
