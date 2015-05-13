@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  13 MAY 2015 01:42
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  13 MAY 2015 02:28
 entering extended mode
 **C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
 (C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
@@ -318,28 +318,39 @@ CHAPTER 6.
 
 
 ] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.bbl
-
-LaTeX Warning: Empty `thebibliography' environment on input line 25.
-
-) [19
-
+Underfull \hbox (badness 3989) in paragraph at lines 34--37
+[]\OT1/cmr/m/n/12 ``Google fit,'' May 2015. [On-line]. Avail-able:
+ []
 
 
-] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.aux
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.aux)
+Underfull \hbox (badness 5245) in paragraph at lines 59--62
+[]\OT1/cmr/m/n/12 ``Weightlifting,'' May 2015. [On-line]. Avail-able:
+ []
+
+
+Underfull \hbox (badness 1028) in paragraph at lines 75--79
+\OT1/cmr/m/n/12 world-wide last week-end?'' 2015. [On-line]. Avail-
+ []
+
+[19
+
+
+
+]) [20] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.aux (C
+:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\literature_review.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\overall_methodology.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\system_design.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.aux)) ) 
 Here is how much of TeX's memory you used:
- 3236 strings out of 493921
- 49840 string characters out of 3144877
- 109482 words of memory out of 3000000
- 6471 multiletter control sequences out of 15000+200000
+ 3248 strings out of 493921
+ 50004 string characters out of 3144877
+ 108482 words of memory out of 3000000
+ 6483 multiletter control sequences out of 15000+200000
  10445 words of font info for 37 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 36i,7n,39p,1400b,265s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,7n,39p,1413b,265s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Pr
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Prog
 ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Progra
@@ -351,9 +362,9 @@ es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files
 iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files (x86)/MiK
 TeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files (x86)/MiKTe
 X 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on ecethesis.pdf (25 pages, 185600 bytes).
+Output written on ecethesis.pdf (26 pages, 191433 bytes).
 PDF statistics:
- 123 PDF objects out of 1000 (max. 8388607)
+ 126 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

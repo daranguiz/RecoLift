@@ -1,10 +1,17 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: ecethesis.aux
+A level-1 auxiliary file: intro.aux
+A level-1 auxiliary file: literature_review.aux
+A level-1 auxiliary file: overall_methodology.aux
+A level-1 auxiliary file: system_design.aux
+A level-1 auxiliary file: results.aux
+A level-1 auxiliary file: conclusion.aux
 The style file: IEEE_ECE.bst
-I found no \citation commands---while reading file ecethesis.aux
-Database file #1: thesisrefs.bib
+Database file #1: refs.bib
+Warning--string name "april" is undefined
+--line 69 of file refs.bib
 -- IEEEtran.bst version 1.12 (2007/01/11) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 
 Done.
-(There was 1 error message)
+(There was 1 warning)
