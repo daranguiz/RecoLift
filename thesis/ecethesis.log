@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  13 MAY 2015 02:28
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  13 MAY 2015 03:19
 entering extended mode
 **C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
 (C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
@@ -281,39 +281,77 @@ CHAPTER 2.
 ]) [4]
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\overall_methodology.tex
 CHAPTER 3.
-[5
+<idling_raw_accelerometer.png, id=39, 410.9754pt x 96.36pt>
+File: idling_raw_accelerometer.png Graphic file (type png)
+
+<use idling_raw_accelerometer.png>
+Package pdftex.def Info: idling_raw_accelerometer.png used on input line 11.
+(pdftex.def)             Requested size: 410.9744pt x 96.35974pt.
+
+<curl_raw_accelerometer.png, id=41, 705.38531pt x 164.86594pt>
+File: curl_raw_accelerometer.png Graphic file (type png)
+
+<use curl_raw_accelerometer.png>
+Package pdftex.def Info: curl_raw_accelerometer.png used on input line 19.
+(pdftex.def)             Requested size: 705.38359pt x 164.86551pt.
+ [5
 
 
 
-] [6]) [7]
+ <C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/idling_raw_acceleromete
+r.png>]
+<squat_raw_accelerometer.png, id=46, 1050.17343pt x 159.59625pt>
+File: squat_raw_accelerometer.png Graphic file (type png)
+
+<use squat_raw_accelerometer.png>
+Package pdftex.def Info: squat_raw_accelerometer.png used on input line 33.
+(pdftex.def)             Requested size: 1050.17087pt x 159.59584pt.
+ [6 <C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/curl_raw_acceleromet
+er.png>] [7 <C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/squat_raw_ac
+celerometer.png>]) [8]
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\system_design.tex
 CHAPTER 4.
-[8
+[9
 
 
 
-]
-Overfull \hbox (20.88509pt too wide) in paragraph at lines 34--35
+] <curl_magnitude_autoc.png, id=63, 578.16pt x 431.4519pt>
+File: curl_magnitude_autoc.png Graphic file (type png)
+
+<use curl_magnitude_autoc.png>
+Package pdftex.def Info: curl_magnitude_autoc.png used on input line 28.
+(pdftex.def)             Requested size: 578.15858pt x 431.45085pt.
+
+<noisy_no_exercise_autoc.png, id=64, 578.16pt x 431.4519pt>
+File: noisy_no_exercise_autoc.png Graphic file (type png)
+
+<use noisy_no_exercise_autoc.png>
+Package pdftex.def Info: noisy_no_exercise_autoc.png used on input line 36.
+(pdftex.def)             Requested size: 578.15858pt x 431.45085pt.
+ [10 <C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/curl_magnitude_auto
+c.png>]
+Overfull \hbox (20.88509pt too wide) in paragraph at lines 50--51
 []\OT1/cmr/bx/n/12 Magnitude: \OT1/cmr/m/n/12 the $[]$ mag-ni-tude of the ac-ce
 lerom-e-ter/gyroscope 
  []
 
-[9] [10] [11] [12] [13]
-Overfull \hbox (18.13968pt too wide) in paragraph at lines 139--140
+[11 <C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/noisy_no_exercise_au
+toc.png>] [12] [13] [14] [15]
+Overfull \hbox (18.13968pt too wide) in paragraph at lines 155--156
 \OT1/cmr/m/n/12 make an as-sump-tion that two rep-e-ti-tions could never oc-cur
  within MIN[]PERIOD
  []
 
-[14]) [15] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.tex
+[16]) [17] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.tex
 CHAPTER 5.
-[16
+[18
 
 
 
-]) [17]
+]) [19]
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.tex
 CHAPTER 6.
-) [18
+) [20
 
 
 
@@ -332,11 +370,11 @@ Underfull \hbox (badness 1028) in paragraph at lines 75--79
 \OT1/cmr/m/n/12 world-wide last week-end?'' 2015. [On-line]. Avail-
  []
 
-[19
+[21
 
 
 
-]) [20] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.aux (C
+]) [22] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.aux (C
 :\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\literature_review.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\overall_methodology.aux)
@@ -344,13 +382,13 @@ Underfull \hbox (badness 1028) in paragraph at lines 75--79
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.aux)) ) 
 Here is how much of TeX's memory you used:
- 3248 strings out of 493921
- 50004 string characters out of 3144877
- 108482 words of memory out of 3000000
- 6483 multiletter control sequences out of 15000+200000
+ 3274 strings out of 493921
+ 50763 string characters out of 3144877
+ 109482 words of memory out of 3000000
+ 6503 multiletter control sequences out of 15000+200000
  10445 words of font info for 37 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 36i,7n,39p,1413b,265s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,7n,39p,1413b,273s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Pr
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Prog
 ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Progra
@@ -362,9 +400,9 @@ es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files
 iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files (x86)/MiK
 TeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files (x86)/MiKTe
 X 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on ecethesis.pdf (26 pages, 191433 bytes).
+Output written on ecethesis.pdf (28 pages, 456720 bytes).
 PDF statistics:
- 126 PDF objects out of 1000 (max. 8388607)
+ 143 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

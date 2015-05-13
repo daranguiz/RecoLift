@@ -4,11 +4,35 @@
 
 There exist a number of problems when doing strength training-based fitness tracking. The first is the issue of \textit{separating exercise from non-exercise}. As with most problems in machine learning, exercise is easily discerned from non-exercise when viewed with the naked eye. This separability breaks down when viewing exercise from the perspective of the onboard sensors. Performing a repetition on bench press may look similar to grabbing a water bottle from a gym bag, for example. Additionally, common non-exercise movements such as pacing about or drinking from the water fountain may be accidentally misconstrued as exercise when looking at time series data. 
 
-We have a key intuition however to separate exercise from non-exercise, and that is periodicity. Non-exercise tends to be very aperiodic, while exercise (especially high-repetition bodybuilder-esque exercise) tends to be very periodic. This can be easily exploited then when performing classification. If a certain subset of the signal is highly periodic, it is likely to be an exercise of some kind. However, there is one activity users do in the gym that is both periodic and non-exercise, and that is walking. In fact, common pedometer applications tend to take advantage of this periodicity when doing their own counting (REFERENCE). This necessitates the use of machine learning, as there is no ubiquitous heuristic which can determine whether a signal is periodic as well as if a signal represents walking versus other exercises. Fortunately, features can easily be extracted and passed into an SVM which accomplishes both of these tasks.
+\begin{figure}
+    \centering
+    \resizebox{\textwidth}{!}{
+        \includegraphics{idling_raw_accelerometer}
+    }
+    \caption{Single axis accelerometer values while idling}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \resizebox{\textwidth}{!}{
+        \includegraphics{curl_raw_accelerometer}
+    }
+    \caption{Single axis accelerometer values while performing curls}
+\end{figure}
+
+We have a key intuition however to separate exercise from non-exercise, and that is periodicity. Non-exercise tends to be very aperiodic, such as in Figure 3.1, while exercise (especially high-repetition bodybuilder-esque exercise) tends to be very periodic, such as in Figure 3.2. This can be easily exploited then when performing classification. If a certain subset of the signal is highly periodic, it is likely to be an exercise of some kind. However, there is one activity users do in the gym that is both periodic and non-exercise, and that is walking. This necessitates the use of machine learning, as there is no ubiquitous heuristic which can determine whether a signal is periodic as well as if a signal represents walking versus other exercises. Fortunately, features can easily be extracted and passed into an SVM which accomplishes both of these tasks.
 
 The second issue we face is the \textit{wide variability in form}. We make the assumption that users of this application will have a fundamental understanding of the lifts they perform, although sensor data will inevitably vary depending on physiological features such as height, arm length, and leg length, regardless of how well they perform the repetition. It is possible that a DTW algorithm could allay this, but we choose to simply train our classifiers over a large dataset. By choosing five to ten athletes to provide training data, we can reasonably cover most variations in form. 
 
-Another issue we have is \textit{properly counting}. For an application like a pedometer, counting repetitions becomes almost a trivial task. A heavy low-pass filter can be applied to the signal, and then the number of steps simply becomes the number of peaks. This is due to the relative steadiness with which we walk. Generally speaking, people's gaits do not change much from step to step. A user may walk at a different speed in their house than going when they go to class, but on the whole, walking is a cleanly periodic signal. Counting lifting repetitions however is a much more difficult task, as the bar speed and repetition rate can change from repetition to repetion, as well as from set to set. A user doing a set of ten repetitions or greater may tire by the end, performing much slower and perhaps even failing a lift. A tracking system must be able to account for this. 
+Another issue we have is \textit{properly counting}. For an application like a pedometer, counting repetitions becomes almost a trivial task. A heavy low-pass filter can be applied to the signal, and then the number of steps simply becomes the number of peaks. This is due to the relative steadiness with which we walk. Generally speaking, people's gaits do not change much from step to step. A user may walk at a different speed in their house than going when they go to class, but on the whole, walking is a cleanly periodic signal. Counting lifting repetitions however is a much more difficult task, as the bar speed and repetition rate can change from repetition to repetion, as well as from set to set. A user doing a set of ten repetitions or greater may tire by the end, performing much slower and perhaps even failing a lift. A tracking system must be able to account for this. Additionally, the accelerometer traces of an exercise may not be amenable to simple peak counting, such as in Figure 3.3.
+
+\begin{figure}
+    \centering
+    \resizebox{\textwidth}{!}{
+        \includegraphics{squat_raw_accelerometer}
+    }
+    \caption{Single axis accelerometer values while performing squats}
+\end{figure}
 
 Finally, we have a problem of \textit{differentiating between similar exercises}. It may be easy for the human eye to differentiate between a Pendlay row and a bench press, but when looking at the movement itself, both simplify down to an explosive upward movement and a controlled downward movement. To this end, we must employ machine learning instead of simple heuristics for lift recognition. 
 

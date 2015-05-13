@@ -8,12 +8,12 @@ An unfortunate downside to the Android platform is that Android does not guarant
 
 Likewise, although Android does not allow us to define a sampling rate, setting the delay to \textit{FASTEST} results in a sampling rate consistently near 25Hz. To be precise, the accelerometer was measured to have a sampling rate of approximately 24.67Hz on average. This is however an average, thus samples may come early or late, depending on how the Android scheduler prioritizes sensor readings. 
 
-Because of this, we resample with a Zero-Order Hold (ZOH). ZOH is very easy to implement, and considering how close our sampling rate is to our desired rate of 25Hz, we maintain a high fidelity signal. Any additional noise introduced due to resampling is effectively filtered out in our next step.
+Because of this, we resample with a zero-order hold (ZOH). ZOH is very easy to implement, and considering how close our sampling rate is to our desired rate of 25Hz, we maintain a high fidelity signal. Any additional noise introduced due to resampling is effectively filtered out in our next step.
 
 \subsection{Filtering}
 Repetitions occur generally on the order of 1Hz, and bodybuilding exercises tend not to have many sharp movements due to the threat of injury, thus we decide on a frequency cutoff of 12Hz for our signal. This is conveniently in the middle of our (now resampled) sampling rate, and it will take care of noise added in the previous step.
 
-Our low-pass filter is implemented using a unity-gain five-tap IIR Butterworth filter generated in MATLAB. (TODO: INCLUDE PICTURE, WHAT IS CUTOFF, ETC)
+Our low-pass filter is implemented using a unity-gain five-tap IIR Butterworth filter generated in MATLAB.
 
 
 %%======================================================================%%
@@ -21,8 +21,24 @@ Our low-pass filter is implemented using a unity-gain five-tap IIR Butterworth f
 
 Sensor data is sent in batches from the watch to reduce message overhead and preserve battery life, thus large buffers of sensor data are sent to segmentation at a time.
 
+\begin{figure}
+    \centering
+    \resizebox{\textwidth}{!}{
+        \includegraphics{curl_magnitude_autoc}
+    }
+    \caption{Autocorrelation of a periodic signal}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \resizebox{\textwidth}{!}{
+        \includegraphics{noisy_no_exercise_autoc}
+    }
+    \caption{Autocorrelation of an aperiodic signal}
+\end{figure}
+
 \subsection{Sliding Window Buffers}
-First, our data is split into five second buffers using a sliding window with 4.8s overlap. This is done for the purposes of autocorrelation. As mentioned earlier, we expect exercise to be roughly periodic across the entire signal, exhibiting an autocorrelation similar to (TODO: INSERT PICTURE). This is not entirely true however. Anecdotally, when performing a set of ten repetitions, the first repetitions will be done better than the final repetitions. Bar speed is directly indicative of the quality of a repetition, thus early repetitions are performed quicker than later repetitions. Computing autocorrelation over the entire signal would not make sense then - concurrent repetitions will likely be similar, but the first is nearly guaranteed to have a different period than the last. Therefore, we compute segmentation over sliding windows. 
+First, our data is split into five second buffers using a sliding window with 4.8s overlap. This is done for the purposes of autocorrelation. As mentioned earlier, we expect exercise to be roughly periodic across the entire signal, exhibiting an autocorrelation similar to Figure 4.1, contrasted to aperiodic movement as in Figure 4.2. This is not entirely true however. Anecdotally, when performing a set of ten repetitions, the first repetitions will be done better than the final repetitions. Bar speed is directly indicative of the quality of a repetition, thus early repetitions are performed quicker than later repetitions. Computing autocorrelation over the entire signal would not make sense then - concurrent repetitions will likely be similar, but the first is nearly guaranteed to have a different period than the last. Therefore, we compute segmentation over sliding windows. 
 
 \subsection{Signal Variants}
 Our system uses two three-axis sensor sources, the smartwatch's accelerometer and gyroscope. We derive the following signals from each sensor stream:
@@ -133,7 +149,7 @@ Our counting algorithm can be defined by the following algorithm:
 
 MIN\_PERIOD is defined as the minimum amount of time a particular lift has ever taken to complete. This number is typically around 0.5s. 
 
-(TODO: INSERT FIGURES) The above figures illustrate the difficulties with counting. For an isolation exercise such as a bicep curl, repetitions tend to be clean, and peaks can be easily counted. Contrast this with a compound movement such as a bench press or a squat; it can be difficult to discern repetitions even when manually examining the signal.
+Figures 3.2 and 3.3 illustrate the difficulties with counting. For an isolation exercise such as a bicep curl, repetitions tend to be clean, and peaks can be easily counted. Contrast this with a compound movement such as a bench press or a squat; it can be difficult to discern repetitions even when manually examining the signal.
 
 \subsection{Algorithm Part 1}
 Our first step in counting repetitions is to compile an initial list of peaks. We make an assumption that two repetitions could never occur within MIN\_PERIOD of each other, and so if two peaks are ever within that range, we assume they correspond to the same repetition. A prime example of this occurring is on Pendlay row; if the repetition is explosive enough, the bar will first accelerate off the floor, then it will experience another spike when it collides with the user's chest. 
