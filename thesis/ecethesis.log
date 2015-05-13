@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  30 APR 2015 16:30
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2014.9.8)  13 MAY 2015 01:02
 entering extended mode
 **C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
 (C:/Users/Dario/Dropbox/SchoolWork/SeniorThesis/thesis/ecethesis.tex
@@ -174,6 +174,26 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 )
 \c@ContinuedFloat=\count106
 )
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty"
+Package: booktabs 2005/04/14 v1.61803 publication quality tables
+\heavyrulewidth=\dimen126
+\lightrulewidth=\dimen127
+\cmidrulewidth=\dimen128
+\belowrulesep=\dimen129
+\belowbottomsep=\dimen130
+\aboverulesep=\dimen131
+\abovetopsep=\dimen132
+\cmidrulesep=\dimen133
+\cmidrulekern=\dimen134
+\defaultaddspace=\dimen135
+\@cmidla=\count107
+\@cmidlb=\count108
+\@aboverulesep=\dimen136
+\@belowrulesep=\dimen137
+\@thisruleclass=\count109
+\@lastruleclass=\count110
+\@thisrulewidth=\dimen138
+)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.aux
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\literature_review.aux)
@@ -181,51 +201,51 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\system_design.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.aux))
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-\chapternumberheight=\dimen126
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+\chapternumberheight=\dimen139
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count107
-\scratchdimen=\dimen127
+\scratchcounter=\count111
+\scratchdimen=\dimen140
 \scratchbox=\box29
-\nofMPsegments=\count108
-\nofMParguments=\count109
+\nofMPsegments=\count112
+\nofMParguments=\count113
 \everyMPshowfont=\toks20
-\MPscratchCnt=\count110
-\MPscratchDim=\dimen128
-\MPnumerator=\count111
-\makeMPintoPDFobject=\count112
+\MPscratchCnt=\count114
+\MPscratchDim=\dimen141
+\MPnumerator=\count115
+\makeMPintoPDFobject=\count116
 \everyMPtoPDFconversion=\toks21
 )
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-\thesis@dim=\dimen129
+\thesis@dim=\dimen142
 
-Underfull \vbox (badness 10000) detected at line 57
+Underfull \vbox (badness 10000) detected at line 60
  []
 
 
-Overfull \vbox (72.26999pt too high) detected at line 57
+Overfull \vbox (72.26999pt too high) detected at line 60
  []
 
 
-Underfull \vbox (badness 10000) detected at line 57
+Underfull \vbox (badness 10000) detected at line 60
  []
 
 
-Underfull \vbox (badness 10000) detected at line 57
+Underfull \vbox (badness 10000) detected at line 60
  []
 
 [1
@@ -243,17 +263,7 @@ Underfull \vbox (badness 10000) detected at line 57
  [5
 
 ]
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.lot)
-\tf@lot=\write4
- [6
-
-]
-(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\ecethesis.lof)
-\tf@lof=\write5
- [7
-
-]
-[8
+[6
 
 ] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\intro.tex
 CHAPTER 1.
@@ -300,9 +310,10 @@ CHAPTER 5.
 
 
 
-] (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.tex
+] [17]
+(C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.tex
 CHAPTER 6.
-) [17
+) [18
 
 
 
@@ -310,7 +321,7 @@ CHAPTER 6.
 
 LaTeX Warning: Empty `thebibliography' environment on input line 25.
 
-) [18
+) [19
 
 
 
@@ -322,13 +333,13 @@ LaTeX Warning: Empty `thebibliography' environment on input line 25.
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\results.aux)
 (C:\Users\Dario\Dropbox\SchoolWork\SeniorThesis\thesis\conclusion.aux)) ) 
 Here is how much of TeX's memory you used:
- 3182 strings out of 493921
- 49290 string characters out of 3144877
- 108482 words of memory out of 3000000
- 6415 multiletter control sequences out of 15000+200000
+ 3236 strings out of 493921
+ 49840 string characters out of 3144877
+ 109482 words of memory out of 3000000
+ 6471 multiletter control sequences out of 15000+200000
  10445 words of font info for 37 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 36i,5n,38p,1400b,256s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,8n,39p,1400b,265s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Pr
 ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Prog
 ram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Progra
@@ -339,10 +350,11 @@ es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files
 6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x86)/M
 iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files (x86)/MiK
 TeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files (x86)/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on ecethesis.pdf (26 pages, 184040 bytes).
+X 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 
+2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on ecethesis.pdf (25 pages, 191810 bytes).
 PDF statistics:
- 126 PDF objects out of 1000 (max. 8388607)
+ 127 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

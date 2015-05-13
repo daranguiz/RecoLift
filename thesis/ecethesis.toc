@@ -1,6 +1,4 @@
-\contentsline {chapter}{\MakeUppercase {List of Tables}}{vi}
-\contentsline {chapter}{\MakeUppercase {List of Figures}}{vii}
-\contentsline {chapter}{\MakeUppercase {LIST OF ABBREVIATIONS}}{viii}
+\contentsline {chapter}{\MakeUppercase {LIST OF ABBREVIATIONS}}{vi}
 \contentsline {chapter}{CHAPTER\ 1\hskip 1em\relax \MakeUppercase {Introduction}}{1}
 \contentsline {chapter}{CHAPTER\ 2\hskip 1em\relax \MakeUppercase {Literature Review}}{3}
 \contentsline {chapter}{CHAPTER\ 3\hskip 1em\relax \MakeUppercase {General Methodology}}{5}
@@ -24,5 +22,7 @@
 \contentsline {subsection}{\numberline {4.4.2}Algorithm Part 2}{15}
 \contentsline {subsection}{\numberline {4.4.3}Algorithm Part 3}{15}
 \contentsline {chapter}{CHAPTER\ 5\hskip 1em\relax \MakeUppercase {Results}}{16}
-\contentsline {chapter}{CHAPTER\ 6\hskip 1em\relax \MakeUppercase {Conclusion}}{17}
-\contentsline {chapter}{\MakeUppercase {REFERENCES}}{18}
+\contentsline {section}{\numberline {5.1}Methods}{16}
+\contentsline {section}{\numberline {5.2}Final Results}{16}
+\contentsline {chapter}{CHAPTER\ 6\hskip 1em\relax \MakeUppercase {Conclusion}}{18}
+\contentsline {chapter}{\MakeUppercase {REFERENCES}}{19}

@@ -1,3 +1,35 @@
 \chapter{Results}
 
-If I had results, this is where they would go! The system is designed and written, but not yet tested. There are still some problems, which will be addressed in the coming week. 
+
+\section{Methods}
+Our accuracy can be characterized by three factors:
+
+\begin{enumerate}
+    \item \textbf{Segmentation}: Does the system properly detect \textit{when} a lift is being performed? Additionally, does the system ignore all idle motion?
+    \item \textbf{Recognition}: Does the system properly determine \textit{which} lift is being performed?
+    \item \textbf{Counting}: Does the system count the number of repetitions correctly?
+\end{enumerate}
+
+To test our system, we trained our classifiers on five lifts: low bar squat, overhead press, bench press, Pendlay row, and barbell curl. Testing comprised of performing 5 sets of each lift at 8 repetitions each, totaling 40 repetitions for each lift. An empty barbell weighing 45 lbs was used. 
+
+
+\section{Final Results}
+We achieved 100\% accuracy both on segmentation and recognition. Every set performed was noted and classified correctly, and no misclassification of idle movement occurred. 
+
+\begin{figure}
+    \centering
+    \begin{tabular}{l r r r}
+        \toprule
+        Lift           & Exact   & Within 1 & Within 2 \\
+        \midrule[\heavyrulewidth]
+        Low Bar Squat  & 80 \%    & 80 \%     & 100 \% \\
+        Overhead Press & 40 \%    & 100 \%    & 100 \% \\
+        Bench Press    & 40 \%    & 40 \%     & 80 \%  \\
+        Pendlay Row    & 40 \%    & 80 \%     & 100 \% \\
+        Curl           & 20 \%    & 100 \%    & 100 \% \\
+        \midrule
+        Overall        & 44 \%   & 80 \%    & 96 \%    \\
+        \bottomrule
+    \end{tabular}
+    \caption{Difference in reported repetition count versus actual repetition count}
+\end{figure}
